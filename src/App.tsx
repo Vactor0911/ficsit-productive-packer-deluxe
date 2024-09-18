@@ -1,17 +1,44 @@
 import styled from "styled-components";
+import Logo from "./assets/game-logo.png";
+import { color } from "../theme";
+import Button from "./components/Button";
 
-const Style = styled.div``;
+const Style = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  padding: 20px;
+  background-color: ${color.green};
+
+  #logo {
+    width: 30vw;
+    animation: logo-tilt 2s infinite ease-out;
+  }
+
+  @keyframes logo-tilt {
+    from {
+      transform: rotate(-5deg);
+    }
+    50% {
+      transform: rotate(5deg);
+    }
+    to {
+      transform: rotate(-5deg);
+    }
+  }
+`;
 
 function App() {
   return (
     <Style>
-      <h1>Hello World!</h1>
-      <p>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Velit quos
-        quas consectetur quia? Aliquid recusandae in tenetur voluptas ut
-        expedita nulla, ipsa cupiditate sint corporis, ipsam id? Commodi, beatae
-        ut.
-      </p>
+      <img src={Logo} alt="logo" id="logo" />
+      <Button />
+      <Button />
     </Style>
   );
 }
