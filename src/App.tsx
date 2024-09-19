@@ -17,18 +17,18 @@ const Style = styled.div`
 
   #logo {
     width: 30vw;
-    animation: logo-tilt 2s infinite ease-out;
+    animation: logo-tilt 4s infinite ease-out;
   }
 
   @keyframes logo-tilt {
     from {
-      transform: rotate(-5deg);
+      transform: rotate(10deg);
     }
     50% {
-      transform: rotate(5deg);
+      transform: rotate(0deg);
     }
     to {
-      transform: rotate(-5deg);
+      transform: rotate(10deg);
     }
   }
 `;
