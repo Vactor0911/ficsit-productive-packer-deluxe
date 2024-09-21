@@ -8,11 +8,11 @@ const Style = styled.button`
   color: white;
   border: 2px solid black;
   background-color: ${color.orange};
-  padding: 10px;
-  padding-bottom: 16px;
+  padding: 14px;
+  padding-bottom: 28px;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 5px 1px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 6px 1px rgba(0, 0, 0, 0.3);
   cursor: pointer;
 
   #text {
@@ -25,7 +25,7 @@ const Style = styled.button`
     content: "";
     position: absolute;
     width: 100%;
-    height: 6px;
+    height: 8px;
     bottom: -2px;
     left: -2px;
     background-color: rgba(120, 0, 0, 0.3);
@@ -37,7 +37,7 @@ const Style = styled.button`
     content: "";
     position: absolute;
     width: 200%;
-    height: calc(100% - 8px);
+    height: calc(100% - 10px);
     top: 0;
     left: -100%;
     background: repeating-linear-gradient(
@@ -52,7 +52,21 @@ const Style = styled.button`
 
   &:hover:after {
     opacity: 1;
-    animation: btn-hover 3s infinite linear;
+    animation: btn-hover 5s infinite linear;
+  }
+
+  &:active {
+    transform: translateY(6px);
+    box-shadow: 0 2px 1px rgba(0, 0, 0, 0.3);
+    margin-top: 6px;
+    margin-bottom: 6px;
+    padding-bottom: 16px;
+  }
+  &:active:before {
+    height: 2px;
+  }
+  &:active:after {
+    height: calc(100% - 4px);
   }
 
   @keyframes btn-hover {
@@ -65,9 +79,13 @@ const Style = styled.button`
   }
 `;
 
-const Button = () => {
+type ButtonProps = {
+  text: string;
+};
+
+const Button = ({text}: ButtonProps) => {
   return <Style>
-    <h1 id="text">Button</h1>
+    <h2 id="text">{text}</h2>
   </Style>;
 };
 

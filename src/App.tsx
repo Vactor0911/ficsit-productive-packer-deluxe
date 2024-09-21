@@ -18,6 +18,7 @@ const Style = styled.div`
   #logo {
     width: 30vw;
     animation: logo-tilt 4s infinite ease-out;
+    margin-bottom: 20px;
   }
 
   @keyframes logo-tilt {
@@ -37,8 +38,8 @@ function App() {
   return (
     <Style>
       <img src={Logo} alt="logo" id="logo" />
-      <Button />
-      <Button />
+      <Button text="게임 시작" />
+      <Button text="플레이 방법" />
     </Style>
   );
 }
