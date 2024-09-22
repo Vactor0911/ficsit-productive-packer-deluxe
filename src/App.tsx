@@ -1,46 +1,23 @@
-import styled from "styled-components";
-import Logo from "./assets/game-logo.png";
-import { color } from "../theme";
-import Button from "./components/Button";
+import { Home, Game, HowToPlay, Setting } from "./components/pages";
+import { useState, createContext, Dispatch, SetStateAction } from "react";
 
-const Style = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  gap: 20px;
-  width: 100%;
-  height: 100%;
-  min-height: 100vh;
-  padding: 20px;
-  background-color: ${color.green};
+interface MenuContextType {
+  menu: string;
+  setMenu: Dispatch<SetStateAction<string>>;
+}
 
-  #logo {
-    width: 30vw;
-    animation: logo-tilt 4s infinite ease-out;
-    margin-bottom: 20px;
-  }
-
-  @keyframes logo-tilt {
-    from {
-      transform: rotate(10deg);
-    }
-    50% {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(10deg);
-    }
-  }
-`;
+export const MenuContext = createContext<MenuContextType | null>(null);
 
 function App() {
+  const [menu, setMenu] = useState("home");
+
   return (
-    <Style>
-      <img src={Logo} alt="logo" id="logo" />
-      <Button text="게임 시작" />
-      <Button text="플레이 방법" />
-    </Style>
+    <MenuContext.Provider value={{ menu, setMenu }}>
+      {menu === "home" && <Home />}
+      {menu === "game" && <Game />}
+      {menu === "how-to-play" && <HowToPlay />}
+      {menu === "setting" && <Setting />}
+    </MenuContext.Provider>
   );
 }
 
