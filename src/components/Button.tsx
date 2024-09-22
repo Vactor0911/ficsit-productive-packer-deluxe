@@ -2,6 +2,8 @@ import styled from "styled-components";
 import { color } from "../../theme";
 
 const Style = styled.button`
+  justify-content: space-between;
+  align-items: center;
   text-align: center;
   font-weight: bold;
   font-size: 1.5em;
@@ -13,12 +15,23 @@ const Style = styled.button`
   position: relative;
   overflow: hidden;
   box-shadow: 0 6px 1px rgba(0, 0, 0, 0.3);
+  font-weight: bold;
   cursor: pointer;
 
-  #text {
+  .text {
     position: relative;
-    -webkit-text-stroke: 2px black;
+    -webkit-text-stroke: 5px black;
+    paint-order: stroke fill;
+    text-shadow: 4px 4px rgba(0, 0, 0, 0.3);
     z-index: 2;
+  }
+
+  .arrow {
+    margin-right: 20px;
+  }
+
+  &:hover .arrow {
+    animation: arrow-hover 1s infinite linear;
   }
 
   &:before {
@@ -43,9 +56,9 @@ const Style = styled.button`
     background: repeating-linear-gradient(
       -45deg,
       ${color.orange},
-      ${color.orange} 15px,
-      #f3d2c0 15px,
-      #f3d2c0 30px
+      ${color.orange} 25px,
+      #f3d2c0 25px,
+      #f3d2c0 50px
     );
     z-index: 1;
   }
@@ -77,16 +90,48 @@ const Style = styled.button`
       transform: translateX(50%);
     }
   }
+
+  @keyframes arrow-hover {
+    from {
+      transform: translateX(0);
+    }
+    50% {
+      transform: translateX(20px);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
 `;
 
 type ButtonProps = {
+  className?: string;
+  id?: string;
   text: string;
+  onClick?: () => void;
+  hasArrow?: boolean;
 };
 
-const Button = ({text}: ButtonProps) => {
-  return <Style>
-    <h2 id="text">{text}</h2>
-  </Style>;
+const Button = ({
+  className,
+  id,
+  text,
+  onClick,
+  hasArrow = false,
+}: ButtonProps) => {
+  return (
+    <Style
+      className={className}
+      id={id}
+      onClick={onClick}
+      style={{
+        display: hasArrow ? "flex" : "block",
+      }}
+    >
+      <h2 className="text">{text}</h2>
+      {hasArrow && <h2 className="text arrow">→</h2>}
+    </Style>
+  );
 };
 
 export default Button;
