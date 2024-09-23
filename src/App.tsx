@@ -1,4 +1,4 @@
-import { Home, Game, HowToPlay, Setting } from "./components/pages";
+import { Home, Level, Game, HowToPlay, Setting } from "./components/pages";
 import { useState, createContext, Dispatch, SetStateAction } from "react";
 
 interface MenuContextType {
@@ -14,6 +14,7 @@ function App() {
   return (
     <MenuContext.Provider value={{ menu, setMenu }}>
       {menu === "home" && <Home />}
+      {menu === "level" && <Level />}
       {menu === "game" && <Game />}
       {menu === "how-to-play" && <HowToPlay />}
       {menu === "setting" && <Setting />}

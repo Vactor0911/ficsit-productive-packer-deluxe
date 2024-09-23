@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Logo from "../../assets/game-logo.png";
+import Logo from "../../assets/images/game-logo.png";
 import Button from "../Button";
 import { useContext } from "react";
 import { MenuContext } from "../../App";
@@ -19,7 +19,7 @@ const Style = styled.div`
     margin-bottom: 20px;
   }
 
-  #btn-setting {
+  #float-container {
     position: absolute;
     bottom: 40px;
     right: 40px;
@@ -51,7 +51,7 @@ const Home = () => {
       <Button
         text="게임 시작"
         onClick={() => {
-          setMenu("game");
+          setMenu("level");
         }}
       />
       <Button
@@ -60,13 +60,16 @@ const Home = () => {
           setMenu("how-to-play");
         }}
       />
-      <Button
-        id="btn-setting"
-        text="게임 설정"
-        onClick={() => {
-          setMenu("setting");
-        }}
-      />
+
+      <div id="float-container">
+        <Button
+          id="btn-setting"
+          text="게임 설정"
+          onClick={() => {
+            setMenu("setting");
+          }}
+        />
+      </div>
     </Style>
   );
 };
