@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { color } from "../../../theme";
 import { useContext } from "react";
-import { MenuContext } from "../../App";
+import { LevelContext, MenuContext } from "../../App";
 import {
   Level1,
   Level2,
@@ -72,9 +72,20 @@ const Level = () => {
   }
   const { setMenu } = menuContext;
 
+  const levelContext = useContext(LevelContext);
+  if (!levelContext) {
+    throw new Error("LevelContext is null");
+  }
+  const { setLevel } = levelContext;
+
+  const startGame = (level: number) => {
+    setMenu("game");
+    setLevel(level);
+  }
+
   return (
     <Style>
-      <div className="card">
+      <div className="card" onClick={() => startGame(1)}>
         <div className="image-wrapper">
           <img src={Level1} alt="level1" />
         </div>
@@ -85,7 +96,7 @@ const Level = () => {
           <h2 id="high-score">John Doe: 1,234</h2>
         </div>
       </div>
-      <div className="card">
+      <div className="card" onClick={() => startGame(2)}>
         <div className="image-wrapper">
           <img src={Level2} alt="level1" />
         </div>
@@ -96,7 +107,7 @@ const Level = () => {
           <h2 id="high-score">John Doe: 1,234</h2>
         </div>
       </div>
-      <div className="card">
+      <div className="card" onClick={() => startGame(3)}>
         <div className="image-wrapper">
           <img src={Level3} alt="level1" />
         </div>
@@ -107,7 +118,7 @@ const Level = () => {
           <h2 id="high-score">John Doe: 1,234</h2>
         </div>
       </div>
-      <div className="card">
+      <div className="card" onClick={() => startGame(4)}>
         <div className="image-wrapper">
           <img src={Level4} alt="level1" />
         </div>
@@ -118,7 +129,7 @@ const Level = () => {
           <h2 id="high-score">John Doe: 1,234</h2>
         </div>
       </div>
-      <div className="card">
+      <div className="card" onClick={() => startGame(5)}>
         <div className="image-wrapper">
           <img src={Level5} alt="level1" />
         </div>
@@ -129,7 +140,7 @@ const Level = () => {
           <h2 id="high-score">John Doe: 1,234</h2>
         </div>
       </div>
-      <div className="card">
+      <div className="card" onClick={() => startGame(6)}>
         <div className="image-wrapper">
           <img src={Level6} alt="level1" />
         </div>
