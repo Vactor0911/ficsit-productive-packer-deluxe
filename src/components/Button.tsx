@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { color } from "../../theme";
 
-const Style = styled.button`
+export const ButtonStyle = styled.button`
   justify-content: space-between;
   align-items: center;
   text-align: center;
@@ -65,7 +65,7 @@ const Style = styled.button`
 
   &:hover:after {
     opacity: 1;
-    animation: btn-hover 1s infinite linear;
+    animation: btn-hover 1.5s infinite linear;
   }
 
   &:active {
@@ -120,17 +120,17 @@ const Button = ({
   hasArrow = false,
 }: ButtonProps) => {
   return (
-    <Style
-      className={className}
-      id={id}
-      onClick={onClick}
-      style={{
-        display: hasArrow ? "flex" : "block",
-      }}
-    >
-      <h2 className="text">{text}</h2>
-      {hasArrow && <h2 className="text arrow">→</h2>}
-    </Style>
+      <ButtonStyle
+        className={className}
+        id={id}
+        onClick={onClick}
+        style={{
+          display: hasArrow ? "flex" : "block",
+        }}
+      >
+        <h2 className="text">{text}</h2>
+        {hasArrow && <h2 className="text arrow">→</h2>}
+      </ButtonStyle>
   );
 };
 
