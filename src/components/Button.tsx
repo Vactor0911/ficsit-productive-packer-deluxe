@@ -49,10 +49,10 @@ const Style = styled.button`
     opacity: 0;
     content: "";
     position: absolute;
-    width: 200%;
+    width: calc(100% + 75px);
     height: calc(100% - 10px);
     top: 0;
-    left: -100%;
+    left: -75px;
     background: repeating-linear-gradient(
       -45deg,
       ${color.orange},
@@ -65,7 +65,7 @@ const Style = styled.button`
 
   &:hover:after {
     opacity: 1;
-    animation: btn-hover 5s infinite linear;
+    animation: btn-hover 1s infinite linear;
   }
 
   &:active {
@@ -87,7 +87,7 @@ const Style = styled.button`
       transform: translateX(0);
     }
     to {
-      transform: translateX(50%);
+      transform: translateX(73px);
     }
   }
 
