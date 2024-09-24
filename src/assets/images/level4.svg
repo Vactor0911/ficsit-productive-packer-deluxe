@@ -1,0 +1,61 @@
+<svg viewBox="-35 -35 520 520" xmlns="http://www.w3.org/2000/svg">
+    <rect x="0" y="0" width="450" height="450" fill="#fcc2ea" />
+
+    <g fill="#ffffff">
+        <!-- Row1 -->
+        <rect x="150" y="0" width="50" height="50" />
+        <rect x="250" y="0" width="50" height="50" />
+        
+        <!-- Row2 -->
+        <rect x="100" y="50" width="50" height="50" />
+        <rect x="200" y="50" width="50" height="50" />
+        <rect x="300" y="50" width="50" height="50" />
+        
+        <!-- Row3 -->
+        <rect x="50" y="100" width="50" height="50" />
+        <rect x="150" y="100" width="50" height="50" />
+        <rect x="250" y="100" width="50" height="50" />
+        <rect x="350" y="100" width="50" height="50" />
+
+        <!-- Row4 -->
+        <rect x="0" y="150" width="50" height="50" />
+        <rect x="100" y="150" width="50" height="50" />
+        <rect x="300" y="150" width="50" height="50" />
+        <rect x="400" y="150" width="50" height="50" />
+
+        <!-- Row5 -->
+        <rect x="50" y="200" width="50" height="50" />
+        <rect x="350" y="200" width="50" height="50" />
+
+        <!-- Row6 -->
+        <rect x="0" y="250" width="50" height="50" />
+        <rect x="100" y="250" width="50" height="50" />
+        <rect x="300" y="250" width="50" height="50" />
+        <rect x="400" y="250" width="50" height="50" />
+
+        <!-- Row7 -->
+        <rect x="50" y="300" width="50" height="50" />
+        <rect x="150" y="300" width="50" height="50" />
+        <rect x="250" y="300" width="50" height="50" />
+        <rect x="350" y="300" width="50" height="50" />
+
+        <!-- Row8 -->
+        <rect x="100" y="350" width="50" height="50" />
+        <rect x="200" y="350" width="50" height="50" />
+        <rect x="300" y="350" width="50" height="50" />
+
+        <!-- Row9 -->
+        <rect x="150" y="400" width="50" height="50" />
+        <rect x="250" y="400" width="50" height="50" />
+
+    </g>
+    <g fill="#3c3c3c">
+        <path d="M0,0 100,0 100,50 50,50 50,100 0,100 z" />
+        <path d="M450,0 350,0 350,50 400,50 400,100 450,100 z" />
+        <path d="M0,450 100,450 100,400 50,400 50,350 0,350 z" />
+        <path d="M450,450 350,450 350,400 400,400 400,350 450,350 z" />
+        <rect x="150" y="150" width="150" height="150" />
+    </g>
+
+    <rect id="border" width="450" height="450" fill="none" />
+</svg>

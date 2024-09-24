@@ -1,0 +1,43 @@
+<svg viewBox="-10 -85 520 520" xmlns="http://www.w3.org/2000/svg">
+    <rect x="0" y="0" width="500" height="350" fill="#ffc2b9" />
+    
+    <g fill="#ffffff">
+        <!-- Row1 -->
+        <rect x="450" y="0" width="50" height="50" />
+        
+        <!-- Row2 -->
+        <rect x="300" y="50" width="50" height="50" />
+        <rect x="400" y="50" width="50" height="50" />
+        
+        <!-- Row3 -->
+        <rect x="50" y="100" width="50" height="50" />
+        <rect x="250" y="100" width="50" height="50" />
+        <rect x="350" y="100" width="50" height="50" />
+        
+        <!-- Row4 -->
+        <rect x="0" y="150" width="50" height="50" />
+        <rect x="100" y="150" width="50" height="50" />
+        <rect x="200" y="150" width="50" height="50" />
+        <rect x="300" y="150" width="50" height="50" />
+
+        <!-- Row5 -->
+        <rect x="150" y="200" width="50" height="50" />
+        <rect x="50" y="200" width="50" height="50" />
+        <rect x="250" y="200" width="50" height="50" />
+        
+        <!-- Row6 -->
+        <rect x="100" y="250" width="50" height="50" />
+        <rect x="200" y="250" width="50" height="50" />
+        
+        <!-- Row7 -->
+        <rect x="150" y="300" width="50" height="50" />
+        
+    </g>
+    <g fill="#3c3c3c">
+        <path d="M0,0 400,0 400,50 300,50 300,100 200,100 200,150 150,150 150,100 0,100 z" />
+        <path d="M0,350 0,200 50,200 50,250 100,250 100,300 150,300 150,350 z" />
+        <path d="M500,350 500,50 450,50 450,100 400,100 400,150 350,150 350,200 300,200 300,250 250,250 250,300 200,300 200,350 z" />
+    </g>
+
+    <rect id="border" width="500" height="350" fill="none" />
+</svg>

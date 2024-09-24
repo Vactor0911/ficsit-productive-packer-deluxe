@@ -39,9 +39,15 @@ const Style = styled.div`
     padding: 10px;
   }
 
-  .image-wrapper img {
-    width: 100%;
+  .image-wrapper svg {
+    height: 100%;
     aspect-ratio: 1/1;
+  }
+
+  .image-wrapper svg #border {
+    stroke: black;
+    stroke-width: 2px;
+    vector-effect: non-scaling-stroke;
   }
 
   .container {
@@ -81,13 +87,13 @@ const Level = () => {
   const startGame = (level: number) => {
     setMenu("game");
     setLevel(level);
-  }
+  };
 
   return (
     <Style>
       <div className="card" onClick={() => startGame(1)}>
         <div className="image-wrapper">
-          <img src={Level1} alt="level1" />
+          <Level1 />
         </div>
         <div className="container">
           <h2>레벨 1</h2>
@@ -98,7 +104,7 @@ const Level = () => {
       </div>
       <div className="card" onClick={() => startGame(2)}>
         <div className="image-wrapper">
-          <img src={Level2} alt="level1" />
+          <Level2 />
         </div>
         <div className="container">
           <h2>레벨 2</h2>
@@ -109,7 +115,7 @@ const Level = () => {
       </div>
       <div className="card" onClick={() => startGame(3)}>
         <div className="image-wrapper">
-          <img src={Level3} alt="level1" />
+          <Level3 />
         </div>
         <div className="container">
           <h2>레벨 3</h2>
@@ -120,7 +126,7 @@ const Level = () => {
       </div>
       <div className="card" onClick={() => startGame(4)}>
         <div className="image-wrapper">
-          <img src={Level4} alt="level1" />
+          <Level4 />
         </div>
         <div className="container">
           <h2>레벨 4</h2>
@@ -131,7 +137,7 @@ const Level = () => {
       </div>
       <div className="card" onClick={() => startGame(5)}>
         <div className="image-wrapper">
-          <img src={Level5} alt="level1" />
+          <Level5 />
         </div>
         <div className="container">
           <h2>레벨 5</h2>
@@ -142,7 +148,7 @@ const Level = () => {
       </div>
       <div className="card" onClick={() => startGame(6)}>
         <div className="image-wrapper">
-          <img src={Level6} alt="level1" />
+          <Level6 />
         </div>
         <div className="container">
           <h2>레벨 6</h2>

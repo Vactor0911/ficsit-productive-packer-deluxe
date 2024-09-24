@@ -1,0 +1,28 @@
+<svg viewBox="-135 -135 520 520" xmlns="http://www.w3.org/2000/svg">
+    <rect x="0" y="0" width="250" height="250" fill="#cce6e6" />
+    <g fill="#ffffff">
+        <!-- Row1 -->
+        <rect x=" 50" y=" 0" width=" 50" height=" 50" />
+        <rect x=" 150" y=" 0" width=" 50" height=" 50" />
+
+        <!-- Row2 -->
+        <rect x=" 0" y=" 50" width=" 50" height=" 50" />
+        <rect x=" 100" y=" 50" width=" 50" height=" 50" />
+        <rect x=" 200" y=" 50" width=" 50" height=" 50" />
+
+        <!-- Row3 -->
+        <rect x=" 50" y=" 100" width=" 50" height=" 50" />
+        <rect x=" 150" y=" 100" width=" 50" height=" 50" />
+
+        <!-- Row4 -->
+        <rect x=" 0" y=" 150" width=" 50" height=" 50" />
+        <rect x=" 100" y=" 150" width=" 50" height=" 50" />
+        <rect x=" 200" y=" 150" width=" 50" height=" 50" />
+
+        <!-- Row5 -->
+        <rect x=" 50" y=" 200" width=" 50" height=" 50" />
+        <rect x=" 150" y=" 200" width=" 50" height=" 50" />
+    </g>
+    
+    <rect id="border" x="0" y="0" width="250" height="250" fill="none" />
+</svg>
