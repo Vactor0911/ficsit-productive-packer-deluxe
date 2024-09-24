@@ -1,8 +1,10 @@
 import styled from "styled-components";
 import Logo from "../../assets/images/game-logo.png";
 import Button from "../Button";
+import { ButtonStyle } from "../Button";
 import { useContext } from "react";
 import { MenuContext } from "../../App";
+import Github from "../../assets/images/github.svg";
 
 const Style = styled.div`
   display: flex;
@@ -20,9 +22,17 @@ const Style = styled.div`
   }
 
   #float-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
     position: absolute;
     bottom: 40px;
     right: 40px;
+    gap: 20px;
+  }
+
+  #float-container * {
+    margin-left: auto;
   }
 
   @keyframes logo-tilt {
@@ -63,12 +73,16 @@ const Home = () => {
 
       <div id="float-container">
         <Button
-          id="btn-setting"
           text="게임 설정"
           onClick={() => {
             setMenu("setting");
           }}
         />
+        <ButtonStyle>
+          <a href="https://github.com/Vactor0911/ficsit-productive-packer-deluxe" target="_blank" style={{color: "white", textDecoration: "none"}}>
+            <h2 className="text">Github 방문하기</h2>
+          </a>
+        </ButtonStyle>
       </div>
     </Style>
   );
