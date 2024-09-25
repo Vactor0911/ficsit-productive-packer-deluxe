@@ -1,10 +1,8 @@
 import styled from "styled-components";
 import Logo from "../../assets/images/game-logo.png";
 import Button from "../Button";
-import { ButtonStyle } from "../Button";
 import { useContext } from "react";
 import { MenuContext } from "../../App";
-import Github from "../../assets/images/github.svg";
 
 const Style = styled.div`
   display: flex;
@@ -78,11 +76,7 @@ const Home = () => {
             setMenu("setting");
           }}
         />
-        <ButtonStyle>
-          <a href="https://github.com/Vactor0911/ficsit-productive-packer-deluxe" target="_blank" style={{color: "white", textDecoration: "none"}}>
-            <h2 className="text">Github 방문하기</h2>
-          </a>
-        </ButtonStyle>
+        <Button text="Github 방문하기" onClick={() => {window.open("https://github.com/Vactor0911/ficsit-productive-packer-deluxe", "_blank")}} />
       </div>
     </Style>
   );

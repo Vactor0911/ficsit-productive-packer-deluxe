@@ -1,22 +1,28 @@
 import styled from "styled-components";
 import { color } from "../../theme";
+import { Block } from "./Styles";
 
 export const ButtonStyle = styled.button`
-  justify-content: space-between;
-  align-items: center;
-  text-align: center;
-  font-weight: bold;
-  font-size: 1.5em;
+  display: flex;
+  align-items: flex-end;
+  background: rgba(0, 0, 0, 0);
+  border: none;
   color: white;
-  border: 2px solid black;
-  background-color: ${color.orange};
-  padding: 14px;
-  padding-bottom: 28px;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 6px 1px rgba(0, 0, 0, 0.3);
+  font-size: 1em;
   font-weight: bold;
+  text-align: center;
+  position: relative;
   cursor: pointer;
+
+  #btn-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 14px;
+    padding-bottom: 26px;
+    overflow: hidden;
+  }
 
   .text {
     position: relative;
@@ -30,22 +36,7 @@ export const ButtonStyle = styled.button`
     margin-right: 20px;
   }
 
-  &:hover .arrow {
-    animation: arrow-hover 1s infinite linear;
-  }
-
-  &:before {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 8px;
-    bottom: -2px;
-    left: -2px;
-    background-color: rgba(120, 0, 0, 0.3);
-    border: 2px solid black;
-  }
-
-  &:after {
+  #btn-container:after {
     opacity: 0;
     content: "";
     position: absolute;
@@ -63,22 +54,28 @@ export const ButtonStyle = styled.button`
     z-index: 1;
   }
 
-  &:hover:after {
+  &:hover #btn-container:after,
+  &:active #btn-container:after {
     opacity: 1;
     animation: btn-hover 1.5s infinite linear;
   }
 
-  &:active {
-    transform: translateY(6px);
-    box-shadow: 0 2px 1px rgba(0, 0, 0, 0.3);
-    margin-top: 6px;
-    margin-bottom: 6px;
-    padding-bottom: 16px;
+  &:hover .arrow,
+  &:active .arrow {
+    animation: arrow-hover 1s infinite linear;
   }
-  &:active:before {
+
+  &:active #btn-container {
+    margin-top: 6px;
+    padding-bottom: 20px;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.3);
+  }
+
+  &:active #btn-container:before {
     height: 2px;
   }
-  &:active:after {
+
+  &:active #btn-container:after {
     height: calc(100% - 4px);
   }
 
@@ -120,17 +117,18 @@ const Button = ({
   hasArrow = false,
 }: ButtonProps) => {
   return (
-      <ButtonStyle
-        className={className}
-        id={id}
-        onClick={onClick}
+    <ButtonStyle className={className} id={id} onClick={onClick}>
+      <Block
+        id="btn-container"
+        color={color.orange}
         style={{
-          display: hasArrow ? "flex" : "block",
+          gap: hasArrow ? "20px" : "0",
         }}
       >
-        <h2 className="text">{text}</h2>
+        <h1 className="text">{text}</h1>
         {hasArrow && <h2 className="text arrow">→</h2>}
-      </ButtonStyle>
+      </Block>
+    </ButtonStyle>
   );
 };
 

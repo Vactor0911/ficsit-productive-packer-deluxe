@@ -10,6 +10,7 @@ export const Block = styled.div<BlockProps>`
   background-color: ${(props) => (props.color ? props.color : "white")};
   position: relative;
   box-shadow: 0 ${(props) => (props.thick ? props.thick: "8px")} 0 rgba(0, 0, 0, 0.3);
+  padding-bottom: calc(${(props) => (props.thick ? props.thick: "8px")} + 4px);
 
   &:before {
     content: "";
