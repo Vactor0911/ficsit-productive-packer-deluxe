@@ -76,7 +76,15 @@ const Home = () => {
             setMenu("setting");
           }}
         />
-        <Button text="Github 방문하기" onClick={() => {window.open("https://github.com/Vactor0911/ficsit-productive-packer-deluxe", "_blank")}} />
+        <Button
+          text="Github 방문하기"
+          onClick={() => {
+            window.open(
+              "https://github.com/Vactor0911/ficsit-productive-packer-deluxe",
+              "_blank"
+            );
+          }}
+        />
       </div>
     </Style>
   );
