@@ -29,6 +29,41 @@ const Style = styled.div`
     border: 2px solid black;
     box-shadow: 0 14px rgba(0, 0, 0, 0.3);
     cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card * {
+    z-index: 2;
+  }
+
+  .card:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      -30deg,
+      transparent 0%,
+      transparent 30%,
+      rgba(255, 255, 255, 0.25) 30%,
+      rgba(255, 255, 255, 0.25) 70%,
+      transparent 70%,
+      transparent 100%
+    );
+    z-index: 1;
+    opacity: 1;
+  }
+
+  .card:hover {
+    background-color: #b6e5d5;
+  }
+
+  .card:hover:after {
+    opacity: 1;
+    animation: card-hover 0.3s linear;
   }
 
   .image-wrapper {
@@ -68,6 +103,15 @@ const Style = styled.div`
 
   Button {
     margin-top: 50px;
+  }
+
+  @keyframes card-hover {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(200%);
+    }
   }
 `;
 
