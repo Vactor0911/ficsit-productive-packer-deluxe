@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import { color } from "../../theme";
 import { Block } from "./Styles";
+import { playAudio } from "../utils";
+import { useAtomValue } from "jotai";
+import { audioButtonClickAtom, audioButtonHoverAtom } from "../state";
 
 export const ButtonStyle = styled.button`
   display: flex;
@@ -116,8 +119,23 @@ const Button = ({
   onClick,
   hasArrow = false,
 }: ButtonProps) => {
+  const audioButtonHover = useAtomValue(audioButtonHoverAtom);
+  const audioButtonClick = useAtomValue(audioButtonClickAtom);
+
   return (
-    <ButtonStyle className={className} id={id} onClick={onClick}>
+    <ButtonStyle
+      className={className}
+      id={id}
+      onClick={() => {
+        if (onClick) {
+          onClick();
+          playAudio(audioButtonClick);
+        }
+      }}
+      onMouseEnter={() => {
+        playAudio(audioButtonHover);
+      }}
+    >
       <Block
         id="btn-container"
         color={color.orange}

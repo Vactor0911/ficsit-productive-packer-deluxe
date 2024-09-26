@@ -1,32 +1,41 @@
+import { useEffect } from "react";
 import { Home, Level, Game, HowToPlay, Setting } from "./components/pages";
-import { useState, createContext, Dispatch, SetStateAction } from "react";
-
-interface MenuContextType {
-  menu: string;
-  setMenu: Dispatch<SetStateAction<string>>;
-}
-export const MenuContext = createContext<MenuContextType | null>(null);
-
-interface LevelContextType {
-  level: number;
-  setLevel: Dispatch<SetStateAction<number>>;
-}
-export const LevelContext = createContext<LevelContextType | null>(null);
+import { audioBgmAtom, gameDataAtom } from "./state";
+import { useAtomValue } from "jotai";
 
 function App() {
-  const [menu, setMenu] = useState("home");
-  const [level, setLevel] = useState(-1);
+  const menu = useAtomValue(gameDataAtom).menu;
+  const audioBgm = useAtomValue(audioBgmAtom);
+
+  const playBgm = () => {
+    audioBgm.play();
+  };
+  const pauseBgm = () => {
+    audioBgm.pause();
+  }
+
+  useEffect(() => {
+    window.addEventListener("click", playBgm);
+    window.addEventListener("keydown", playBgm);
+    window.addEventListener("focus", playBgm);
+    window.addEventListener("blur", pauseBgm);
+
+    return () => {
+      window.removeEventListener("click", playBgm);
+      window.removeEventListener("keydown", playBgm);
+      window.addEventListener("focus", playBgm);
+      window.addEventListener("blur", pauseBgm);
+    };
+  });
 
   return (
-    <MenuContext.Provider value={{ menu, setMenu }}>
-      <LevelContext.Provider value={{ level, setLevel }}>
-        {menu === "home" && <Home />}
-        {menu === "level" && <Level />}
-        {menu === "game" && <Game />}
-        {menu === "how-to-play" && <HowToPlay />}
-        {menu === "setting" && <Setting />}
-      </LevelContext.Provider>
-    </MenuContext.Provider>
+    <>
+      {menu === "home" && <Home />}
+      {menu === "level" && <Level />}
+      {menu === "game" && <Game />}
+      {menu === "how-to-play" && <HowToPlay />}
+      {menu === "setting" && <Setting />}
+    </>
   );
 }
 
