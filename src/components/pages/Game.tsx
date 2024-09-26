@@ -1,31 +1,19 @@
 import styled from "styled-components";
-import { color } from "../../../theme";
-import Button from "../Button";
-import { useContext } from "react";
-import { LevelContext, MenuContext } from "../../App";
+import { useAtomValue } from "jotai";
+import { gameDataAtom } from "../../state";
 
 const Style = styled.div``;
 
 const Game = () => {
-    const menuContext = useContext(MenuContext);
-    if (!menuContext) {
-      throw new Error("MenuContext is null");
-    }
-    const { setMenu } = menuContext;
+  const level = useAtomValue(gameDataAtom).level;
 
-    const levelContext = useContext(LevelContext);
-    if (!levelContext) {
-      throw new Error("LevelContext is null");
-    }
-    const { level } = levelContext;
-
-    return (
-        <Style>
-            <h1>Game</h1>
-            <p>게임 화면</p>
-            <p>레벨: {level}</p>
-        </Style>
-    )
-}
+  return (
+    <Style>
+      <h1>Game</h1>
+      <p>게임 화면</p>
+      <p>레벨: {level}</p>
+    </Style>
+  );
+};
 
 export default Game;

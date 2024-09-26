@@ -1,7 +1,5 @@
 import styled from "styled-components";
 import { color } from "../../../theme";
-import { useContext } from "react";
-import { LevelContext, MenuContext } from "../../App";
 import {
   Level1,
   Level2,
@@ -11,6 +9,13 @@ import {
   Level6,
 } from "../../assets/images";
 import Button from "../Button";
+import {
+  audioButtonHoverAtom,
+  audioGameStartAtom,
+  gameDataAtom,
+} from "../../state";
+import { useAtom, useAtomValue } from "jotai";
+import { playAudio } from "../../utils";
 
 const Style = styled.div`
   display: flex;
@@ -116,26 +121,29 @@ const Style = styled.div`
 `;
 
 const Level = () => {
-  const menuContext = useContext(MenuContext);
-  if (!menuContext) {
-    throw new Error("MenuContext is null");
-  }
-  const { setMenu } = menuContext;
+  // 게임 데이터
+  const [, setGameData] = useAtom(gameDataAtom);
 
-  const levelContext = useContext(LevelContext);
-  if (!levelContext) {
-    throw new Error("LevelContext is null");
-  }
-  const { setLevel } = levelContext;
-
-  const startGame = (level: number) => {
-    setMenu("game");
-    setLevel(level);
+  const startGame = (levelNum: number) => {
+    setGameData({ menu: "game", level: levelNum });
   };
+
+  // 배경음
+  const audioButtonHover = useAtomValue(audioButtonHoverAtom);
+  const audioGameStart = useAtomValue(audioGameStartAtom);
 
   return (
     <Style>
-      <div className="card" onClick={() => startGame(1)}>
+      <div
+        className="card"
+        onClick={() => {
+          startGame(1);
+          playAudio(audioGameStart);
+        }}
+        onMouseEnter={() => {
+          playAudio(audioButtonHover);
+        }}
+      >
         <div className="image-wrapper">
           <Level1 />
         </div>
@@ -146,7 +154,16 @@ const Level = () => {
           <h2 id="high-score">John Doe: 1,234</h2>
         </div>
       </div>
-      <div className="card" onClick={() => startGame(2)}>
+      <div
+        className="card"
+        onClick={() => {
+          startGame(2);
+          playAudio(audioGameStart);
+        }}
+        onMouseEnter={() => {
+          playAudio(audioButtonHover);
+        }}
+      >
         <div className="image-wrapper">
           <Level2 />
         </div>
@@ -157,7 +174,16 @@ const Level = () => {
           <h2 id="high-score">John Doe: 1,234</h2>
         </div>
       </div>
-      <div className="card" onClick={() => startGame(3)}>
+      <div
+        className="card"
+        onClick={() => {
+          startGame(3);
+          playAudio(audioGameStart);
+        }}
+        onMouseEnter={() => {
+          playAudio(audioButtonHover);
+        }}
+      >
         <div className="image-wrapper">
           <Level3 />
         </div>
@@ -168,7 +194,16 @@ const Level = () => {
           <h2 id="high-score">John Doe: 1,234</h2>
         </div>
       </div>
-      <div className="card" onClick={() => startGame(4)}>
+      <div
+        className="card"
+        onClick={() => {
+          startGame(4);
+          playAudio(audioGameStart);
+        }}
+        onMouseEnter={() => {
+          playAudio(audioButtonHover);
+        }}
+      >
         <div className="image-wrapper">
           <Level4 />
         </div>
@@ -179,7 +214,16 @@ const Level = () => {
           <h2 id="high-score">John Doe: 1,234</h2>
         </div>
       </div>
-      <div className="card" onClick={() => startGame(5)}>
+      <div
+        className="card"
+        onClick={() => {
+          startGame(5);
+          playAudio(audioGameStart);
+        }}
+        onMouseEnter={() => {
+          playAudio(audioButtonHover);
+        }}
+      >
         <div className="image-wrapper">
           <Level5 />
         </div>
@@ -190,7 +234,16 @@ const Level = () => {
           <h2 id="high-score">John Doe: 1,234</h2>
         </div>
       </div>
-      <div className="card" onClick={() => startGame(6)}>
+      <div
+        className="card"
+        onClick={() => {
+          startGame(6);
+          playAudio(audioGameStart);
+        }}
+        onMouseEnter={() => {
+          playAudio(audioButtonHover);
+        }}
+      >
         <div className="image-wrapper">
           <Level6 />
         </div>
@@ -201,7 +254,10 @@ const Level = () => {
           <h2 id="high-score">John Doe: 1,234</h2>
         </div>
       </div>
-      <Button text="메뉴로 돌아가기" onClick={() => setMenu("home")} />
+      <Button
+        text="메뉴로 돌아가기"
+        onClick={() => setGameData({ menu: "home", level: -1 })}
+      />
     </Style>
   );
 };

@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import Logo from "../../assets/images/game-logo.png";
 import Button from "../Button";
-import { useContext } from "react";
-import { MenuContext } from "../../App";
+import { gameDataAtom } from "../../state";
+import { useAtom } from "jotai";
 
 const Style = styled.div`
   display: flex;
@@ -47,11 +47,11 @@ const Style = styled.div`
 `;
 
 const Home = () => {
-  const menuContext = useContext(MenuContext);
-  if (!menuContext) {
-    throw new Error("MenuContext is null");
+  const [, setGameData] = useAtom(gameDataAtom);
+
+  const setMenu = (menuName: string) => {
+    setGameData({menu: menuName, level: -1})
   }
-  const { setMenu } = menuContext;
 
   return (
     <Style>

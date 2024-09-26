@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Block, Button } from "../index";
-import { useContext } from "react";
-import { MenuContext } from "../../App";
+import { useAtom } from "jotai";
+import { gameDataAtom } from "../../state";
 
 const Style = styled.div`
   display: flex;
@@ -56,11 +56,7 @@ const Style = styled.div`
 `;
 
 const HowToPlay = () => {
-  const menuContext = useContext(MenuContext);
-  if (!menuContext) {
-    throw new Error("MenuContext is null");
-  }
-  const { setMenu } = menuContext;
+  const [, setGameData] = useAtom(gameDataAtom);
 
   return (
     <Style>
@@ -113,7 +109,7 @@ const HowToPlay = () => {
         </div>
 
         <div id="button-wrapper">
-          <Button text="메뉴로 돌아가기" onClick={() => setMenu("home")} />
+          <Button text="메뉴로 돌아가기" onClick={() => setGameData({ menu: "home", level: -1 })} />
         </div>
       </Block>
     </Style>
