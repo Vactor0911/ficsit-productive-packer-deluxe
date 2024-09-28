@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Block, Button } from "../index";
+import { BlockStyle, Button } from "../index";
 import { useAtom } from "jotai";
 import { gameDataAtom } from "../../state";
 
@@ -60,7 +60,7 @@ const HowToPlay = () => {
 
   return (
     <Style>
-      <Block id="container" color="#d1fec1">
+      <BlockStyle id="container" color="#d1fec1">
         <div id="scroll-container">
           <h1>게임 설정</h1>
         </div>
@@ -68,7 +68,7 @@ const HowToPlay = () => {
         <div id="button-wrapper">
           <Button text="메뉴로 돌아가기" onClick={() => setGameData({ menu: "home", level: -1 })} />
         </div>
-      </Block>
+      </BlockStyle>
     </Style>
   );
 };

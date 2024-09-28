@@ -1,3 +1,3 @@
-import { Block } from "./Styles"
+import { BlockStyle } from "./Styles"
 import Button from "./Button"
-export { Block, Button }
+export { BlockStyle, Button }

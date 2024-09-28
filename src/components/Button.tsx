@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { color } from "../../theme";
-import { Block } from "./Styles";
+import { BlockStyle } from "./Styles";
 import { playAudio } from "../utils";
 import { useAtomValue } from "jotai";
 import { audioButtonClickAtom, audioButtonHoverAtom } from "../state";
@@ -136,7 +136,7 @@ const Button = ({
         playAudio(audioButtonHover);
       }}
     >
-      <Block
+      <BlockStyle
         id="btn-container"
         color={color.orange}
         style={{
@@ -145,7 +145,7 @@ const Button = ({
       >
         <h1 className="text">{text}</h1>
         {hasArrow && <h2 className="text arrow">→</h2>}
-      </Block>
+      </BlockStyle>
     </ButtonStyle>
   );
 };
