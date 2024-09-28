@@ -1,4 +1,4 @@
-<svg viewBox="0 0 500 450" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="-2 -2 504 462" xmlns="http://www.w3.org/2000/svg">
     <rect x="0" y="0" width="500" height="450" fill="#ffeaa7" />
     
     <g fill="#ffffff">
@@ -68,4 +68,5 @@
     </g>
 
     <rect id="border" width="500" height="450" fill="none" />
+    <rect id="solid" x="0" y="450" width="500" height="8" fill="#ffeaa7" />
 </svg>

@@ -25,3 +25,20 @@ export const BlockStyle = styled.div<BlockProps>`
     background-color: rgba(0, 0, 0, 0.3);
   }
 `;
+
+export const BoltStyle = styled.span`
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: #737373;
+  background: linear-gradient(
+    45deg,
+    #737373,
+    #737373 43%,
+    #555555 43%,
+    #555555 57%,
+    #737373 57%,
+    #737373 100%
+  );
+  border: 2px solid black;
+`;

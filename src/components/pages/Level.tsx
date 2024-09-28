@@ -32,7 +32,7 @@ const Style = styled.div`
     padding: 5px;
     background-color: white;
     border: 2px solid black;
-    box-shadow: 0 14px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 14px rgba(0, 0, 0, 0.2);
     cursor: pointer;
     position: relative;
     overflow: hidden;
@@ -88,6 +88,10 @@ const Style = styled.div`
     stroke: black;
     stroke-width: 2px;
     vector-effect: non-scaling-stroke;
+  }
+
+  .image-wrapper svg #solid {
+    display: none;
   }
 
   .container {
