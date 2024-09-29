@@ -42,3 +42,27 @@ export const BoltStyle = styled.span`
   );
   border: 2px solid black;
 `;
+
+const ScoreTextStyle = styled.h1`
+  -webkit-text-stroke: 4px black;
+  paint-order: stroke fill;
+  letter-spacing: 0.1em;
+
+  &:before {
+    content: "";
+    display: inline-block;
+    color: rgba(0, 0, 0, 0);
+    width: 0.8em;
+    height: 0.8em;
+    margin-right: 10px;
+    background-color: ${color.orange};
+    border: 2px solid black;
+    border-radius: 50%;
+    box-shadow: inset 0px 0 0 0.075em ${color.orange},
+      inset 0px 0 0 0.1em #a25f27, 0 2px 0 -1px #975823, 0 3px 0 black;
+  }
+`;
+
+export const ScoreText = (score: number = 0, textColor: string = "black") => {
+  return <ScoreTextStyle style={{ color: textColor }}>{score}</ScoreTextStyle>;
+};

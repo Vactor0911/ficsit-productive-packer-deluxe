@@ -4,7 +4,7 @@ import { audioBgmAtom, gameDataAtom } from "../../state";
 import { useEffect, useState } from "react";
 import { Music2 } from "../../assets/audio";
 import { audioVolume } from "../../utils";
-import { BlockStyle, BoltStyle } from "../Styles";
+import { BlockStyle, BoltStyle, ScoreText } from "../Styles";
 import * as Level from "../../assets/images";
 import Button from "../Button";
 
@@ -17,10 +17,17 @@ const Style = styled.div`
 
   .scoreboard {
     display: flex;
+    align-items: center;
+    padding: 10px;
+    padding-bottom: 20px;
     width: 40%;
     min-width: 400px;
     height: 17%;
     margin-top: 20px;
+  }
+
+  .scoreboard #score h1 {
+    font-size: 4em;
   }
 
   .conveyor {
@@ -114,7 +121,7 @@ const Style = styled.div`
 
   .container {
     display: flex;
-    min-width: 20vw;
+    min-width: 17vw;
     height: 100%;
     position: absolute;
     top: 0;
@@ -298,7 +305,8 @@ const Game = () => {
       <BlockStyle className="scoreboard">
         <div id="timer"></div>
         <div id="score">
-          <h1>0</h1>
+          <p>최종 점수:</p>
+          {ScoreText(12340)}
         </div>
       </BlockStyle>
       <div className="conveyor">
