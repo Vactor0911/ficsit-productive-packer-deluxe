@@ -43,11 +43,13 @@ export const BoltStyle = styled.span`
   border: 2px solid black;
 `;
 
-const ScoreTextStyle = styled.h1`
+export const BorderedTextStyle = styled.h1`
   -webkit-text-stroke: 4px black;
   paint-order: stroke fill;
   letter-spacing: 0.1em;
+`;
 
+const ScoreTextStyle = styled(BorderedTextStyle)`
   &:before {
     content: "";
     display: inline-block;
@@ -63,6 +65,6 @@ const ScoreTextStyle = styled.h1`
   }
 `;
 
-export const ScoreText = (score: number = 0, textColor: string = "black") => {
+export const createScoreText = (score: number = 0, textColor: string = "black") => {
   return <ScoreTextStyle style={{ color: textColor }}>{score}</ScoreTextStyle>;
 };

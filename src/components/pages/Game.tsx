@@ -4,9 +4,10 @@ import { audioBgmAtom, gameDataAtom } from "../../state";
 import { useEffect, useState } from "react";
 import { Music2 } from "../../assets/audio";
 import { audioVolume } from "../../utils";
-import { BlockStyle, BoltStyle, ScoreText } from "../Styles";
+import { BlockStyle, BoltStyle, BorderedTextStyle, createScoreText } from "../Styles";
 import * as Level from "../../assets/images";
 import Button from "../Button";
+import { color } from "../../../theme";
 
 const Style = styled.div`
   display: flex;
@@ -18,12 +19,21 @@ const Style = styled.div`
   .scoreboard {
     display: flex;
     align-items: center;
+    gap: 10px;
     padding: 10px;
     padding-bottom: 20px;
     width: 40%;
     min-width: 400px;
     height: 17%;
     margin-top: 20px;
+  }
+
+  .scoreboard #timer {
+    width: auto;
+    height: 100%;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    border: 2px solid black;
   }
 
   .scoreboard #score h1 {
@@ -218,6 +228,10 @@ const Style = styled.div`
     align-items: flex-start;
   }
 
+  .container.right button {
+    width: 100%;
+  }
+
   .bonus-score {
     display: flex;
     flex-direction: column;
@@ -250,6 +264,23 @@ const Style = styled.div`
   .bonus-score span.bolt:nth-child(4) {
     bottom: 20px;
     right: 8px;
+  }
+
+  .score-wrapper {
+    width: 100%;
+    text-align: center;
+    font-size: 1.5em;
+    margin: 5px 0;
+    padding: 0 30px;
+    border-radius: 1.75em;
+    background-color: #49859d;
+  }
+
+  .score-wrapper #bonus {
+    color: ${color.orange};
+  }
+  .score-wrapper #bonus:before {
+    content: "x";
   }
 `;
 
@@ -306,7 +337,7 @@ const Game = () => {
         <div id="timer"></div>
         <div id="score">
           <p>최종 점수:</p>
-          {ScoreText(12340)}
+          {createScoreText(12340)}
         </div>
       </BlockStyle>
       <div className="conveyor">
@@ -340,8 +371,17 @@ const Game = () => {
               <BoltStyle className="bolt" />
 
               <p>포장 점수:</p>
+              <div className="score-wrapper">
+                {createScoreText(0, "white")}
+              </div>
               <p>채우기 보너스:</p>
+              <div className="score-wrapper">
+                <BorderedTextStyle id="bonus">1</BorderedTextStyle>
+              </div>
               <p>최종 배달 점수:</p>
+              <div className="score-wrapper">
+                {createScoreText(0, "white")}
+              </div>
             </BlockStyle>
             <Button text="보내기" hasArrow={true} />
           </div>
