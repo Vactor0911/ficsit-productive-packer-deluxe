@@ -1,0 +1,4 @@
+<svg viewBox="-10 -10 170 120" xmlns="http://www.w3.org/2000/svg">
+    <path id="solid" d="M0 0 100 0 100 50 150 50 150 100 50 100 50 50 0 50z" fill="currentColor" />
+    <path id="shape" d="M0 0 100 0 100 50 150 50 150 100 50 100 50 50 0 50z" fill="currentColor" />
+</svg>

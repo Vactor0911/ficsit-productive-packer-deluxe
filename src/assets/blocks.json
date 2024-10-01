@@ -1,0 +1,34 @@
+[
+    {
+        "type": "J",
+        "rotate": 2,
+        "color": "#668bff",
+        "point": 2,
+        "shape": [
+            [1, 1],
+            [1, 0],
+            [1, 0]
+        ]
+    },
+    {
+        "type": "O",
+        "rotate": 0,
+        "color": "#6ee135",
+        "point": 2,
+        "shape": [
+            [1, 1],
+            [1, 1]
+        ]
+    },
+    {
+        "type": "Z",
+        "rotate": 1,
+        "color": "#ff556c",
+        "point": 2,
+        "shape": [
+            [0, 1],
+            [1, 1],
+            [1, 0]
+        ]
+    }
+]
