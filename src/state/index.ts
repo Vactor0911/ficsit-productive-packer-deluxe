@@ -22,3 +22,6 @@ export const audioButtonHoverAtom = atom(createAudio(Music.ButtonHover));
 export const audioButtonClickAtom = atom(createAudio(Music.ButtonClick));
 
 export const audioGameStartAtom = atom(createAudio(Music.GameStart));
+
+// 패키지 블록
+export const blockIndex = atom(1);

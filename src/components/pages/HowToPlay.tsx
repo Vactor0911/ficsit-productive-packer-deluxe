@@ -2,6 +2,8 @@ import styled from "styled-components";
 import { BlockStyle, Button } from "../index";
 import { useAtom } from "jotai";
 import { gameDataAtom } from "../../state";
+import { getBlock, getBlockImg, getBlockSize } from "../../utils";
+import { useState } from "react";
 
 const Style = styled.div`
   display: flex;
@@ -53,10 +55,57 @@ const Style = styled.div`
     width: 50%;
     align-self: center;
   }
+
+  .block-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+  }
+`;
+
+interface PackageBlockProps {
+  rotate: number;
+  color: string;
+  shape: Array<Array<number>>;
+  size: Array<number>;
+}
+
+const PackageBlockStyle = styled.div<PackageBlockProps>`
+  color: ${(props) => props.color};
+  stroke: black;
+  stroke-width: 2px;
+  vector-effect: non-scaling-stroke;
+  width: ${(props) => props.size[0] * 50}px;
+  height: ${(props) => props.size[1] * 50}px;
+  transform: rotate(${(props) => props.rotate * 90}deg);
+
+  #solid {
+    transform: translate(
+      ${(props) => {
+        switch (props.rotate) {
+          case 0:
+            return "0, 8px";
+          case 1:
+            return "8px, 0";
+          case 2:
+            return "0, -8px";
+          case 3:
+            return "-8px, 0";
+        }
+      }}
+    );
+    filter: brightness(70%);
+  }
 `;
 
 const HowToPlay = () => {
   const [, setGameData] = useAtom(gameDataAtom);
+  const [blocks] = useState([
+    getBlock("J", 2),
+    getBlock("O", 0),
+    getBlock("Z", 1),
+  ]);
 
   return (
     <Style>
@@ -77,7 +126,22 @@ const HowToPlay = () => {
           </p>
           <h1>플레이 방법</h1>
           {/* 패키지 블록 */}
-          <div className="package-wrapper"></div>
+          <div className="block-wrapper">
+            {blocks.map((block, index) => {
+              const BlockImg = getBlockImg(block.type);
+              return BlockImg ? (
+                <PackageBlockStyle
+                  key={index}
+                  rotate={block.rotate}
+                  color={block.color}
+                  shape={block.shape}
+                  size={getBlockSize(block.type) || [1, 1]}
+                >
+                  <BlockImg />
+                </PackageBlockStyle>
+              ) : null;
+            })}
+          </div>
           <h2>블록</h2>
           <p>
             보드에 블록을 올려 포장을 채우기 시작하세요. 패키지에 블록을 놓을
@@ -109,7 +173,10 @@ const HowToPlay = () => {
         </div>
 
         <div id="button-wrapper">
-          <Button text="메뉴로 돌아가기" onClick={() => setGameData({ menu: "home", level: -1 })} />
+          <Button
+            text="메뉴로 돌아가기"
+            onClick={() => setGameData({ menu: "home", level: -1 })}
+          />
         </div>
       </BlockStyle>
     </Style>
