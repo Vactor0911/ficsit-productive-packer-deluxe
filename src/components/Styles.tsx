@@ -65,6 +65,9 @@ const ScoreTextStyle = styled(BorderedTextStyle)`
   }
 `;
 
-export const createScoreText = (score: number = 0, textColor: string = "black") => {
+export const createScoreText = (
+  score: number = 0,
+  textColor: string = "black"
+) => {
   return <ScoreTextStyle style={{ color: textColor }}>{score}</ScoreTextStyle>;
 };
