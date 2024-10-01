@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Home, Level, Game, HowToPlay, Setting } from "./components/pages";
 import { audioBgmAtom, gameDataAtom } from "./state";
 import { useAtomValue } from "jotai";
+import 'overlayscrollbars/overlayscrollbars.css';
 
 function App() {
   const menu = useAtomValue(gameDataAtom).menu;
