@@ -7,7 +7,7 @@ import {
   Level4,
   Level5,
   Level6,
-} from "../../assets/images";
+} from "../../assets/images/levels";
 import Button from "../Button";
 import {
   audioButtonHoverAtom,

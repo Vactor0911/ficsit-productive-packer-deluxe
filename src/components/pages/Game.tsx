@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Music2 } from "../../assets/audio";
 import { audioVolume } from "../../utils";
 import { BlockStyle, BoltStyle, BorderedTextStyle, createScoreText } from "../Styles";
-import * as Level from "../../assets/images";
+import * as Level from "../../assets/images/levels";
 import Button from "../Button";
 import { color } from "../../../theme";
 
