@@ -67,4 +67,5 @@ export const getRandBlocks = (count: number = 1) => {
     const rand = Math.floor(Math.random() * validBlocks.length);
     result.push(validBlocks[rand]);
   }
+  return result;
 };

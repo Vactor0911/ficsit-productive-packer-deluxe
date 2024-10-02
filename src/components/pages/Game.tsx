@@ -3,8 +3,13 @@ import { useAtomValue } from "jotai";
 import { audioBgmAtom, gameDataAtom } from "../../state";
 import { useEffect, useState } from "react";
 import { Music2 } from "../../assets/audio";
-import { audioVolume } from "../../utils";
-import { BlockStyle, BoltStyle, BorderedTextStyle, createScoreText } from "../Styles";
+import { audioVolume, getBlockImg, getBlockSize, getRandBlocks } from "../../utils";
+import {
+  BlockStyle,
+  BoltStyle,
+  BorderedTextStyle,
+  createScoreText,
+} from "../Styles";
 import * as Level from "../../assets/images/levels";
 import Button from "../Button";
 import { color } from "../../../theme";
@@ -282,11 +287,65 @@ const Style = styled.div`
   .score-wrapper #bonus:before {
     content: "x";
   }
+
+  .block-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 26px;
+    padding-bottom: 60px;
+    gap: px;
+  }
+`;
+
+interface PackageBlockProps {
+  rotate: number;
+  color: string;
+  shape: Array<Array<number>>;
+  size: Array<number>;
+}
+const PackageBlockStyle = styled.div<PackageBlockProps>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: ${(props) => props.color};
+  stroke: black;
+  stroke-width: 2px;
+  vector-effect: non-scaling-stroke;
+  width: 150px;
+  height: 150px;
+
+  svg {
+    width: ${(props) => props.size[0] * 50}px;
+    height: ${(props) => props.size[1] * 50}px;
+    transform: rotate(${(props) => props.rotate * 90}deg);
+  }
+
+  #solid {
+    transform: translate(
+      ${(props) => {
+        switch (props.rotate) {
+          case 0:
+            return "0, 8px";
+          case 1:
+            return "8px, 0";
+          case 2:
+            return "0, -8px";
+          case 3:
+            return "-8px, 0";
+        }
+      }}
+    );
+    filter: brightness(70%);
+  }
 `;
 
 const Game = () => {
   const level = useAtomValue(gameDataAtom).level;
 
+  // 배경음
   const audioBgm = useAtomValue(audioBgmAtom);
 
   const [audioBgmVolume, setAudioBgmVolume] = useState(0.05);
@@ -331,6 +390,9 @@ const Game = () => {
     }
   };
 
+  // 패키지 블럭
+  const [blocks, ] = useState(getRandBlocks(8));
+
   return (
     <Style>
       <BlockStyle className="scoreboard">
@@ -359,6 +421,23 @@ const Game = () => {
           <span className="frame" />
           <span className="frame" />
           <span className="frame" />
+
+          <div className="block-wrapper">
+              {blocks.map((block, index) => {
+                const BlockImg = getBlockImg(block.type);
+                return BlockImg ? (
+                  <PackageBlockStyle
+                    key={index}
+                    rotate={block.rotate}
+                    color={block.color}
+                    shape={block.shape}
+                    size={getBlockSize(block.type) || [1, 1]}
+                  >
+                    <BlockImg />
+                  </PackageBlockStyle>
+                ) : null;
+              })}
+            </div>
         </div>
 
         {/* 오른쪽 컨테이너 */}
@@ -371,17 +450,13 @@ const Game = () => {
               <BoltStyle className="bolt" />
 
               <p>포장 점수:</p>
-              <div className="score-wrapper">
-                {createScoreText(0, "white")}
-              </div>
+              <div className="score-wrapper">{createScoreText(0, "white")}</div>
               <p>채우기 보너스:</p>
               <div className="score-wrapper">
                 <BorderedTextStyle id="bonus">1</BorderedTextStyle>
               </div>
               <p>최종 배달 점수:</p>
-              <div className="score-wrapper">
-                {createScoreText(0, "white")}
-              </div>
+              <div className="score-wrapper">{createScoreText(0, "white")}</div>
             </BlockStyle>
             <Button text="보내기" hasArrow={true} />
           </div>
