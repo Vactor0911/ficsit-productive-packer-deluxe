@@ -47,4 +47,13 @@ export const theme = createTheme({
       lineHeight: "0.83em",
     },
   },
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        "#root": {
+          userSelect: "none",
+        }
+      }
+    }
+  }
 });
