@@ -23,8 +23,8 @@ const Main = () => {
         width="600px"
         sx={{ animation: `${LogoAnimation} 4s ease-in-out infinite` }}
       />
-      <Button text="Start Game" />
-      <Button text="How to Play" />
+      <Button text="게임 시작" />
+      <Button text="플레이 방법" />
     </Stack>
   );
 };
