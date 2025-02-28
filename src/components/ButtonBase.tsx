@@ -1,15 +1,16 @@
-import { Box } from "@mui/material";
+import { Box, ButtonProps } from "@mui/material";
 
-interface ButtonProps {
+interface ButtonBaseProps extends ButtonProps {
   children: React.ReactNode;
-  onClick?: () => void;
 }
 
-const ButtonBase = (props: ButtonProps) => {
-  const { children, onClick } = props;
+const ButtonBase = (props: ButtonBaseProps) => {
+  const { children, ...otherProps } = props;
 
   return (
     <Box
+      padding={0}
+      component="button"
       paddingBottom="10px"
       border="2px solid black"
       position="relative"
@@ -27,7 +28,7 @@ const ButtonBase = (props: ButtonProps) => {
           backgroundColor: "rgba(0, 0, 0, 0.25)",
           borderTop: "2px solid black",
         },
-        "&:hover > div:before": {
+        "&:hover > div:before, &:active > div:before": {
           display: "block",
         },
         "&:active": {
@@ -37,12 +38,9 @@ const ButtonBase = (props: ButtonProps) => {
           "&:before": {
             height: "5px",
           },
-          "&:after": {
-            height: "calc(100% - 5px)",
-          },
         },
       }}
-      onClick={onClick}
+      {...otherProps}
     >
       {children}
     </Box>
