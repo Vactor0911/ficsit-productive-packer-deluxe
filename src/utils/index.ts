@@ -1,4 +1,5 @@
 import { createTheme } from "@mui/material";
+import { effectAudio, musicAudio } from "../App";
 
 export const theme = createTheme({
   palette: {
@@ -52,8 +53,22 @@ export const theme = createTheme({
       styleOverrides: {
         "#root": {
           userSelect: "none",
-        }
-      }
-    }
-  }
+        },
+      },
+    },
+  },
 });
+
+// 오디오 재생
+export const playMusic = (src: string, volume = 1) => {
+  musicAudio.src = src;
+  musicAudio.volume = volume;
+  musicAudio.play();
+};
+
+// 효과음 재생
+export const playEffect = (src: string, volume = 1) => {
+  effectAudio.src = src;
+  effectAudio.volume = volume;
+  effectAudio.play();
+};
