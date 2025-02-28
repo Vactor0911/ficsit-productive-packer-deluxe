@@ -1,5 +1,7 @@
 import { Box, keyframes, Stack } from "@mui/material";
 import Button from "../components/Button";
+import { useNavigate } from "react-router-dom";
+import { useCallback } from "react";
 
 const LogoAnimation = keyframes`
   0% {
@@ -14,6 +16,16 @@ const LogoAnimation = keyframes`
 `;
 
 const Main = () => {
+  const navigate = useNavigate();
+
+  const handlePlayButtonClick = useCallback(() => {
+    navigate("/levels");
+  }, [navigate]);
+
+  const handleHowToPlayButtonClick = useCallback(() => {
+    navigate("/how-to-play");
+  }, [navigate]);
+
   return (
     <Stack alignItems="center" justifyContent="center" height="100vh" gap={3}>
       <Box
@@ -23,8 +35,8 @@ const Main = () => {
         width="600px"
         sx={{ animation: `${LogoAnimation} 4s ease-in-out infinite` }}
       />
-      <Button text="게임 시작" />
-      <Button text="플레이 방법" />
+      <Button text="게임 시작" onClick={handlePlayButtonClick} />
+      <Button text="플레이 방법" onClick={handleHowToPlayButtonClick} />
     </Stack>
   );
 };
