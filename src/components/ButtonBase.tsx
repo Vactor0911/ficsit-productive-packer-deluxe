@@ -1,7 +1,7 @@
 import { Box, ButtonProps } from "@mui/material";
 
 interface ButtonBaseProps extends ButtonProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 const ButtonBase = (props: ButtonBaseProps) => {
