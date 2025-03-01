@@ -27,13 +27,14 @@ const Main = () => {
   }, [navigate]);
 
   return (
-    <Stack alignItems="center" justifyContent="center" height="100vh" gap={3}>
+    <Stack alignItems="center" justifyContent="center" height="100vh" gap={2}>
       <Box
         component="img"
         alt="Logo"
         src="./Logo.png"
         width="600px"
         sx={{ animation: `${LogoAnimation} 4s ease-in-out infinite` }}
+        marginBottom="20px"
       />
       <Button text="게임 시작" onClick={handlePlayButtonClick} />
       <Button text="플레이 방법" onClick={handleHowToPlayButtonClick} />
