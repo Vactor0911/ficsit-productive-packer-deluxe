@@ -2,12 +2,11 @@ import { Typography } from "@mui/material";
 import ButtonBase from "./ButtonBase";
 
 interface ArrowButtonProps {
-  text: string;
   onClick?: () => void;
 }
 
-const ArrowButton = (props: ArrowButtonProps) => {
-  const { text, onClick } = props;
+const SendButton = (props: ArrowButtonProps) => {
+  const { onClick } = props;
 
   return (
     <ButtonBase onClick={onClick}>
@@ -20,10 +19,10 @@ const ArrowButton = (props: ArrowButtonProps) => {
           position: "relative",
         }}
       >
-        {text}
+        보내기
       </Typography>
     </ButtonBase>
   );
 };
 
-export default ArrowButton;
+export default SendButton;
