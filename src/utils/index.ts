@@ -53,6 +53,7 @@ export const theme = createTheme({
       styleOverrides: {
         "#root": {
           userSelect: "none",
+          wordBreak: "keep-all",
         },
       },
     },
