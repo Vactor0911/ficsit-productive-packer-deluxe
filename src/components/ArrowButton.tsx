@@ -15,6 +15,7 @@ const ArrowButton = (props: ArrowButtonProps) => {
         variant="h1"
         sx={{
           color: "white",
+          fontSize: "2.5em",
           textShadow: "0 2px 0 #b85400",
           position: "relative",
         }}

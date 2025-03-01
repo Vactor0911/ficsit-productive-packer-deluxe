@@ -10,23 +10,23 @@ export const theme = createTheme({
   typography: {
     fontFamily: ["Pretendard-Regular", "sans-serif"].join(","),
     h1: {
-      fontSize: "2.5em",
-      lineHeight: "1.9em",
+      fontSize: "2em",
+      lineHeight: "2em",
       fontWeight: "bold",
     },
     h2: {
-      fontSize: "2em",
+      fontSize: "1.5em",
       lineHeight: "1.5em",
       fontWeight: "bold",
     },
     h3: {
-      fontSize: "1.5em",
-      lineHeight: "1em",
+      fontSize: "1.17em",
+      lineHeight: "1.17em",
       fontWeight: "bold",
     },
     h4: {
       fontSize: "1em",
-      lineHeight: "0.75em",
+      lineHeight: "1em",
       fontWeight: "bold",
     },
     h5: {
