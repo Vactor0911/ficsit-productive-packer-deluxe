@@ -8,25 +8,25 @@ export const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: ["noto-serif-kr", "sans-serif"].join(","),
+    fontFamily: ["Pretendard-Regular", "sans-serif"].join(","),
     h1: {
-      fontSize: "2em",
-      lineHeight: "2em",
+      fontSize: "2.5em",
+      lineHeight: "1.9em",
       fontWeight: "bold",
     },
     h2: {
-      fontSize: "1.5em",
+      fontSize: "2em",
       lineHeight: "1.5em",
       fontWeight: "bold",
     },
     h3: {
-      fontSize: "1.17em",
-      lineHeight: "1.17em",
+      fontSize: "1.5em",
+      lineHeight: "1em",
       fontWeight: "bold",
     },
     h4: {
       fontSize: "1em",
-      lineHeight: "1em",
+      lineHeight: "0.75em",
       fontWeight: "bold",
     },
     h5: {

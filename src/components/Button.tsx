@@ -31,7 +31,7 @@ const Button = (props: ButtonProps) => {
         sx={{
           color: "white",
           fontWeight: "400",
-          WebkitTextStroke: "5px black",
+          WebkitTextStroke: "4px black",
           paintOrder: "stroke fill",
           textShadow: "4px 4px 0 rgba(0, 0, 0, 0.25)",
           position: "relative",
