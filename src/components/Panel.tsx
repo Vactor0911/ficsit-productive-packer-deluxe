@@ -1,12 +1,12 @@
-import { Box } from "@mui/material";
+import { Box, StackProps } from "@mui/material";
 
-interface PanelProps {
+interface PanelProps extends StackProps {
   color?: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 const Panel = (props: PanelProps) => {
-  const { color, children } = props;
+  const { color, children, ...others } = props;
 
   return (
     <Box
@@ -15,6 +15,7 @@ const Panel = (props: PanelProps) => {
       border="2px solid black"
       position="relative"
       boxShadow="0 10px 0 rgba(0, 0, 0, 0.15)"
+      {...others}
       sx={{
         backgroundColor: color ? color : "white",
         "&:before": {
