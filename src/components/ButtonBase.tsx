@@ -11,10 +11,11 @@ const HoverAnimation = keyframes`
 
 interface ButtonBaseProps extends ButtonProps {
   children?: React.ReactNode;
+  disabled?: boolean;
 }
 
 const ButtonBase = (props: ButtonBaseProps) => {
-  const { children, ...otherProps } = props;
+  const { children, disabled, ...otherProps } = props;
 
   return (
     <Box
