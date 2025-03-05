@@ -8,7 +8,7 @@ export const theme = createTheme({
     },
     primary: {
       main: "#e59344",
-    }
+    },
   },
   typography: {
     fontFamily: ["Pretendard-Regular", "sans-serif"].join(","),

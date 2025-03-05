@@ -1,17 +1,16 @@
 import { Typography } from "@mui/material";
-import ButtonBase from "./ButtonBase";
+import ButtonBase, { ButtonBaseProps } from "./ButtonBase";
 import { useCallback } from "react";
 import { playEffect } from "../utils";
 import ButtonHoverAudio from "../assets/audio/button_hover.mp3";
 import ButtonClickAudio from "../assets/audio/button_click.mp3";
 
-interface ButtonProps {
+interface ButtonProps extends ButtonBaseProps {
   text: string;
-  onClick?: () => void;
 }
 
 const Button = (props: ButtonProps) => {
-  const { text, onClick } = props;
+  const { text, onClick, ...others } = props;
 
   const handleHover = useCallback(() => {
     playEffect(ButtonHoverAudio, 0.3);
@@ -25,7 +24,7 @@ const Button = (props: ButtonProps) => {
   }, [onClick]);
 
   return (
-    <ButtonBase onClick={handleClick} onMouseEnter={handleHover}>
+    <ButtonBase onClick={handleClick} onMouseEnter={handleHover} {...others}>
       <Typography
         variant="h1"
         sx={{
