@@ -40,7 +40,9 @@ const SendButton = (props: ButtonBaseProps) => {
           sx={{
             color: "white",
             fontSize: "4em",
-            animation: disabled ? undefined : `${HoverAnimation} 1s ease-in-out infinite`,
+            animation: disabled
+              ? undefined
+              : `${HoverAnimation} 1s ease-in-out infinite`,
           }}
         />
       </Stack>
