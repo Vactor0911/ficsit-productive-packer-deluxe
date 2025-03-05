@@ -1,26 +1,49 @@
-import { Typography } from "@mui/material";
-import ButtonBase from "./ButtonBase";
+import { keyframes, Stack, Typography } from "@mui/material";
+import ButtonBase, { ButtonBaseProps } from "./ButtonBase";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
-interface ArrowButtonProps {
-  onClick?: () => void;
-}
+const HoverAnimation = keyframes`
+  0% {
+    transform: translateX(-10px);
+  }
+  50% {
+    transform: translateX(10px);
+  }
+  100% {
+    transform: translateX(-10px);
+  }
+`;
 
-const SendButton = (props: ArrowButtonProps) => {
-  const { onClick } = props;
+const SendButton = (props: ButtonBaseProps) => {
+  const { onClick, disabled, ...others } = props;
 
   return (
-    <ButtonBase onClick={onClick}>
-      <Typography
-        variant="h1"
-        sx={{
-          color: "white",
-          fontSize: "2.5em",
-          textShadow: "0 2px 0 #b85400",
-          position: "relative",
-        }}
+    <ButtonBase onClick={onClick} disabled={disabled} {...others}>
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        alignItems="center"
+        gap={1}
       >
-        보내기
-      </Typography>
+        <Typography
+          variant="h1"
+          sx={{
+            color: "white",
+            fontSize: "2.5em",
+            textShadow: "0 2px 0 rgba(0, 0, 0, 0.25)",
+            position: "relative",
+          }}
+        >
+          보내기
+        </Typography>
+        <ArrowForwardIcon
+          sx={{
+            color: "white",
+            fontSize: "4em",
+            animation: disabled ? undefined : `${HoverAnimation} 1s ease-in-out infinite`,
+          }}
+        />
+      </Stack>
     </ButtonBase>
   );
 };

@@ -1,4 +1,5 @@
-import { Box, ButtonProps, keyframes } from "@mui/material";
+import { Box, Button, ButtonProps, keyframes } from "@mui/material";
+import { useCallback } from "react";
 
 const HoverAnimation = keyframes`
   0% {
@@ -9,24 +10,33 @@ const HoverAnimation = keyframes`
   }
 `;
 
-interface ButtonBaseProps extends ButtonProps {
+export interface ButtonBaseProps extends ButtonProps {
   children?: React.ReactNode;
+  disabled?: boolean;
+  onClick?: () => void;
 }
 
 const ButtonBase = (props: ButtonBaseProps) => {
-  const { children, ...otherProps } = props;
+  const { children, disabled, onClick, ...otherProps } = props;
+
+  const handleClick = useCallback(() => {
+    if (onClick && !disabled) {
+      onClick();
+    }
+  }, [disabled, onClick]);
 
   return (
-    <Box
-      padding={0}
-      component="button"
-      paddingBottom="10px"
-      border="2px solid black"
-      position="relative"
-      boxShadow="0 10px 0 rgba(0, 0, 0, 0.15)"
+    <Button
+      disabled={disabled}
       sx={{
-        backgroundColor: "#e59344",
-        cursor: "pointer",
+        padding: "0",
+        paddingBottom: "10px",
+        border: "2px solid black",
+        backgroundColor: disabled ? "#666666" : "#e59344",
+        boxShadow: "0 10px 0 rgba(0, 0, 0, 0.15)",
+        position: "relative",
+        transition: "none",
+        borderRadius: "0",
         "&:before": {
           content: "''",
           position: "absolute",
@@ -49,10 +59,14 @@ const ButtonBase = (props: ButtonBaseProps) => {
           },
         },
       }}
+      onClick={handleClick}
       {...otherProps}
     >
       <Box
+        width="100%"
         padding="8px 16px"
+        justifyContent="center"
+        alignItems="center"
         sx={{
           position: "relative",
           overflow: "hidden",
@@ -72,7 +86,7 @@ const ButtonBase = (props: ButtonBaseProps) => {
       >
         {children}
       </Box>
-    </Box>
+    </Button>
   );
 };
 

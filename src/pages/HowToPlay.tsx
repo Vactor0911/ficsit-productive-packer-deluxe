@@ -1,9 +1,22 @@
-import { Box, Stack, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import Panel from "../components/Panel";
 import Button from "../components/Button";
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import SendButton from "../components/SendButton";
+import "overlayscrollbars/overlayscrollbars.css";
+import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
+import styled from "@emotion/styled";
+
+const StyledOverlayScrollbarsComponent = styled(OverlayScrollbarsComponent)`
+  height: 100%;
+  .os-scrollbar {
+    --os-size: 10px;
+    --os-handle-bg: white;
+    --os-handle-border-radius: 2px;
+    --os-handle-border: 1px solid #aaa;
+  }
+`;
 
 const HowToPlay = () => {
   const navigate = useNavigate();
@@ -21,12 +34,7 @@ const HowToPlay = () => {
         height="75%"
         position="relative"
       >
-        <Box
-          height="100%"
-          sx={{
-            overflowY: "auto",
-          }}
-        >
+        <StyledOverlayScrollbarsComponent defer>
           <Stack padding="16px 8px" gap={1}>
             {/* 인사말 */}
             <Typography variant="h1" textAlign="center">
@@ -107,7 +115,7 @@ const HowToPlay = () => {
               블록을 떨어뜨리면 해당 블록이 보통 포인트의 4배를 얻게 됩니다!
             </Typography>
           </Stack>
-        </Box>
+        </StyledOverlayScrollbarsComponent>
         <Stack
           direction="row"
           position="absolute"
