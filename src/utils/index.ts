@@ -1,5 +1,5 @@
 import { createTheme } from "@mui/material";
-import { effectAudio, musicAudio } from "../App";
+import { musicAudio, effectAudios } from "../App";
 
 export const theme = createTheme({
   palette: {
@@ -72,7 +72,12 @@ export const playMusic = (src: string, volume = 1) => {
 
 // 효과음 재생
 export const playEffect = (src: string, volume = 1) => {
-  effectAudio.src = src;
-  effectAudio.volume = volume;
-  effectAudio.play();
+  for (const audio of effectAudios) {
+    if (audio.paused) {
+      audio.src = src;
+      audio.volume = volume;
+      audio.play();
+      break;
+    }
+  }
 };

@@ -12,7 +12,13 @@ musicAudio.volume = 0.3;
 // musicAudio.play();
 
 // 효과음 오디오
-export const effectAudio = new Audio();
+export const effectAudios = [
+  new Audio(),
+  new Audio(),
+  new Audio(),
+  new Audio(),
+  new Audio(),
+];
 
 const App = () => {
   return (
