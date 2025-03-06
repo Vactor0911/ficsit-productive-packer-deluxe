@@ -57,14 +57,14 @@ const Levels = () => {
     },
   ]);
 
-  // 버튼 호버 핸들러
-  const handleMainButtonHover = useCallback(() => {
+  // 레벨 선택 버튼 호버 핸들러
+  const handleLevelButtonHover = useCallback(() => {
     playEffect(ButtonHoverAudio);
   }, []);
 
-  // 버튼 클릭 핸들러
+  // 레벨 선택 버튼 클릭 핸들러
   const navigate = useNavigate();
-  const handleMainButtonClick = useCallback(() => {
+  const handleLevelButtonClick = useCallback(() => {
     playEffect(GameStartAudio);
     navigate({
       pathname: "/game",
@@ -73,6 +73,11 @@ const Levels = () => {
       })}`,
     });
   }, [navigate]);
+
+  // 메인 버튼 클릭 핸들러
+  const handleMainButtonClick = useCallback(() => {
+    navigate("/");
+  }, []);
 
   return (
     <Stack padding={5} alignItems="center" gap={2}>
@@ -114,8 +119,8 @@ const Levels = () => {
               },
             },
           }}
-          onMouseEnter={handleMainButtonHover}
-          onClick={handleMainButtonClick}
+          onMouseEnter={handleLevelButtonHover}
+          onClick={handleLevelButtonClick}
         >
           <Stack gap={0.5}>
             <Typography variant="h2" lineHeight="1.25em">
