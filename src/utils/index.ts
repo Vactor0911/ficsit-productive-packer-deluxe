@@ -14,12 +14,12 @@ export const theme = createTheme({
     fontFamily: ["Pretendard-Regular", "sans-serif"].join(","),
     h1: {
       fontSize: "2em",
-      lineHeight: "2em",
+      lineHeight: "1.5em",
       fontWeight: "bold",
     },
     h2: {
       fontSize: "1.5em",
-      lineHeight: "1.5em",
+      lineHeight: "1.25em",
       fontWeight: "bold",
     },
     h3: {
