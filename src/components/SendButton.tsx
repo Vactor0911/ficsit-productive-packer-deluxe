@@ -43,6 +43,8 @@ const SendButton = (props: ButtonBaseProps) => {
             animation: disabled
               ? undefined
               : `${HoverAnimation} 1s ease-in-out infinite`,
+            WebkitFilter: "drop-shadow(0 3px 0 rgba(0, 0, 0, 0.25))",
+            filter: "drop-shadow(0 3px 0 rgba(0, 0, 0, 0.25))",
           }}
         />
       </Stack>
