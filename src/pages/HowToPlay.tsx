@@ -1,4 +1,4 @@
-import { Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import Panel from "../components/Panel";
 import Button from "../components/Button";
 import { useCallback } from "react";
@@ -7,6 +7,7 @@ import SendButton from "../components/SendButton";
 import "overlayscrollbars/overlayscrollbars.css";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import styled from "@emotion/styled";
+import BonusScore from "../components/BonusScore";
 
 const StyledOverlayScrollbarsComponent = styled(OverlayScrollbarsComponent)`
   height: 100%;
@@ -66,7 +67,9 @@ const HowToPlay = () => {
             </Typography>
 
             {/* 채우기 보너스 */}
-            {/* TODO: 채우기 보너스 컴포넌트 추가 */}
+            <Box display="flex" justifyContent="center">
+              <BonusScore score={1} />
+            </Box>
             <Typography variant="h1" textAlign="center">
               채우기 보너스
             </Typography>

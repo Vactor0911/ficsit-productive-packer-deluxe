@@ -1,8 +1,6 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Main } from "./pages";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { Game, HowToPlay, Levels, Main } from "./pages";
 import MainAudio from "./assets/audio/music_1.mp3";
-import HowToPlay from "./pages/HowToPlay";
-import Levels from "./pages/Levels";
 
 // 배경음악 오디오
 export const musicAudio = new Audio(MainAudio);
@@ -12,7 +10,13 @@ musicAudio.volume = 0.3;
 // musicAudio.play();
 
 // 효과음 오디오
-export const effectAudio = new Audio();
+export const effectAudios = [
+  new Audio(),
+  new Audio(),
+  new Audio(),
+  new Audio(),
+  new Audio(),
+];
 
 const App = () => {
   return (
@@ -21,6 +25,8 @@ const App = () => {
         <Route path="/" element={<Main />} />
         <Route path="levels" element={<Levels />} />
         <Route path="how-to-play" element={<HowToPlay />} />
+        <Route path="game" element={<Game />} />
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </BrowserRouter>
   );

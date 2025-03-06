@@ -1,5 +1,8 @@
 import { Box, Button, ButtonProps, keyframes } from "@mui/material";
 import { useCallback } from "react";
+import { playEffect } from "../utils";
+import ButtonHoverAudio from "../assets/audio/button_hover.mp3";
+import ButtonClickAudio from "../assets/audio/button_click.mp3";
 
 const HoverAnimation = keyframes`
   0% {
@@ -14,12 +17,21 @@ export interface ButtonBaseProps extends ButtonProps {
   children?: React.ReactNode;
   disabled?: boolean;
   onClick?: () => void;
+  onMouseEnter?: () => void;
 }
 
 const ButtonBase = (props: ButtonBaseProps) => {
-  const { children, disabled, onClick, ...otherProps } = props;
+  const { children, disabled, onMouseEnter, onClick, ...otherProps } = props;
+
+  const handleHover = useCallback(() => {
+    playEffect(ButtonHoverAudio);
+    if (onMouseEnter && !disabled) {
+      onMouseEnter();
+    }
+  }, [disabled, onMouseEnter]);
 
   const handleClick = useCallback(() => {
+    playEffect(ButtonClickAudio);
     if (onClick && !disabled) {
       onClick();
     }
@@ -60,6 +72,7 @@ const ButtonBase = (props: ButtonBaseProps) => {
         },
       }}
       onClick={handleClick}
+      onMouseEnter={handleHover}
       {...otherProps}
     >
       <Box

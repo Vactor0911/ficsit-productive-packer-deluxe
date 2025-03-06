@@ -1,6 +1,20 @@
-import { Stack, Typography } from "@mui/material";
-import { useState } from "react";
-import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
+import { Box, keyframes, Stack, Typography } from "@mui/material";
+import { useCallback, useState } from "react";
+import StarBorderRoundedIcon from "@mui/icons-material/StarBorderRounded";
+import Button from "../components/Button";
+import { createSearchParams, useNavigate } from "react-router-dom";
+import { playEffect } from "../utils";
+import ButtonHoverAudio from "../assets/audio/button_hover.mp3";
+import GameStartAudio from "../assets/audio/game_start.mp3";
+
+const HoverAnimation = keyframes`
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+`;
 
 const Levels = () => {
   // 레벨 데이터
@@ -43,34 +57,91 @@ const Levels = () => {
     },
   ]);
 
+  // 레벨 선택 버튼 호버 핸들러
+  const handleLevelButtonHover = useCallback(() => {
+    playEffect(ButtonHoverAudio);
+  }, []);
+
+  // 레벨 선택 버튼 클릭 핸들러
+  const navigate = useNavigate();
+  const handleLevelButtonClick = useCallback(() => {
+    playEffect(GameStartAudio);
+    navigate({
+      pathname: "/game",
+      search: `?${createSearchParams({
+        level: "1",
+      })}`,
+    });
+  }, [navigate]);
+
+  // 메인 버튼 클릭 핸들러
+  const handleMainButtonClick = useCallback(() => {
+    navigate("/");
+  }, []);
+
   return (
-    <Stack height="100vh" justifyContent="center" alignItems="center" gap={2}>
+    <Stack padding={5} alignItems="center" gap={2}>
       {levels.map((level) => (
         <Stack
           key={level.level}
           direction="row"
           gap={2}
-          padding={2}
+          padding={1}
           border="2px solid black"
-          width="50%"
+          width="35%"
           boxShadow="0 10px 0 rgba(0, 0, 0, 0.15)"
           sx={{
             backgroundColor: "white",
+            cursor: "pointer",
+            position: "relative",
+            overflow: "hidden",
+            "&:hover": {
+              backgroundColor: "#b6e5d6",
+              "&:before": {
+                content: '""',
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                zIndex: 2,
+                transform: "translateX(-100%)",
+                background: `linear-gradient(
+                  -30deg,
+                  transparent 0%,
+                  transparent 30%,
+                  rgba(255, 255, 255, 0.25) 30%,
+                  rgba(255, 255, 255, 0.25) 70%,
+                  transparent 70%,
+                  transparent 100%
+                )`,
+                animation: `${HoverAnimation} 0.3s linear`,
+              },
+            },
           }}
+          onMouseEnter={handleLevelButtonHover}
+          onClick={handleLevelButtonClick}
         >
-          <Stack gap={1}>
-            <Typography variant="h1" lineHeight="1.7em">레벨 {level.level}</Typography>
+          <Stack gap={0.5}>
+            <Typography variant="h2" lineHeight="1.25em">
+              레벨 {level.level}
+            </Typography>
             <Stack direction="row">
               {/* TODO: 별 SVG 이미지 변경, 반복문 사용 */}
               <StarBorderRoundedIcon fontSize="large" />
               <StarBorderRoundedIcon fontSize="large" />
               <StarBorderRoundedIcon fontSize="large" />
             </Stack>
-            <Typography variant="h3">최고 점수: {level.score}</Typography>
-            <Typography variant="h2">최고 점수: {level.score}</Typography>
+            <Typography variant="subtitle1">최고 점수:</Typography>
+            <Typography variant="h3" color="primary">
+              홍길동: 1,234
+            </Typography>
           </Stack>
         </Stack>
       ))}
+      <Box marginTop={2}>
+        <Button text="메인 화면으로" onClick={handleMainButtonClick} />
+      </Box>
     </Stack>
   );
 };

@@ -1,5 +1,5 @@
 import { createTheme } from "@mui/material";
-import { effectAudio, musicAudio } from "../App";
+import { musicAudio, effectAudios } from "../App";
 
 export const theme = createTheme({
   palette: {
@@ -14,12 +14,12 @@ export const theme = createTheme({
     fontFamily: ["Pretendard-Regular", "sans-serif"].join(","),
     h1: {
       fontSize: "2em",
-      lineHeight: "2em",
+      lineHeight: "1.5em",
       fontWeight: "bold",
     },
     h2: {
       fontSize: "1.5em",
-      lineHeight: "1.5em",
+      lineHeight: "1.25em",
       fontWeight: "bold",
     },
     h3: {
@@ -64,15 +64,20 @@ export const theme = createTheme({
 });
 
 // 오디오 재생
-export const playMusic = (src: string, volume = 1) => {
+export const playMusic = (src: string, volume = 0.3) => {
   musicAudio.src = src;
   musicAudio.volume = volume;
   musicAudio.play();
 };
 
 // 효과음 재생
-export const playEffect = (src: string, volume = 1) => {
-  effectAudio.src = src;
-  effectAudio.volume = volume;
-  effectAudio.play();
+export const playEffect = (src: string, volume = 0.3) => {
+  for (const audio of effectAudios) {
+    if (audio.paused) {
+      audio.src = src;
+      audio.volume = volume;
+      audio.play();
+      break;
+    }
+  }
 };
