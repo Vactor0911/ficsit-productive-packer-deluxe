@@ -23,6 +23,7 @@ const SendButton = (props: ButtonBaseProps) => {
         direction="row"
         justifyContent="space-between"
         alignItems="center"
+        padding={1}
         gap={1}
       >
         <Typography
