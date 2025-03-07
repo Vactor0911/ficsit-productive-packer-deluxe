@@ -1,0 +1,15 @@
+<svg width="320" height="288" viewBox="-16 0 320 288" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <pattern id="grid" width="64" height="64" patternUnits="userSpaceOnUse">
+            <rect width="64" height="64" fill="white" />
+            <rect width="32" height="32" fill="#d9edb6" />
+            <rect x="32" y="32" width="32" height="32" fill="#d9edb6" />
+        </pattern>
+    </defs>
+    <rect width="288" height="288" fill="url(#grid)" vector-effect="non-scaling-stroke" stroke="black"
+        stroke-width="2px" />
+    <rect width="64" height="64" fill="#3d3d3d" />
+    <rect width="64" height="64" x="224" fill="#3d3d3d" />
+    <rect width="64" height="64" y="224" fill="#3d3d3d" />
+    <rect width="64" height="64" x="224" y="224" fill="#3d3d3d" />
+</svg>

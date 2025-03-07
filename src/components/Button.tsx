@@ -12,6 +12,7 @@ const Button = (props: ButtonProps) => {
     <ButtonBase onClick={onClick} {...others}>
       <Typography
         variant="h1"
+        padding={1}
         sx={{
           color: "white",
           fontWeight: "400",
