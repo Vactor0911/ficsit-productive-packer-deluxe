@@ -72,12 +72,12 @@ const Levels = () => {
 
   // 레벨 선택 버튼 클릭 핸들러
   const navigate = useNavigate();
-  const handleLevelButtonClick = useCallback(() => {
+  const handleLevelButtonClick = useCallback((level: number) => {
     playEffect(GameStartAudio);
     navigate({
       pathname: "/game",
       search: `?${createSearchParams({
-        level: "1",
+        level: `${level}`,
       })}`,
     });
   }, [navigate]);
@@ -126,7 +126,7 @@ const Levels = () => {
             },
           }}
           onMouseEnter={handleLevelButtonHover}
-          onClick={handleLevelButtonClick}
+          onClick={() => handleLevelButtonClick(level.level)}
         >
           <Stack justifyContent="center" alignItems="center">
             <img
