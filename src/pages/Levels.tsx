@@ -6,6 +6,14 @@ import { createSearchParams, useNavigate } from "react-router-dom";
 import { playEffect } from "../utils";
 import ButtonHoverAudio from "../assets/audio/button_hover.mp3";
 import GameStartAudio from "../assets/audio/game_start.mp3";
+import {
+  Level1Preview,
+  Level2Preview,
+  Level3Preview,
+  Level4Preview,
+  Level5Preview,
+  Level6Preview,
+} from "../assets/images/levels";
 
 const HoverAnimation = keyframes`
   0% {
@@ -21,37 +29,37 @@ const Levels = () => {
   const [levels, setLevels] = useState([
     {
       level: 1,
-      image: null,
+      image: Level1Preview,
       stars: 0,
       score: 0,
     },
     {
       level: 2,
-      image: null,
+      image: Level2Preview,
       stars: 0,
       score: 0,
     },
     {
       level: 3,
-      image: null,
+      image: Level3Preview,
       stars: 0,
       score: 0,
     },
     {
       level: 4,
-      image: null,
+      image: Level4Preview,
       stars: 0,
       score: 0,
     },
     {
       level: 5,
-      image: null,
+      image: Level5Preview,
       stars: 0,
       score: 0,
     },
     {
       level: 6,
-      image: null,
+      image: Level6Preview,
       stars: 0,
       score: 0,
     },
@@ -77,7 +85,7 @@ const Levels = () => {
   // 메인 버튼 클릭 핸들러
   const handleMainButtonClick = useCallback(() => {
     navigate("/");
-  }, []);
+  }, [navigate]);
 
   return (
     <Stack padding={5} alignItems="center" gap={2}>
@@ -102,27 +110,32 @@ const Levels = () => {
                 position: "absolute",
                 top: 0,
                 left: 0,
-                width: "100%",
+                width: "200%",
                 height: "100%",
                 zIndex: 2,
                 transform: "translateX(-100%)",
                 background: `linear-gradient(
-                  -30deg,
-                  transparent 0%,
-                  transparent 30%,
-                  rgba(255, 255, 255, 0.25) 30%,
-                  rgba(255, 255, 255, 0.25) 70%,
-                  transparent 70%,
-                  transparent 100%
+                  150deg,
+                  transparent 40%,
+                  rgba(255, 255, 255, 0.25) 40%,
+                  rgba(255, 255, 255, 0.25) 60%,
+                  transparent 60%
                 )`,
-                animation: `${HoverAnimation} 0.3s linear`,
+                animation: `${HoverAnimation} 0.6s linear`,
               },
             },
           }}
           onMouseEnter={handleLevelButtonHover}
           onClick={handleLevelButtonClick}
         >
-          <Stack gap={0.5}>
+          <Stack justifyContent="center" alignItems="center">
+            <img
+              src={level.image || ""}
+              alt={`Level${level.level}`}
+              height="120em"
+            />
+          </Stack>
+          <Stack gap={0.5} justifyContent="center">
             <Typography variant="h2" lineHeight="1.25em">
               레벨 {level.level}
             </Typography>
