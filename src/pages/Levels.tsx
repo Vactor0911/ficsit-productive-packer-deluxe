@@ -72,15 +72,18 @@ const Levels = () => {
 
   // 레벨 선택 버튼 클릭 핸들러
   const navigate = useNavigate();
-  const handleLevelButtonClick = useCallback((level: number) => {
-    playEffect(GameStartAudio);
-    navigate({
-      pathname: "/game",
-      search: `?${createSearchParams({
-        level: `${level}`,
-      })}`,
-    });
-  }, [navigate]);
+  const handleLevelButtonClick = useCallback(
+    (level: number) => {
+      playEffect(GameStartAudio);
+      navigate({
+        pathname: "/game",
+        search: `?${createSearchParams({
+          level: `${level}`,
+        })}`,
+      });
+    },
+    [navigate]
+  );
 
   // 메인 버튼 클릭 핸들러
   const handleMainButtonClick = useCallback(() => {
@@ -88,7 +91,7 @@ const Levels = () => {
   }, [navigate]);
 
   return (
-    <Stack padding={5} alignItems="center" gap={2}>
+    <Stack padding="40px 0" alignItems="center" gap={2}>
       {levels.map((level) => (
         <Stack
           key={level.level}
@@ -96,7 +99,15 @@ const Levels = () => {
           gap={2}
           padding={1}
           border="2px solid black"
-          width="35%"
+          width={{
+            xs: "80%",
+            sm: "50%",
+            md: "35%",
+          }}
+          minWidth={{
+            sm: "450px",
+          }}
+          maxWidth="750px"
           boxShadow="0 10px 0 rgba(0, 0, 0, 0.15)"
           sx={{
             backgroundColor: "white",
@@ -128,11 +139,18 @@ const Levels = () => {
           onMouseEnter={handleLevelButtonHover}
           onClick={() => handleLevelButtonClick(level.level)}
         >
-          <Stack justifyContent="center" alignItems="center">
+          <Stack justifyContent="center" alignItems="center" sx={{
+            img: {
+              height: {
+                xs: "80px",
+                sm: "100px",
+                md: "120px",
+              }
+            }
+          }}>
             <img
               src={level.image || ""}
               alt={`Level${level.level}`}
-              height="120em"
             />
           </Stack>
           <Stack gap={0.5} justifyContent="center">
