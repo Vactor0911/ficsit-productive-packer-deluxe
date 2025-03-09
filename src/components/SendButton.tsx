@@ -30,7 +30,10 @@ const SendButton = (props: ButtonBaseProps) => {
           variant="h1"
           sx={{
             color: "white",
-            fontSize: "2.5em",
+            fontSize: {
+              xs: "1.5em",
+              sm: "2.5em",
+            },
             textShadow: "0 2px 0 rgba(0, 0, 0, 0.25)",
             position: "relative",
           }}
@@ -40,7 +43,10 @@ const SendButton = (props: ButtonBaseProps) => {
         <ArrowForwardIcon
           sx={{
             color: "white",
-            fontSize: "4em",
+            fontSize: {
+              xs: "2.5em",
+              sm: "4em",
+            },
             animation: disabled
               ? undefined
               : `${HoverAnimation} 1s ease-in-out infinite`,

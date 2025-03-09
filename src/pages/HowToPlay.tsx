@@ -80,7 +80,10 @@ const HowToPlay = () => {
 
             {/* 패키지 보내기 */}
             <Stack
-              margin="0 25%"
+              margin={{
+                xs: "0 10%",
+                sm: "0 25%",
+              }}
               sx={{
                 position: "relative",
                 "&:after": {

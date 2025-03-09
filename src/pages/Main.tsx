@@ -2,6 +2,7 @@ import { Box, keyframes, Stack } from "@mui/material";
 import Button from "../components/Button";
 import { useNavigate } from "react-router-dom";
 import { useCallback } from "react";
+import Logo from "/Logo.png";
 
 const LogoAnimation = keyframes`
   0% {
@@ -31,8 +32,12 @@ const Main = () => {
       <Box
         component="img"
         alt="Logo"
-        src="./Logo.png"
-        width="600px"
+        src={Logo}
+        width={{
+          xs: "300px",
+          sm: "500px",
+          md: "600px",
+        }}
         sx={{ animation: `${LogoAnimation} 4s ease-in-out infinite` }}
         marginBottom="20px"
       />

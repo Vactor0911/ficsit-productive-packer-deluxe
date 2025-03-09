@@ -1,4 +1,4 @@
-<svg width="320" height="288" viewBox="0 0 320 288" xmlns="http://www.w3.org/2000/svg">
+<svg width="320" height="288" viewBox="-2 -2 324 292" xmlns="http://www.w3.org/2000/svg">
     <defs>
         <pattern id="grid" width="64" height="64" patternUnits="userSpaceOnUse">
             <rect width="64" height="64" fill="white" />
@@ -6,10 +6,10 @@
             <rect x="32" y="32" width="32" height="32" fill="#ffeaa7" />
         </pattern>
     </defs>
-    <rect width="320" height="288" fill="url(#grid)" vector-effect="non-scaling-stroke" stroke="black"
-        stroke-width="2px" />
+    <rect width="320" height="288" fill="url(#grid)" />
     <path d="M0 0 L64 0 L64 32 L32 32 L32 64 L0 64 z" fill="#3d3d3d" />
     <path d="M320 0 L256 0 L256 32 L288 32 L288 64 L320 64 z" fill="#3d3d3d" />
     <path d="M0 288 L64 288 L64 256 L32 256 L32 224 L0 224 z" fill="#3d3d3d" />
     <path d="M320 288 L256 288 L256 256 L288 256 L288 224 L320 224 z" fill="#3d3d3d" />
+    <rect width="320" height="288" fill="none" vector-effect="non-scaling-stroke" stroke="black" stroke-width="2px" />
 </svg>
