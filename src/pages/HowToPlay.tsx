@@ -8,6 +8,7 @@ import "overlayscrollbars/overlayscrollbars.css";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import styled from "@emotion/styled";
 import BonusScore from "../components/BonusScore";
+import BonusTile from "../components/BonusTile";
 
 const StyledOverlayScrollbarsComponent = styled(OverlayScrollbarsComponent)`
   height: 100%;
@@ -112,7 +113,11 @@ const HowToPlay = () => {
             </Typography>
 
             {/* 보너스 타일 */}
-            {/* TODO: 보너스 타일 컴포넌트 추가 */}
+            <Stack alignItems="center">
+              <Box width="80px">
+                <BonusTile degree={270} multiplier={4} />
+              </Box>
+            </Stack>
             <Typography variant="h1" textAlign="center">
               보너스 타일
             </Typography>
