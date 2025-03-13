@@ -6,7 +6,7 @@ interface PanelProps extends StackProps {
 }
 
 const Panel = (props: PanelProps) => {
-  const { color, children, ...others } = props;
+  const { color = "white", children, ...others } = props;
 
   return (
     <Box
@@ -17,7 +17,7 @@ const Panel = (props: PanelProps) => {
       boxShadow="0 10px 0 rgba(0, 0, 0, 0.15)"
       {...others}
       sx={{
-        backgroundColor: color ? color : "white",
+        backgroundColor: color,
         "&:before": {
           content: "''",
           position: "absolute",
