@@ -7,5 +7,5 @@
         </pattern>
     </defs>
     <rect width="160" height="160" fill="url(#checkerboard)" />
-    <rect id="test" width="160" height="8" y="160" fill="#5b8080" stroke="black" />
+    <rect id="test" width="160" height="8" y="160" fill="#5b8080" />
 </svg>
