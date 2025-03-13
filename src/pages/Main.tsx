@@ -2,7 +2,7 @@ import { Box, keyframes, Stack } from "@mui/material";
 import Button from "../components/Button";
 import { useNavigate } from "react-router-dom";
 import { useCallback } from "react";
-import Logo from "/Logo.png";
+import Logo from "../assets/images/Logo.png";
 
 const LogoAnimation = keyframes`
   0% {
