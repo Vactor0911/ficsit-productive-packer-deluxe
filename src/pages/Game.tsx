@@ -1,7 +1,7 @@
-import { Box, Stack, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import { useLocation } from "react-router-dom";
 import Scoreboard from "../components/Scoreboard";
-import Conveyor from "../assets/images/conveyor.svg";
+import Conveyor from "../components/Conveyor";
 
 const Game = () => {
   const location = useLocation();
@@ -14,17 +14,8 @@ const Game = () => {
         Level: {searchParams.get("level")}
       </Typography>
       <Scoreboard />
-      <Box
-        width="100%"
-        height="300px"
-        sx={{
-          backgroundImage: `url(${Conveyor})`,
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "center left",
-          backgroundSize: "contain",
-        }}
-      />
-    </Stack>
+      <Conveyor height="500px" />
+    </Stack >
   );
 };
 
