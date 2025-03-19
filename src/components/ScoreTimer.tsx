@@ -34,8 +34,8 @@ const ScoreTimer = (props: ScoreTimerProps) => {
 
   return (
     <Stack
-      width="150px"
-      height="150px"
+      width="140px"
+      height="140px"
       border="2px solid black"
       {...StackStyle}
     >

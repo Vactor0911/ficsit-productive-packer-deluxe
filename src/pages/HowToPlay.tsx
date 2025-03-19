@@ -35,6 +35,7 @@ const HowToPlay = () => {
         maxWidth="800px"
         height="75%"
         position="relative"
+        padding={1}
       >
         <StyledOverlayScrollbarsComponent defer>
           <Stack padding="16px 8px" gap={1}>

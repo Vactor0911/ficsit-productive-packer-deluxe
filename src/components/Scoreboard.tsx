@@ -5,8 +5,8 @@ import Coin from "../assets/images/coin.svg";
 
 const Scoreboard = () => {
   return (
-    <Panel>
-      <Stack direction="row" gap={2} padding={1}>
+    <Panel padding={1}>
+      <Stack direction="row" gap={2}>
         {/* 제한시간 */}
         <ScoreTimer time={20} maxTime={100} isTimeAlert />
 

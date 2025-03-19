@@ -1,6 +1,8 @@
 import { Box, keyframes, Stack, StackProps } from "@mui/material";
+import Panel from "./Panel";
 
 interface ConveyorProps extends StackProps {
+  children?: React.ReactNode;
   isRunning?: boolean;
 }
 
@@ -9,53 +11,37 @@ const ConveyorAnimation = keyframes`
         background-position: 0 0;
     }
     100% {
-        background-position: 10% 0;
+        background-position: 220px 0;
     }
 `;
 
 const Conveyor = (props: ConveyorProps) => {
-  const { isRunning = false, ...others } = props;
+  const { children, isRunning = false, ...others } = props;
   return (
     <Stack {...others}>
-      <Box
-        height="8px"
-        sx={{
-          backgroundColor: "white",
-        }}
-      />
-      <Box
-        height="16px"
-        sx={{
-          backgroundColor: "#b3b3b3",
-        }}
-      />
+      {/* 상부 지지대 */}
+      <Panel padding="4px" thickness="24px" position="relative" zIndex={1} />
 
+      {/* 컨베이어어 */}
       <Box
         width="100%"
         height="100%"
+        position="relative"
         sx={{
           background: `
             conic-gradient(from -15deg at calc(100% - 2px), #0000 210deg, #4d4d4d 0),
             conic-gradient(from -15deg at 100%, #4d4d4d 210deg, #000 0)`,
-          backgroundSize: "12% 100%",
+          backgroundSize: "220px 100%",
           animation: isRunning
-            ? `${ConveyorAnimation} 1s linear infinite`
+            ? `${ConveyorAnimation} 0.25s linear infinite`
             : "none",
         }}
-      />
+      >
+        {children}
+      </Box>
 
-      <Box
-        height="8px"
-        sx={{
-          backgroundColor: "white",
-        }}
-      />
-      <Box
-        height="16px"
-        sx={{
-          backgroundColor: "#b3b3b3",
-        }}
-      />
+      {/* 하부 지지대 */}
+      <Panel padding="4px" thickness="24px" />
     </Stack>
   );
 };
