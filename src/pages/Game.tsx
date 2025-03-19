@@ -8,14 +8,12 @@ const Game = () => {
   const searchParams = new URLSearchParams(location.search);
 
   return (
-    <Stack>
-      <Typography variant="h1">Game Page</Typography>
-      <Typography variant="subtitle1">
-        Level: {searchParams.get("level")}
-      </Typography>
-      <Scoreboard />
-      <Conveyor height="500px" />
-    </Stack >
+    <Stack gap={1} height="100vh">
+      <Stack width="600px" marginTop={2} alignSelf="center">
+        <Scoreboard />
+      </Stack>
+      <Conveyor height="70%" />
+    </Stack>
   );
 };
 
