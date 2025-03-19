@@ -2,8 +2,12 @@ import { Box, Stack, Typography } from "@mui/material";
 import Panel from "./Panel";
 import ScoreTimer from "./ScoreTimer";
 import Coin from "../assets/images/coin.svg";
+import { useAtomValue } from "jotai";
+import { scoreAtom } from "../states";
 
 const Scoreboard = () => {
+  const score = useAtomValue(scoreAtom);
+
   return (
     <Panel padding={1}>
       <Stack direction="row" gap={2}>
@@ -12,6 +16,11 @@ const Scoreboard = () => {
 
         {/* 점수 */}
         <Stack
+          width={{
+            md: "calc(95% - 140px)",
+            sm: "calc(95% - 120px)",
+            xs: "calc(95% - 100px)",
+          }}
           gap={{
             md: 3,
             xs: 2,
@@ -32,13 +41,16 @@ const Scoreboard = () => {
             <Typography
               variant="h1"
               fontSize={{
-                md: "5em",
+                md: "4.5em",
                 sm: "4em",
                 xs: "2.5em",
               }}
               lineHeight="1em"
+              overflow="hidden"
+              whiteSpace="nowrap"
+              textOverflow="ellipsis"
             >
-              100
+              {Math.min(score, 99999999)}
             </Typography>
           </Stack>
         </Stack>
