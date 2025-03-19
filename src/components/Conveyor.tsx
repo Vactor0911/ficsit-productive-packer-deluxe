@@ -1,23 +1,13 @@
-import { Box, keyframes, Stack, StackProps } from "@mui/material";
+import { Box, Stack, StackProps } from "@mui/material";
 import Panel from "./Panel";
 import Marquee from "react-fast-marquee";
 
 interface ConveyorProps extends StackProps {
-  children?: React.ReactNode;
   isRunning?: boolean;
 }
 
-const ConveyorAnimation = keyframes`
-    0% {
-        background-position: 0 0;
-    }
-    100% {
-        background-position: 220px 0;
-    }
-`;
-
 const Conveyor = (props: ConveyorProps) => {
-  const { children, isRunning = false, ...others } = props;
+  const { isRunning = false, ...others } = props;
   return (
     <Stack {...others}>
       {/* 상부 지지대 */}
@@ -28,6 +18,7 @@ const Conveyor = (props: ConveyorProps) => {
         autoFill
         direction="right"
         speed={500}
+        play={isRunning}
         style={{
           width: "100%",
           height: "100%",
