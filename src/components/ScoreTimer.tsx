@@ -1,5 +1,8 @@
 import { keyframes, Stack, Typography } from "@mui/material";
 import { useCallback } from "react";
+import { theme } from "../utils";
+import { useAtomValue } from "jotai";
+import { maxTimeAtom, timeLeftAtom } from "../states";
 
 const TimeAlertAnimation = keyframes`
   0% {
@@ -13,65 +16,108 @@ const TimeAlertAnimation = keyframes`
   }
 `;
 
-interface ScoreTimerProps {
-  time: number;
-  maxTime: number;
-  isTimeAlert?: boolean;
-}
-
 const StackStyle = {
   justifyContent: "center",
   alignItems: "center",
   borderRadius: "50%",
 };
 
-const ScoreTimer = (props: ScoreTimerProps) => {
-  const { time, maxTime, isTimeAlert = false } = props;
+const ScoreTimer = () => {
+  const time = useAtomValue(timeLeftAtom);
+  const maxTime = useAtomValue(maxTimeAtom);
 
+  /**
+   * 남은 시간의 비율을 각도로 변환하는 함수
+   */
   const getDegree = useCallback(() => {
     return Math.min((time / maxTime) * 360, 360);
   }, [maxTime, time]);
 
+  /**
+   * 시간을 소수점 첫째 자리까지 표시하는 함수
+   */
+  const getFormattedTime = useCallback(() => {
+    if (isNaN(time)) return "00.0";
+    return time.toFixed(1).padStart(4, "0");
+  }, []);
+
   return (
     <Stack
-      width="150px"
-      height="150px"
+      width={{
+        md: "140px",
+        sm: "120px",
+        xs: "90px",
+      }}
+      height={{
+        md: "140px",
+        sm: "120px",
+        xs: "90px",
+      }}
       border="2px solid black"
       {...StackStyle}
     >
       <Stack
-        width="calc(100% - 6px)"
-        height="calc(100% - 6px)"
+        width={{
+          sm: "calc(100% - 6px)",
+          xs: "calc(100% - 3px)",
+        }}
+        height={{
+          sm: "calc(100% - 6px)",
+          xs: "calc(100% - 3px)",
+        }}
         {...StackStyle}
         sx={{
           background: `conic-gradient(#d78b00 ${getDegree()}deg, #ffffff ${getDegree()}deg)`,
         }}
       >
         <Stack
-          width="calc(100% - 40px)"
-          height="calc(100% - 40px)"
+          width={{
+            md: "calc(100% - 40px)",
+            sm: "calc(100% - 30px)",
+            xs: "calc(100% - 20px)",
+          }}
+          height={{
+            md: "calc(100% - 40px)",
+            sm: "calc(100% - 30px)",
+            xs: "calc(100% - 20px)",
+          }}
           {...StackStyle}
           sx={{
             background: "white",
           }}
         >
           <Stack
-            width="calc(100% - 7px)"
-            height="calc(100% - 7px)"
+            width={{
+              sm: "calc(100% - 6px)",
+              xs: "calc(100% - 3px)",
+            }}
+            height={{
+              sm: "calc(100% - 6px)",
+              xs: "calc(100% - 3px)",
+            }}
             {...StackStyle}
             gap={1}
             sx={{
               background: "#666666",
-              animation: isTimeAlert
-                ? `${TimeAlertAnimation} 1.1s linear infinite`
-                : "none",
+              animation:
+                getDegree() <= 75
+                  ? `${TimeAlertAnimation} 1.1s linear infinite`
+                  : "none",
             }}
           >
             <Typography variant="h5" color="white">
               시간 :
             </Typography>
-            <Typography variant="h3" color="white">
-              00.0초
+            <Typography
+              variant="h3"
+              sx={{
+                [theme.breakpoints.down("sm")]: {
+                  fontSize: "1em",
+                },
+              }}
+              color="white"
+            >
+              {getFormattedTime()}초
             </Typography>
           </Stack>
         </Stack>
