@@ -46,19 +46,25 @@ const ScoreTimer = () => {
       width={{
         md: "140px",
         sm: "120px",
-        xs: "100px",
+        xs: "90px",
       }}
       height={{
         md: "140px",
         sm: "120px",
-        xs: "100px",
+        xs: "90px",
       }}
       border="2px solid black"
       {...StackStyle}
     >
       <Stack
-        width="calc(100% - 6px)"
-        height="calc(100% - 6px)"
+        width={{
+          sm: "calc(100% - 6px)",
+          xs: "calc(100% - 3px)",
+        }}
+        height={{
+          sm: "calc(100% - 6px)",
+          xs: "calc(100% - 3px)",
+        }}
         {...StackStyle}
         sx={{
           background: `conic-gradient(#d78b00 ${getDegree()}deg, #ffffff ${getDegree()}deg)`,
@@ -81,8 +87,14 @@ const ScoreTimer = () => {
           }}
         >
           <Stack
-            width="calc(100% - 6px)"
-            height="calc(100% - 6px)"
+            width={{
+              sm: "calc(100% - 6px)",
+              xs: "calc(100% - 3px)",
+            }}
+            height={{
+              sm: "calc(100% - 6px)",
+              xs: "calc(100% - 3px)",
+            }}
             {...StackStyle}
             gap={1}
             sx={{

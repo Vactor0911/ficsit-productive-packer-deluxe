@@ -28,13 +28,19 @@ const Conveyor = (props: ConveyorProps) => {
         }}
       >
         <Box
-          width="220px"
+          width={{
+            sm: "220px",
+            xs: "110px",
+          }}
           height="70vh"
           sx={{
             background: `
           conic-gradient(from -15deg at calc(100% - 2px), #0000 210deg, #4d4d4d 0),
           conic-gradient(from -15deg at 100%, #4d4d4d 210deg, #000 0)`,
-            backgroundSize: "220px 100%",
+            backgroundSize: {
+              sm: "220px 100%",
+              xs: "110px 100%",
+            },
           }}
         />
       </Marquee>

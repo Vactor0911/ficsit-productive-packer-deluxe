@@ -19,7 +19,7 @@ const Scoreboard = () => {
           width={{
             md: "calc(95% - 140px)",
             sm: "calc(95% - 120px)",
-            xs: "calc(95% - 100px)",
+            xs: "calc(95% - 90px)",
           }}
           gap={{
             md: 3,
