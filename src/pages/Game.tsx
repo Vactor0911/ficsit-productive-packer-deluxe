@@ -1,16 +1,25 @@
-import { Box, Stack } from "@mui/material";
+import { Box, Stack, useMediaQuery } from "@mui/material";
 import { useLocation } from "react-router-dom";
 import Scoreboard from "../components/Scoreboard";
 import Conveyor from "../components/Conveyor";
 import BlockContainer from "../components/BlockContainer";
 import MobileBlockContainer from "../components/MobileBlockContainer";
+import { theme } from "../utils";
 
 const Game = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
 
   return (
-    <Stack gap={1} height="100vh" position="relative" overflow="hidden">
+    <Stack
+      gap={1}
+      height="100vh"
+      position="relative"
+      overflow={{
+        md: "hidden",
+        sm: "auto",
+      }}
+    >
       {/* 점수판 */}
       <Stack
         width="90%"
@@ -25,20 +34,20 @@ const Game = () => {
 
       <Box
         height={{
-          md: "70vh",
+          sm: "70vh",
           xs: "50vh",
         }}
         position="relative"
       >
-        {/* 컨베이어 벨트트 */}
+        {/* 컨베이어 벨트 */}
         <Conveyor height="100%" />
 
         {/* PC, 태블릿용 블록 컨테이너 */}
-        <BlockContainer />
+        {useMediaQuery(theme.breakpoints.up("xs")) && <BlockContainer />}
       </Box>
 
       {/* 모바일용 블록 컨테이너 */}
-      <MobileBlockContainer />
+      {useMediaQuery(theme.breakpoints.only("xs")) && <MobileBlockContainer />}
     </Stack>
   );
 };
