@@ -10,7 +10,7 @@ const Game = () => {
   const searchParams = new URLSearchParams(location.search);
 
   return (
-    <Stack gap={1} height="100vh" position="relative">
+    <Stack gap={1} height="100vh" position="relative" overflow="hidden">
       {/* 점수판 */}
       <Stack
         width="90%"
