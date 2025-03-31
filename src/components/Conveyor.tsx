@@ -9,7 +9,7 @@ interface ConveyorProps extends StackProps {
 const Conveyor = (props: ConveyorProps) => {
   const { isRunning = false, ...others } = props;
   return (
-    <Stack {...others}>
+    <Stack minHeight="300px" maxHeight="1600px" {...others}>
       {/* 상부 지지대 */}
       <Panel padding="4px" thickness="24px" position="relative" zIndex={2} />
 

@@ -8,3 +8,6 @@ export const maxTimeAtom = atom(95);
 
 // 게임 점수
 export const scoreAtom = atom(0);
+
+// 블록 저장
+export const blocksAtom = atom([]);
