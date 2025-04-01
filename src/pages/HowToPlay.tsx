@@ -7,7 +7,7 @@ import SendButton from "../components/SendButton";
 import "overlayscrollbars/overlayscrollbars.css";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import styled from "@emotion/styled";
-import BonusScore from "../components/BonusScore";
+import BonusScore from "../components/ScoreMultiplier";
 import BonusTile from "../components/BonusTile";
 
 const StyledOverlayScrollbarsComponent = styled(OverlayScrollbarsComponent)`
