@@ -70,6 +70,9 @@ const ButtonBase = (props: ButtonBaseProps) => {
             height: "5px",
           },
         },
+        "& .MuiTouchRipple-root": {
+          display: "none",
+        },
       }}
       onClick={handleClick}
       onMouseEnter={handleHover}
