@@ -69,9 +69,11 @@ const HowToPlay = () => {
             </Typography>
 
             {/* 채우기 보너스 */}
-            <Box display="flex" justifyContent="center">
-              <BonusScore score={1} />
-            </Box>
+            <Stack alignItems="center">
+              <Box width="160px">
+                <BonusScore score={1} />
+              </Box>
+            </Stack>
             <Typography variant="h1" textAlign="center">
               채우기 보너스
             </Typography>
