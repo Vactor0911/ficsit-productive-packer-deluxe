@@ -28,15 +28,19 @@ const BonusScoreContainer = () => {
         <Box {...BoltStyle} bottom={10} left={5} />
         <Box {...BoltStyle} bottom={10} right={5} />
 
-        {/* 보너스 점수 */}
+        {/* 포장 점수 */}
         <Typography variant="h3" color="white" textAlign="center">
           포장 점수 :
         </Typography>
         <BonusScore score={0} />
+
+        {/* 채우기 보너스 */}
         <Typography variant="h3" color="white" textAlign="center">
           채우기 보너스 :
         </Typography>
         <BonusScore score={0} />
+
+        {/* 최종 배달 점수 */}
         <Typography variant="h3" color="white" textAlign="center">
           최종 배달 점수 :
         </Typography>
