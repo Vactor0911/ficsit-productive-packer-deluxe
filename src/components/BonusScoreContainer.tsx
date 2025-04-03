@@ -1,7 +1,7 @@
 import { Box, Stack, Typography } from "@mui/material";
 import Panel from "./Panel";
 import Bolt from "../assets/images/bolt.svg";
-import BonusScore from "./ScoreMultiplier";
+import ScoreMultiplier from "./ScoreMultiplier";
 
 const BoltStyle = {
   component: "img" as React.ElementType,
@@ -32,19 +32,19 @@ const BonusScoreContainer = () => {
         <Typography variant="h3" color="white" textAlign="center">
           포장 점수 :
         </Typography>
-        <BonusScore score={0} />
+        <ScoreMultiplier score={0} />
 
         {/* 채우기 보너스 */}
         <Typography variant="h3" color="white" textAlign="center">
           채우기 보너스 :
         </Typography>
-        <BonusScore score={0} />
+        <ScoreMultiplier score={0} />
 
         {/* 최종 배달 점수 */}
         <Typography variant="h3" color="white" textAlign="center">
           최종 배달 점수 :
         </Typography>
-        <BonusScore score={0} />
+        <ScoreMultiplier score={0} />
       </Stack>
     </Panel>
   );
