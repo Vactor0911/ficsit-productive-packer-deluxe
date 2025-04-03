@@ -71,17 +71,31 @@ const Game = () => {
       {/* 태블릿용 보너스 점수 컨테이너 */}
       {useMediaQuery(theme.breakpoints.down("lg")) && (
         <Stack
-          margin="30px 0"
+          margin={{
+            xs: "-8px 0",
+            sm: "30px 0",
+          }}
           direction="row"
           width="100%"
           justifyContent="space-evenly"
           position="relative"
           zIndex={3}
         >
-          <Box width="40%">
+          <Box
+            width="40%"
+            display={{
+              xs: "none",
+              sm: "block",
+            }}
+          >
             <BonusScoreContainer />
           </Box>
-          <Box width="40%">
+          <Box
+            width={{
+              xs: "50%",
+              sm: "40%",
+            }}
+          >
             <SendButton fullWidth />
           </Box>
         </Stack>
