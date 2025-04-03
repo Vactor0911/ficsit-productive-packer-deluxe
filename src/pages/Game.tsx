@@ -5,6 +5,8 @@ import Conveyor from "../components/Conveyor";
 import BlockContainer from "../components/BlockContainer";
 import MobileBlockContainer from "../components/MobileBlockContainer";
 import { theme } from "../utils";
+import BonusScoreContainer from "../components/BonusScoreContainer";
+import SendButton from "../components/SendButton";
 
 const Game = () => {
   const location = useLocation();
@@ -13,7 +15,7 @@ const Game = () => {
   return (
     <Stack
       gap={1}
-      height="100vh"
+      minHeight="100vh"
       position="relative"
       overflow={{
         md: "hidden",
@@ -34,7 +36,7 @@ const Game = () => {
 
       <Box
         height={{
-          sm: "70vh",
+          lg: "70vh",
           xs: "50vh",
         }}
         position="relative"
@@ -44,10 +46,60 @@ const Game = () => {
 
         {/* PC, 태블릿용 블록 컨테이너 */}
         {useMediaQuery(theme.breakpoints.up("xs")) && <BlockContainer />}
+
+        {/* PC용 보너스 점수 컨테이너 */}
+        {useMediaQuery(theme.breakpoints.up("lg")) && (
+          <Stack
+            width="20vw"
+            height="100%"
+            top={0}
+            right="2vw"
+            justifyContent="space-between"
+            padding="50px 0"
+            position="absolute"
+            zIndex={3}
+          >
+            <BonusScoreContainer />
+            <SendButton />
+          </Stack>
+        )}
       </Box>
 
       {/* 모바일용 블록 컨테이너 */}
       {useMediaQuery(theme.breakpoints.only("xs")) && <MobileBlockContainer />}
+
+      {/* 태블릿용 보너스 점수 컨테이너 */}
+      {useMediaQuery(theme.breakpoints.down("lg")) && (
+        <Stack
+          margin={{
+            xs: "-8px 0",
+            sm: "30px 0",
+          }}
+          direction="row"
+          width="100%"
+          justifyContent="space-evenly"
+          position="relative"
+          zIndex={3}
+        >
+          <Box
+            width="40%"
+            display={{
+              xs: "none",
+              sm: "block",
+            }}
+          >
+            <BonusScoreContainer />
+          </Box>
+          <Box
+            width={{
+              xs: "50%",
+              sm: "40%",
+            }}
+          >
+            <SendButton fullWidth />
+          </Box>
+        </Stack>
+      )}
     </Stack>
   );
 };

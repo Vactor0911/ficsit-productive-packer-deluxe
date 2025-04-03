@@ -7,7 +7,7 @@ import SendButton from "../components/SendButton";
 import "overlayscrollbars/overlayscrollbars.css";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import styled from "@emotion/styled";
-import BonusScore from "../components/BonusScore";
+import ScoreMultiplier from "../components/ScoreMultiplier";
 import BonusTile from "../components/BonusTile";
 
 const StyledOverlayScrollbarsComponent = styled(OverlayScrollbarsComponent)`
@@ -69,9 +69,11 @@ const HowToPlay = () => {
             </Typography>
 
             {/* 채우기 보너스 */}
-            <Box display="flex" justifyContent="center">
-              <BonusScore score={1} />
-            </Box>
+            <Stack alignItems="center">
+              <Box width="160px">
+                <ScoreMultiplier score={1} />
+              </Box>
+            </Stack>
             <Typography variant="h1" textAlign="center">
               채우기 보너스
             </Typography>
