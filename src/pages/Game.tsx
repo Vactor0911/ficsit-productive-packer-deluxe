@@ -7,6 +7,7 @@ import MobileBlockContainer from "../components/MobileBlockContainer";
 import { theme } from "../utils";
 import BonusScoreContainer from "../components/BonusScoreContainer";
 import SendButton from "../components/SendButton";
+import Package from "../components/Package";
 
 const Game = () => {
   const location = useLocation();
@@ -43,6 +44,8 @@ const Game = () => {
       >
         {/* 컨베이어 벨트 */}
         <Conveyor height="100%" />
+
+        <Package board={undefined} />
 
         {/* PC, 태블릿용 블록 컨테이너 */}
         {useMediaQuery(theme.breakpoints.up("xs")) && <BlockContainer />}
