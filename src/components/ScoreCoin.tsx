@@ -21,7 +21,7 @@ const ScoreCoin = (props: ScoreCoinProps) => {
         component="img"
         src={Coin}
         alt="coin"
-        width="30px"
+        width="36px"
       />
       <Typography
         variant="h1"
