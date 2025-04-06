@@ -7,10 +7,14 @@ import MobileBlockContainer from "../components/MobileBlockContainer";
 import { theme } from "../utils";
 import BonusScoreContainer from "../components/BonusScoreContainer";
 import SendButton from "../components/SendButton";
+import Package from "../components/Package";
+import Board from "../components/Board";
 
 const Game = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
+
+  const level = Number(searchParams.get("level")) || 1; // 게임 레벨
 
   return (
     <Stack
@@ -43,6 +47,8 @@ const Game = () => {
       >
         {/* 컨베이어 벨트 */}
         <Conveyor height="100%" />
+
+        <Package board={<Board level={level} />} />
 
         {/* PC, 태블릿용 블록 컨테이너 */}
         {useMediaQuery(theme.breakpoints.up("xs")) && <BlockContainer />}

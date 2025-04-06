@@ -1,0 +1,32 @@
+[
+  {
+    "level": 1,
+    "size": [5, 5],
+    "color": "#cce6e6"
+  },
+  {
+    "level": 2,
+    "size": [10, 9],
+    "color": "#ffeaa7"
+  },
+  {
+    "level": 3,
+    "size": [9, 9],
+    "color": "#d9edb6"
+  },
+  {
+    "level": 4,
+    "size": [9, 9],
+    "color": "#fcc2ea"
+  },
+  {
+    "level": 5,
+    "size": [9, 9],
+    "color": "#d9dbff"
+  },
+  {
+    "level": 6,
+    "size": [10, 7],
+    "color": "#ffc2b9"
+  }
+]
