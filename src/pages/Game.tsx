@@ -43,6 +43,7 @@ const Game = () => {
           lg: "70vh",
           xs: "50vh",
         }}
+        minHeight="300px"
         position="relative"
       >
         {/* 컨베이어 벨트 */}
