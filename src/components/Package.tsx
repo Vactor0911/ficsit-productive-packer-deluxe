@@ -1,12 +1,11 @@
 import { Box, Stack, StackProps } from "@mui/material";
-import { ReactNode } from "react";
 
 interface PackageProps extends StackProps {
-  board: ReactNode;
+  children: React.ReactNode;
 }
 
 const Package = (props: PackageProps) => {
-  const { board } = props;
+  const { children } = props;
 
   return (
     <Stack
@@ -80,7 +79,7 @@ const Package = (props: PackageProps) => {
                 alignItems="center"
                 position="relative"
               >
-                {board}
+                {children}
               </Stack>
             </Stack>
           </Stack>
