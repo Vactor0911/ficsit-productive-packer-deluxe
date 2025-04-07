@@ -9,6 +9,7 @@ import BonusScoreContainer from "../components/BonusScoreContainer";
 import SendButton from "../components/SendButton";
 import Package from "../components/Package";
 import Board from "../components/Board";
+import Block from "../components/Block";
 
 const Game = () => {
   const location = useLocation();
@@ -48,7 +49,13 @@ const Game = () => {
         {/* 컨베이어 벨트 */}
         <Conveyor height="100%" />
 
-        <Package board={<Board level={level} />} />
+        <Package>
+          <Board level={level}>
+            {/* <Box width="calc(40%)" position="absolute" top="-1px" left="-1px">
+              <Block />
+            </Box> */}
+          </Board>
+        </Package>
 
         {/* PC, 태블릿용 블록 컨테이너 */}
         {useMediaQuery(theme.breakpoints.up("xs")) && <BlockContainer />}
