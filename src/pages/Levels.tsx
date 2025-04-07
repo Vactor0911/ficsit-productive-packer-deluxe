@@ -7,12 +7,12 @@ import { playEffect } from "../utils";
 import ButtonHoverAudio from "../assets/audio/button_hover.mp3";
 import GameStartAudio from "../assets/audio/game_start.mp3";
 import {
-  Level1Preview,
-  Level2Preview,
-  Level3Preview,
-  Level4Preview,
-  Level5Preview,
-  Level6Preview,
+  Level1,
+  Level2,
+  Level3,
+  Level4,
+  Level5,
+  Level6,
 } from "../assets/images/levels";
 
 const HoverAnimation = keyframes`
@@ -29,37 +29,37 @@ const Levels = () => {
   const [levels, setLevels] = useState([
     {
       level: 1,
-      image: Level1Preview,
+      image: Level1,
       stars: 0,
       score: 0,
     },
     {
       level: 2,
-      image: Level2Preview,
+      image: Level2,
       stars: 0,
       score: 0,
     },
     {
       level: 3,
-      image: Level3Preview,
+      image: Level3,
       stars: 0,
       score: 0,
     },
     {
       level: 4,
-      image: Level4Preview,
+      image: Level4,
       stars: 0,
       score: 0,
     },
     {
       level: 5,
-      image: Level5Preview,
+      image: Level5,
       stars: 0,
       score: 0,
     },
     {
       level: 6,
-      image: Level6Preview,
+      image: Level6,
       stars: 0,
       score: 0,
     },
@@ -139,19 +139,20 @@ const Levels = () => {
           onMouseEnter={handleLevelButtonHover}
           onClick={() => handleLevelButtonClick(level.level)}
         >
-          <Stack justifyContent="center" alignItems="center" sx={{
-            img: {
-              height: {
-                xs: "80px",
-                sm: "100px",
-                md: "120px",
-              }
-            }
-          }}>
-            <img
-              src={level.image || ""}
-              alt={`Level${level.level}`}
-            />
+          <Stack
+            justifyContent="center"
+            alignItems="center"
+            sx={{
+              img: {
+                height: {
+                  xs: "80px",
+                  sm: "100px",
+                  md: "120px",
+                },
+              },
+            }}
+          >
+            <img src={level.image || ""} alt={`Level${level.level}`} />
           </Stack>
           <Stack gap={0.5} justifyContent="center">
             <Typography variant="h2" lineHeight="1.25em">

@@ -1,15 +1,15 @@
-import Level1Preview from "./level1_preview.svg";
-import Level2Preview from "./level2_preview.svg";
-import Level3Preview from "./level3_preview.svg";
-import Level4Preview from "./level4_preview.svg";
-import Level5Preview from "./level5_preview.svg";
-import Level6Preview from "./level6_preview.svg";
+import Level1 from "./level1.svg";
+import Level2 from "./level2.svg";
+import Level3 from "./level3.svg";
+import Level4 from "./level4.svg";
+import Level5 from "./level5.svg";
+import Level6 from "./level6.svg";
 
 export {
-  Level1Preview,
-  Level2Preview,
-  Level3Preview,
-  Level4Preview,
-  Level5Preview,
-  Level6Preview,
+  Level1,
+  Level2,
+  Level3,
+  Level4,
+  Level5,
+  Level6,
 };

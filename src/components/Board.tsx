@@ -21,10 +21,11 @@ const GridImage = (color: string) => {
 
 interface BoardProps {
   level: number;
+  children?: React.ReactNode;
 }
 
 const Board = (props: BoardProps) => {
-  const { level } = props;
+  const { level, children } = props;
 
   const size = BoardData[level - 1].size;
   const color = BoardData[level - 1].color;
@@ -47,10 +48,9 @@ const Board = (props: BoardProps) => {
         margin={1}
         justifyContent="flex-end"
         position="relative"
-        border="2px solid black"
+        // border="2px solid black"
         boxShadow="0 10px 0 rgba(0, 0, 0, 0.15)"
         sx={{
-          aspectRatio: `${size[0]}/${size[1]}`,
           backgroundColor: color,
         }}
       >
@@ -60,12 +60,23 @@ const Board = (props: BoardProps) => {
             backgroundImage: GridImage(color),
             background: GridImage(color),
             backgroundSize: `${(2 / size[0]) * 100}% ${(2 / size[1]) * 100}%`,
+            aspectRatio: `${size[0]}/${size[1]}`,
           }}
-        ></Stack>
+        >
+          <Stack
+            width="100%"
+            height="100%"
+            position="relative"
+            border="2px solid black"
+          >
+            {children}
+          </Stack>
+        </Stack>
         <Box
           width="100%"
           height="10px"
-          borderTop="2px solid black"
+          border="2px solid black"
+          borderTop="none"
           sx={{
             background: "rgba(0, 0, 0, 0.3)",
           }}
