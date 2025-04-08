@@ -10,12 +10,16 @@ import SendButton from "../components/SendButton";
 import Package from "../components/Package";
 import Board from "../components/Board";
 import Block from "../components/Block";
+import { useAtomValue } from "jotai";
+import { tileSizeAtom } from "../states";
 
 const Game = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
 
   const level = Number(searchParams.get("level")) || 1; // 게임 레벨
+
+  const tileSize = useAtomValue(tileSizeAtom);
 
   return (
     <Stack
@@ -52,9 +56,24 @@ const Game = () => {
 
         <Package>
           <Board level={level}>
-            {/* <Box width="calc(40%)" position="absolute" top="-1px" left="-1px">
+            <Box width={`${tileSize * 2}px`} position="absolute" top="0" left="0">
               <Block />
-            </Box> */}
+            </Box>
+            <Box width={`${tileSize * 2}px`} position="absolute" top="0" left={`${tileSize * 2}px`}>
+              <Block />
+            </Box>
+            <Box width={`${tileSize * 2}px`} position="absolute" top="0" left={`${tileSize * 4}px`}>
+              <Block />
+            </Box>
+            <Box width={`${tileSize * 2}px`} position="absolute" top="0" left={`${tileSize * 6}px`}>
+              <Block />
+            </Box>
+            <Box width={`${tileSize * 2}px`} position="absolute" top="0" left={`${tileSize * 8}px`}>
+              <Block />
+            </Box>
+            <Box width={`${tileSize * 2}px`} position="absolute" top={`${tileSize * 4}px`} left={`${tileSize * 4}px`}>
+              <Block />
+            </Box>
           </Board>
         </Package>
 

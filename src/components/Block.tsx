@@ -12,8 +12,8 @@ const BlockImage = (props: BlockImageProps) => {
   switch (type) {
     case "L":
       svg = `
-        <svg width="64" height="96" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 0 L64 0 L64 32 L32 32 L32 96 L0 96 z" fill="${color}" />
+        <svg width="8" height="12" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 0 L8 0 L8 4 L4 4 L4 12 L0 12 z" fill="${color}" />
         </svg>`;
       break;
   }
@@ -31,7 +31,7 @@ const Block = () => {
           filter: "grayscale(0.3)",
         }}
       />
-      {/* <Box
+      <Box
         component="img"
         src={BlockImage({ type: "L", color: "red" })}
         alt="Block"
@@ -41,7 +41,7 @@ const Block = () => {
         content='""'
         top="-10px"
         left="0"
-      /> */}
+      />
     </Stack>
   );
 };

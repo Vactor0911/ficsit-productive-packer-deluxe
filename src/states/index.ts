@@ -11,3 +11,6 @@ export const scoreAtom = atom(0);
 
 // 블록 저장
 export const blocksAtom = atom([]);
+
+// 보드 타일 크기
+export const tileSizeAtom = atom(0);
