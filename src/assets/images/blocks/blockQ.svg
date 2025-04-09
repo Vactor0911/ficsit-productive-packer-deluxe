@@ -1,6 +1,11 @@
 <svg viewBox="0 0 12 16" xmlns="http://www.w3.org/2000/svg">
-    <path d="M4 0 L12 0 L12 8 L8 8 L8 4 L4 4 z" />
-    <rect x="0" y="4" width="4" height="4" />
-    <rect x="4" y="8" width="4" height="4" />
-    <rect x="0" y="12" width="4" height="4" />
+    <path d="M4 0 L12 0 L12 8 L8 8 L8 4 L4 4 z" stroke="black" stroke-width="2px" vector-effect="non-scaling-stroke" />
+    <rect x="0" y="4" width="4" height="4" stroke="black" stroke-width="2px" vector-effect="non-scaling-stroke" />
+    <rect x="4" y="8" width="4" height="4" stroke="black" stroke-width="2px" vector-effect="non-scaling-stroke" />
+    <rect x="0" y="12" width="4" height="4" stroke="black" stroke-width="2px" vector-effect="non-scaling-stroke" />
+    <line x1="4" y1="0" x2="12" y2="0" stroke="black" stroke-width="4px" vector-effect="non-scaling-stroke" />
+    <line x1="12" y1="0" x2="12" y2="8" stroke="black" stroke-width="4px" vector-effect="non-scaling-stroke" />
+    <line x1="0" y1="16" x2="4" y2="16" stroke="black" stroke-width="4px" vector-effect="non-scaling-stroke" />
+    <line x1="0" y1="12" x2="0" y2="16" stroke="black" stroke-width="4px" vector-effect="non-scaling-stroke" />
+    <line x1="0" y1="4" x2="0" y2="8" stroke="black" stroke-width="4px" vector-effect="non-scaling-stroke" />
 </svg>

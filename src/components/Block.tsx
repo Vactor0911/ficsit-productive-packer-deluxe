@@ -65,7 +65,7 @@ const BlockImage = (props: BlockImageProps) => {
       fill: blockData.color,
       height: tileSize * height,
       style: {
-        transform: `rotate(${blockData.rotation}deg) translate(${offset}px, ${offset}px)`,
+        transform: `rotate(${blockData.rotation}deg) translate(${offset}px, ${offset}px) scale(1.01)`,
       },
     };
 
