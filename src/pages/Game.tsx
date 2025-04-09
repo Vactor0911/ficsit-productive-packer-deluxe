@@ -54,26 +54,15 @@ const Game = () => {
         {/* 컨베이어 벨트 */}
         <Conveyor height="100%" />
 
+        {/* 패키지 */}
         <Package>
           <Board level={level}>
-            <Box width={`${tileSize * 2}px`} position="absolute" top="0" left="0">
-              <Block />
-            </Box>
-            <Box width={`${tileSize * 2}px`} position="absolute" top="0" left={`${tileSize * 2}px`}>
-              <Block />
-            </Box>
-            <Box width={`${tileSize * 2}px`} position="absolute" top="0" left={`${tileSize * 4}px`}>
-              <Block />
-            </Box>
-            <Box width={`${tileSize * 2}px`} position="absolute" top="0" left={`${tileSize * 6}px`}>
-              <Block />
-            </Box>
-            <Box width={`${tileSize * 2}px`} position="absolute" top="0" left={`${tileSize * 8}px`}>
-              <Block />
-            </Box>
-            <Box width={`${tileSize * 2}px`} position="absolute" top={`${tileSize * 4}px`} left={`${tileSize * 4}px`}>
-              <Block />
-            </Box>
+            <Block blockId={2} position="absolute" top={`${tileSize * 0}px`} left={`${tileSize * 0}px`} zIndex={1} />
+            <Block blockId={18} position="absolute" top={`${tileSize * 0}px`} left={`${tileSize * 2}px`} />
+            <Block blockId={15} position="absolute" top={`${tileSize * 1}px`} left={`${tileSize * 2}px`} zIndex={2} />
+            <Block blockId={19} position="absolute" top={`${tileSize * 2}px`} left={`${tileSize * 0}px`} zIndex={2} />
+            <Block blockId={23} position="absolute" top={`${tileSize * 3}px`} left={`${tileSize * 2}px`} zIndex={2} />
+            <Block blockId={22} position="absolute" top={`${tileSize * 5}px`} left={`${tileSize * 7}px`} zIndex={2} />
           </Board>
         </Package>
 
