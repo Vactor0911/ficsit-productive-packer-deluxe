@@ -43,7 +43,6 @@ const Board = (props: BoardProps) => {
       const newSizeW = Math.floor((width - 10) / 10 / 4) * 4;
       const newSizeH = Math.floor((height - 30) / 9 / 4) * 4;
       const newTileSize = Math.min(newSizeW, newSizeH);
-      console.log(newSizeW, newSizeH);
 
       // 크기 적용
       setTileSize(newTileSize);
