@@ -120,7 +120,7 @@ const Block = (props: BlockProps) => {
         position="relative"
         zIndex={1}
         sx={{
-          filter: "brightness(0.7)",
+          filter: "brightness(0.85)",
         }}
       >
         <BlockImage blockId={blockId} />
