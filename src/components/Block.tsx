@@ -1,47 +1,131 @@
-import { Box, Stack } from "@mui/material";
+import { Box, Stack, StackProps } from "@mui/material";
+import BlockData from "../assets/blocks.json";
+import {
+  BlockC,
+  BlockI,
+  BlockJ,
+  BlockL,
+  BlockN,
+  BlockO,
+  BlockP,
+  BlockQ,
+  BlockS,
+  BlockT,
+  BlockX,
+  BlockZ,
+} from "../assets/images/blocks";
+import { useAtomValue } from "jotai";
+import { tileSizeAtom } from "../states";
+import { useMemo } from "react";
 
 interface BlockImageProps {
-  type: string;
-  color: string;
+  blockId: number;
 }
 
 const BlockImage = (props: BlockImageProps) => {
-  const { type, color } = props;
-  let svg = "";
+  const { blockId } = props;
+  const tileSize = useAtomValue(tileSizeAtom);
 
-  switch (type) {
+  // 블록 데이터 가져오기
+  const blockData = useMemo(() => {
+    return BlockData[blockId];
+  }, [blockId]);
+
+  const BlockProps = useMemo(() => {
+    // 회전된 블록 offset 계산
+    let multiplier = 0;
+    switch (blockData.type) {
+      case "J":
+      case "L":
+        multiplier = blockData.rotation === 90 ? -0.5 : 0.5;
+        break;
+      case "T":
+        multiplier = blockData.rotation === 270 ? -0.5 : 0.5;
+        break;
+      case "S":
+      case "Z":
+        multiplier = 0.5;
+        break;
+      case "I":
+        multiplier = -1.5;
+        break;
+    }
+
+    const offset =
+      (blockData?.rotation ?? 0) % 180 !== 0 ? tileSize * multiplier : 0;
+
+    // 블록 높이 계산
+    const height =
+      (blockData?.rotation ?? 0) % 180 !== 0
+        ? blockData.grid[0].length
+        : blockData.grid.length;
+
+    // 블록 공통 속성
+    const BlockProps = {
+      fill: blockData.color,
+      height: tileSize * height,
+      style: {
+        transform: `rotate(${blockData.rotation}deg) translate(${offset}px, ${offset}px)`,
+      },
+    };
+
+    return BlockProps;
+  }, [
+    blockData.color,
+    blockData.grid,
+    blockData.rotation,
+    blockData.type,
+    tileSize,
+  ]);
+
+  // 블록 타입에 따른 컴포넌트 렌더링
+  switch (blockData.type) {
+    case "X":
+      return <BlockX {...BlockProps} />;
+    case "J":
+      return <BlockJ {...BlockProps} />;
     case "L":
-      svg = `
-        <svg width="8" height="12" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 0 L8 0 L8 4 L4 4 L4 12 L0 12 z" fill="${color}" />
-        </svg>`;
-      break;
+      return <BlockL {...BlockProps} />;
+    case "T":
+      return <BlockT {...BlockProps} />;
+    case "Z":
+      return <BlockZ {...BlockProps} />;
+    case "S":
+      return <BlockS {...BlockProps} />;
+    case "I":
+      return <BlockI {...BlockProps} />;
+    case "O":
+      return <BlockO {...BlockProps} />;
+    case "P":
+      return <BlockP {...BlockProps} />;
+    case "C":
+      return <BlockC {...BlockProps} />;
+    case "Q":
+      return <BlockQ {...BlockProps} />;
+    case "N":
+      return <BlockN {...BlockProps} />;
   }
-  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
 };
 
-const Block = () => {
+interface BlockProps extends StackProps {
+  blockId: number;
+}
+
+const Block = (props: BlockProps) => {
+  const { blockId, ...others } = props;
+
   return (
-    <Stack position="relative">
+    <Stack position="relative" {...others}>
       <Box
-        component="img"
-        src={BlockImage({ type: "L", color: "red" })}
-        alt="Block"
         sx={{
-          filter: "grayscale(0.3)",
+          filter: "brightness(0.7)",
         }}
-      />
-      <Box
-        component="img"
-        src={BlockImage({ type: "L", color: "red" })}
-        alt="Block"
-        position="absolute"
-        width="100%"
-        height="100%"
-        content='""'
-        top="-10px"
-        left="0"
-      />
+      >
+        <BlockImage blockId={blockId} />
+      </Box>
+      <Box position="absolute" top="-10px" left="0">
+        <BlockImage blockId={blockId} />
+      </Box>
     </Stack>
   );
 };
