@@ -117,13 +117,15 @@ const Block = (props: BlockProps) => {
   return (
     <Stack position="relative" {...others}>
       <Box
+        position="relative"
+        zIndex={1}
         sx={{
           filter: "brightness(0.7)",
         }}
       >
         <BlockImage blockId={blockId} />
       </Box>
-      <Box position="absolute" top="-10px" left="0">
+      <Box position="absolute" top="-10px" left="0" zIndex={2}>
         <BlockImage blockId={blockId} />
       </Box>
     </Stack>

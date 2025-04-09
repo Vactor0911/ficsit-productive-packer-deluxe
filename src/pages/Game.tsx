@@ -57,12 +57,13 @@ const Game = () => {
         {/* 패키지 */}
         <Package>
           <Board level={level}>
-            <Block blockId={2} position="absolute" top={`${tileSize * 0}px`} left={`${tileSize * 0}px`} zIndex={1} />
-            <Block blockId={18} position="absolute" top={`${tileSize * 0}px`} left={`${tileSize * 2}px`} />
-            <Block blockId={15} position="absolute" top={`${tileSize * 1}px`} left={`${tileSize * 2}px`} zIndex={2} />
-            <Block blockId={19} position="absolute" top={`${tileSize * 2}px`} left={`${tileSize * 0}px`} zIndex={2} />
-            <Block blockId={23} position="absolute" top={`${tileSize * 3}px`} left={`${tileSize * 2}px`} zIndex={2} />
-            <Block blockId={22} position="absolute" top={`${tileSize * 5}px`} left={`${tileSize * 7}px`} zIndex={2} />
+            <Block blockId={2} position="absolute" top={`${tileSize * 0}px`} left={`${tileSize * 0}px`} />
+            <Block blockId={18} position="absolute" top={`${tileSize * 0}px`} left={`${tileSize * 4}px`} />
+            <Block blockId={15} position="absolute" top={`${tileSize * 1}px`} left={`${tileSize * 2}px`} />
+            <Block blockId={19} position="absolute" top={`${tileSize * 2}px`} left={`${tileSize * 0}px`} />
+            <Block blockId={23} position="absolute" top={`${tileSize * 3}px`} left={`${tileSize * 2}px`} />
+            <Block blockId={22} position="absolute" top={`${tileSize * 5}px`} left={`${tileSize * 7}px`} />
+            <Block blockId={20} position="absolute" top={`${tileSize * 5}px`} left={`${tileSize * 6}px`} />
           </Board>
         </Package>
 
