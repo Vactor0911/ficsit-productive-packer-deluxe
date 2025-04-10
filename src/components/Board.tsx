@@ -75,7 +75,7 @@ const Board = (props: BoardProps) => {
       >
         <Stack
           width={`${tileSize * boardSize[0]}px`}
-          height={`${tileSize * boardSize[1]}px + 10px)`}
+          height={`${tileSize * boardSize[1] + 10}px)`}
           justifyContent="flex-end"
           position="relative"
           boxShadow="0 10px 0 rgba(0, 0, 0, 0.15)"
