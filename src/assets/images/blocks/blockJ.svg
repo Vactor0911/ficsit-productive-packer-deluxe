@@ -1,0 +1,8 @@
+<svg viewBox="0 0 8 12" xmlns="http://www.w3.org/2000/svg">
+    <path d="M4 0 L8 0 L8 12 L0 12 L0 8 L4 8 z" stroke="black" stroke-width="2px" vector-effect="non-scaling-stroke" />
+    <line x1="4" y1="0" x2="8" y2="0" stroke="black" stroke-width="4px" vector-effect="non-scaling-stroke" />
+    <line x1="8" y1="0" x2="8" y2="12" stroke="black" stroke-width="4px" vector-effect="non-scaling-stroke" />
+    <line x1="0" y1="12" x2="8" y2="12" stroke="black" stroke-width="4px" vector-effect="non-scaling-stroke" />
+    <line x1="0" y1="12" x2="8" y2="12" stroke="black" stroke-width="4px" vector-effect="non-scaling-stroke" />
+    <line x1="0" y1="12" x2="0" y2="8" stroke="black" stroke-width="4px" vector-effect="non-scaling-stroke" />
+</svg>

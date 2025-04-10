@@ -9,12 +9,17 @@ import BonusScoreContainer from "../components/BonusScoreContainer";
 import SendButton from "../components/SendButton";
 import Package from "../components/Package";
 import Board from "../components/Board";
+import Block from "../components/Block";
+import { useAtomValue } from "jotai";
+import { tileSizeAtom } from "../states";
 
 const Game = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
 
   const level = Number(searchParams.get("level")) || 1; // 게임 레벨
+
+  const tileSize = useAtomValue(tileSizeAtom);
 
   return (
     <Stack
@@ -43,12 +48,24 @@ const Game = () => {
           lg: "70vh",
           xs: "50vh",
         }}
+        minHeight="300px"
         position="relative"
       >
         {/* 컨베이어 벨트 */}
         <Conveyor height="100%" />
 
-        <Package board={<Board level={level} />} />
+        {/* 패키지 */}
+        <Package>
+          <Board level={level}>
+            <Block blockId={2} position="absolute" top={`${tileSize * 0}px`} left={`${tileSize * 0}px`} />
+            <Block blockId={18} position="absolute" top={`${tileSize * 0}px`} left={`${tileSize * 4}px`} />
+            <Block blockId={15} position="absolute" top={`${tileSize * 1}px`} left={`${tileSize * 2}px`} />
+            <Block blockId={19} position="absolute" top={`${tileSize * 2}px`} left={`${tileSize * 0}px`} />
+            <Block blockId={23} position="absolute" top={`${tileSize * 3}px`} left={`${tileSize * 2}px`} />
+            <Block blockId={22} position="absolute" top={`${tileSize * 5}px`} left={`${tileSize * 7}px`} />
+            <Block blockId={20} position="absolute" top={`${tileSize * 5}px`} left={`${tileSize * 6}px`} />
+          </Board>
+        </Package>
 
         {/* PC, 태블릿용 블록 컨테이너 */}
         {useMediaQuery(theme.breakpoints.up("xs")) && <BlockContainer />}
