@@ -1,5 +1,6 @@
 import { Box, Stack, StackProps } from "@mui/material";
 import Bolt from "../assets/images/bolt.svg";
+import BlockImage from "./BlockImage";
 
 const BlockContainer = (props: StackProps) => {
   return (
@@ -23,7 +24,13 @@ const BlockContainer = (props: StackProps) => {
       {...props}
     >
       {/* 블록 저장 div */}
-      <Stack width="100%" height="calc(100% - 36px)" position="relative">
+      <Stack
+        width="100%"
+        height="calc(100% - 36px)"
+        position="relative"
+        padding={4}
+        pt={6}
+      >
         {/* 볼트 */}
         <Box
           component="img"
@@ -43,6 +50,9 @@ const BlockContainer = (props: StackProps) => {
           right={10}
           position="absolute"
         />
+
+        {/* 블록 */}
+        <Stack></Stack>
       </Stack>
 
       {/* 장식용 div */}
