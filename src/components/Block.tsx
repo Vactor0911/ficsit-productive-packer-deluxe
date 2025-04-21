@@ -1,15 +1,13 @@
 import { Stack, StackProps } from "@mui/material";
-import { useAtomValue } from "jotai";
-import { tileSizeAtom } from "../states";
 import BlockImage from "./BlockImage";
 
 interface BlockProps extends StackProps {
   blockId: number;
+  tileSize?: number;
 }
 
 const Block = (props: BlockProps) => {
-  const { blockId, ...others } = props;
-  const tileSize = useAtomValue(tileSizeAtom);
+  const { blockId, tileSize = 10, ...others } = props;
 
   return (
     <Stack position="relative" {...others}>
