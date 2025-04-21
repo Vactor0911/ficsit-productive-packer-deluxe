@@ -1,7 +1,7 @@
 import { Box, Stack, Typography } from "@mui/material";
 import Panel from "../components/Panel";
 import Button from "../components/Button";
-import { useCallback } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SendButton from "../components/SendButton";
 import "overlayscrollbars/overlayscrollbars.css";
@@ -9,6 +9,7 @@ import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import styled from "@emotion/styled";
 import ScoreMultiplier from "../components/ScoreMultiplier";
 import BonusTile from "../components/BonusTile";
+import Block from "../components/Block";
 
 const StyledOverlayScrollbarsComponent = styled(OverlayScrollbarsComponent)`
   height: 100%;
@@ -27,8 +28,42 @@ const HowToPlay = () => {
     navigate("/");
   }, [navigate]);
 
+  const rootRef = useRef<HTMLDivElement>(null);
+
+  // 블록 타일 크기 계산
+  const [blockTileSize, setBlockTileSize] = useState(0);
+  useEffect(() => {
+    const observer = new ResizeObserver(([entry]) => {
+      const { width } = entry.contentRect;
+
+      // 퍼센트 계산 후 10px 단위로 반올림
+      switch (true) {
+        case width >= 600:
+          setBlockTileSize(40);
+          break;
+        case width >= 480:
+          setBlockTileSize(30);
+          break;
+        default:
+          setBlockTileSize(20);
+          break;
+      }
+    });
+
+    if (rootRef.current) {
+      observer.observe(rootRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <Stack height="100vh" justifyContent="center" alignItems="center">
+    <Stack
+      height="100vh"
+      justifyContent="center"
+      alignItems="center"
+      ref={rootRef}
+    >
       <Panel
         color="#d1fec1"
         width="80%"
@@ -38,7 +73,13 @@ const HowToPlay = () => {
         padding={1}
       >
         <StyledOverlayScrollbarsComponent defer>
-          <Stack padding="16px 8px" gap={1}>
+          <Stack
+            padding="16px 8px"
+            gap={1}
+            sx={{
+              overflowX: "hidden",
+            }}
+          >
             {/* 인사말 */}
             <Typography variant="h1" textAlign="center">
               FICSIT 생산 포장업체에 오신 것을 환영합니다!
@@ -55,10 +96,25 @@ const HowToPlay = () => {
             </Typography>
 
             {/* 플레이 방법 */}
-            <Typography variant="h1" textAlign="center">
+            <Typography variant="h1" textAlign="center" mb={2}>
               플레이 방법
             </Typography>
-            {/* TODO: 3가지 블록 컴포넌트 추가 */}
+
+            {/* 블록 컨테이너 */}
+            <Stack
+              direction="row"
+              gap={5}
+              justifyContent="center"
+              sx={{
+                transform: `translateX(${blockTileSize / 2}px)`,
+              }}
+            >
+              <Block blockId={3} tileSize={blockTileSize} />
+              <Block blockId={19} tileSize={blockTileSize} alignSelf="center" />
+              <Block blockId={14} tileSize={blockTileSize} />
+            </Stack>
+
+            {/* 블록 */}
             <Typography variant="h2" textAlign="center">
               블록
             </Typography>
