@@ -19,10 +19,11 @@ import { useMemo } from "react";
 interface BlockImageProps extends BoxProps {
   blockId: number;
   tileSize: number;
+  disableAlign?: boolean;
 }
 
 const BlockImage = (props: BlockImageProps) => {
-  const { blockId, tileSize, ...others } = props;
+  const { blockId, tileSize, disableAlign, ...others } = props;
 
   // 블록 데이터 가져오기
   const blockData = useMemo(() => {
@@ -58,12 +59,18 @@ const BlockImage = (props: BlockImageProps) => {
         ? blockData.grid[0].length
         : blockData.grid.length;
 
+    // 블록 위치 정렬
+    let transformStyle = `rotate(${blockData.rotation}deg) scale(1.01)`;
+    if (!disableAlign) {
+      transformStyle += ` translate(${offset}px, ${offset}px)`;
+    }
+
     // 블록 공통 속성
     const BlockProps = {
       fill: blockData.color,
       height: tileSize * height,
       style: {
-        transform: `rotate(${blockData.rotation}deg) translate(${offset}px, ${offset}px) scale(1.01)`,
+        transform: transformStyle,
       },
     };
 
