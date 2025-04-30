@@ -1,8 +1,29 @@
 import { Box, Grid2, Stack, StackProps } from "@mui/material";
 import Bolt from "../assets/images/bolt.svg";
-import BlockImage from "./BlockImage";
+import BlockWithScore from "./BlockWithScore";
+import { useEffect, useRef, useState } from "react";
 
 const BlockContainer = (props: StackProps) => {
+  const rootRef = useRef<HTMLDivElement>(null);
+  const [tileSize, setTileSize] = useState(0);
+
+  useEffect(() => {
+    const observer = new ResizeObserver(([entry]) => {
+      const { width } = entry.contentRect;
+
+      const newTileSize = Math.floor(width / 9);
+
+      // 크기 적용
+      setTileSize(newTileSize);
+    });
+
+    if (rootRef.current) {
+      observer.observe(rootRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [setTileSize]);
+
   return (
     <Stack
       display={{
@@ -55,17 +76,20 @@ const BlockContainer = (props: StackProps) => {
         <Grid2
           container
           height="100%"
+          justifyContent="space-between"
           alignContent="space-between"
+          ref={rootRef}
         >
-          {[1, 2, 3, 4, 5, 6, 7, 8].map((_, index) => (
+          {[1, 2, 3, 22, 5, 6, 22, 8].map((block, index) => (
             <Grid2
               key={index}
               size={6}
+              maxWidth="130px"
               sx={{
                 aspectRatio: "1 / 1",
               }}
             >
-              Block{index}
+              <BlockWithScore blockId={block} tileSize={tileSize} />
             </Grid2>
           ))}
         </Grid2>
