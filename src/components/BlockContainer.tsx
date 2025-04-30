@@ -2,6 +2,8 @@ import { Box, Grid2, Stack, StackProps } from "@mui/material";
 import Bolt from "../assets/images/bolt.svg";
 import BlockWithScore from "./BlockWithScore";
 import { useEffect, useRef, useState } from "react";
+import { StyledOverlayScrollbarsComponent } from "./StyledOverlayScrollbarsComponent";
+import { theme } from "../utils";
 
 const BlockContainer = (props: StackProps) => {
   const rootRef = useRef<HTMLDivElement>(null);
@@ -11,7 +13,11 @@ const BlockContainer = (props: StackProps) => {
     const observer = new ResizeObserver(([entry]) => {
       const { width } = entry.contentRect;
 
-      const newTileSize = Math.floor(width / 9);
+      const calculatedWidth =
+        window.innerWidth <= theme.breakpoints.values.md
+          ? width / 5
+          : width / 10;
+      const newTileSize = Math.floor(calculatedWidth);
 
       // 크기 적용
       setTileSize(newTileSize);
@@ -73,26 +79,35 @@ const BlockContainer = (props: StackProps) => {
         />
 
         {/* 블록 */}
-        <Grid2
-          container
-          height="100%"
-          justifyContent="space-between"
-          alignContent="space-between"
-          ref={rootRef}
-        >
-          {[1, 2, 3, 22, 5, 6, 22, 8].map((block, index) => (
-            <Grid2
-              key={index}
-              size={6}
-              maxWidth="130px"
-              sx={{
-                aspectRatio: "1 / 1",
-              }}
-            >
-              <BlockWithScore blockId={block} tileSize={tileSize} />
-            </Grid2>
-          ))}
-        </Grid2>
+        <StyledOverlayScrollbarsComponent defer>
+          <Grid2
+            container
+            height="100%"
+            justifyContent="space-between"
+            alignContent="space-between"
+            ref={rootRef}
+            spacing={2}
+          >
+            {[1, 2, 3, 22, 5, 6, 22, 8].map((block, index) => (
+              <Grid2
+                key={index}
+                size={{
+                  xs: 12,
+                  md: 6,
+                }}
+                maxWidth={{
+                  md: "none",
+                  lg: "130px",
+                }}
+                sx={{
+                  aspectRatio: "1 / 1",
+                }}
+              >
+                <BlockWithScore blockId={block} tileSize={tileSize} />
+              </Grid2>
+            ))}
+          </Grid2>
+        </StyledOverlayScrollbarsComponent>
       </Stack>
 
       {/* 장식용 div */}
