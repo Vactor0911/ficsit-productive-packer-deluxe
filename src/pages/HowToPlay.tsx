@@ -4,22 +4,10 @@ import Button from "../components/Button";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SendButton from "../components/SendButton";
-import "overlayscrollbars/overlayscrollbars.css";
-import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
-import styled from "@emotion/styled";
 import ScoreMultiplier from "../components/ScoreMultiplier";
 import BonusTile from "../components/BonusTile";
 import Block from "../components/Block";
-
-const StyledOverlayScrollbarsComponent = styled(OverlayScrollbarsComponent)`
-  height: 100%;
-  .os-scrollbar {
-    --os-size: 10px;
-    --os-handle-bg: white;
-    --os-handle-border-radius: 2px;
-    --os-handle-border: 1px solid #aaa;
-  }
-`;
+import { StyledOverlayScrollbarsComponent } from "../components/StyledOverlayScrollbarsComponent";
 
 const HowToPlay = () => {
   const navigate = useNavigate();
