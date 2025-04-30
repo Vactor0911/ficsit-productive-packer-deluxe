@@ -1,4 +1,4 @@
-import { Box, Stack, StackProps } from "@mui/material";
+import { Box, Grid2, Stack, StackProps } from "@mui/material";
 import Bolt from "../assets/images/bolt.svg";
 import BlockImage from "./BlockImage";
 
@@ -52,7 +52,23 @@ const BlockContainer = (props: StackProps) => {
         />
 
         {/* 블록 */}
-        <Stack></Stack>
+        <Grid2
+          container
+          height="100%"
+          alignContent="space-between"
+        >
+          {[1, 2, 3, 4, 5, 6, 7, 8].map((_, index) => (
+            <Grid2
+              key={index}
+              size={6}
+              sx={{
+                aspectRatio: "1 / 1",
+              }}
+            >
+              Block{index}
+            </Grid2>
+          ))}
+        </Grid2>
       </Stack>
 
       {/* 장식용 div */}
