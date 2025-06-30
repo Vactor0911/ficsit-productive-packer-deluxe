@@ -3,13 +3,16 @@ import Panel from "./Panel";
 import React, { useCallback, useState } from "react";
 import Marquee from "react-fast-marquee";
 import DiagonalPattern from "../assets/images/diagonal_pattern.svg?react";
+import { playEffect } from "../utils";
+import ButtonHoverAudio from "../assets/audio/button_hover.mp3";
+import ButtonClickAudio from "../assets/audio/button_click.mp3";
 
 interface ButtonProps extends ButtonBaseProps {
   children: React.ReactNode;
 }
 
 const Button = (props: ButtonProps) => {
-  const { children, sx, ...others } = props;
+  const { children, onClick, sx, ...others } = props;
 
   const theme = useTheme();
   const [pushedSize, setPushedSize] = useState(0);
@@ -24,6 +27,22 @@ const Button = (props: ButtonProps) => {
     setPushedSize(0);
   }, []);
 
+  // 마우스 호버
+  const handleHover = useCallback(() => {
+    playEffect(ButtonHoverAudio);
+  }, []);
+
+  // 마우스 클릭
+  const handleClick = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      playEffect(ButtonClickAudio);
+      if (onClick) {
+        onClick(event);
+      }
+    },
+    [onClick]
+  );
+
   return (
     <ButtonBase
       disableRipple
@@ -33,6 +52,8 @@ const Button = (props: ButtonProps) => {
       onTouchStart={handleMouseDown}
       onTouchEnd={handleMouseUp}
       onTouchCancel={handleMouseUp}
+      onMouseEnter={handleHover}
+      onClick={handleClick}
       sx={{
         marginTop: pushedSize,
         "&:hover .pattern-container": {

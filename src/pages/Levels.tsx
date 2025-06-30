@@ -18,6 +18,9 @@ import Button from "../components/Button";
 import StarTwoToneIcon from "@mui/icons-material/StarTwoTone";
 import { useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import { playEffect } from "../utils";
+import ButtonHoverAudio from "../assets/audio/button_hover.mp3";
+import ButtonClickAudio from "../assets/audio/button_click.mp3";
 
 // 게임 레벨 데이터
 const levels = [
@@ -76,6 +79,20 @@ const Levels = () => {
     []
   );
 
+  // 레벨 버튼 호버
+  const handleHover = useCallback(() => {
+    playEffect(ButtonHoverAudio);
+  }, []);
+
+  // 레벨 버튼 클릭
+  const handleClick = useCallback(
+    (level: number) => {
+      playEffect(ButtonClickAudio);
+      navigate(`/game/${level}`);
+    },
+    [navigate]
+  );
+
   // 메인 화면으로 버튼 클릭
   const handleMainButtonClick = useCallback(() => {
     navigate("/");
@@ -88,6 +105,8 @@ const Levels = () => {
           <ButtonBase
             key={`level-button-${level.level}`}
             disableRipple
+            onMouseEnter={handleHover}
+            onClick={() => handleClick(level.level)}
             sx={{
               width: "100%",
               boxShadow: `0 8px 0 rgba(0, 0, 0, 0.15)`,
