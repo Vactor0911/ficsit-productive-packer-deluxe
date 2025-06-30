@@ -8,12 +8,12 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <BrowserRouter>
+      <BrowserRouter basename="ficsit-productive-packer-deluxe">
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="levels" element={<Levels />} />
           <Route path="how-to-play" element={<HowToPlay />} />
-          <Route path="game" element={<Game />} />
+          <Route path="game/:level" element={<Game />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </BrowserRouter>
