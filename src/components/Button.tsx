@@ -1,6 +1,8 @@
-import { ButtonBase, useTheme, type ButtonBaseProps } from "@mui/material";
+import { Box, ButtonBase, useTheme, type ButtonBaseProps } from "@mui/material";
 import Panel from "./Panel";
-import { useCallback, useState } from "react";
+import React, { useCallback, useState } from "react";
+import Marquee from "react-fast-marquee";
+import DiagonalPattern from "../assets/images/diagonal_pattern.svg?react";
 
 interface ButtonProps extends ButtonBaseProps {
   children: React.ReactNode;
@@ -27,9 +29,17 @@ const Button = (props: ButtonProps) => {
       disableRipple
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseUp}
       onTouchStart={handleMouseDown}
       onTouchEnd={handleMouseUp}
-      sx={{ marginTop: pushedSize, ...sx }}
+      onTouchCancel={handleMouseUp}
+      sx={{
+        marginTop: pushedSize,
+        "&:hover .pattern-container": {
+          display: "block",
+        },
+        ...sx,
+      }}
       {...others}
     >
       <Panel
@@ -37,6 +47,7 @@ const Button = (props: ButtonProps) => {
         paddingY={2}
         backgroundColor={theme.palette.primary.main}
         thickness={1.5 - pushedSize}
+        display="inline-flex"
         sx={{
           "& .MuiTypography-root": {
             WebkitTextStroke: "4px black",
@@ -45,7 +56,39 @@ const Button = (props: ButtonProps) => {
           },
         }}
       >
-        {children}
+        <Box position="relative" zIndex={2}>
+          {children}
+        </Box>
+
+        {/* 대각선 패턴 */}
+        <Box
+          className="pattern-container"
+          display={pushedSize > 0 ? "block" : "none"}
+          position="absolute"
+          overflow="hidden"
+          width="100%"
+          height="calc(100% - 1px)"
+          sx={{
+            top: 0,
+            left: 0,
+          }}
+        >
+          <Marquee
+            direction="left"
+            autoFill={true}
+            css={{
+              height: "100%",
+              overflow: "hidden",
+              "& div.rfm-initial-child-container, & div.rfm-child": {
+                height: "100%",
+              },
+            }}
+          >
+            <DiagonalPattern
+              style={{ width: "100%", height: "100%", color: "#f3d2c0" }}
+            />
+          </Marquee>
+        </Box>
       </Panel>
     </ButtonBase>
   );
