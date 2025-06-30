@@ -1,6 +1,6 @@
 import Main from "./Main";
-import HowToPlay from "./HowToPlay";
 import Levels from "./Levels";
+import HowToPlay from "./HowToPlay";
 import Game from "./Game";
 
-export { Main, HowToPlay, Levels, Game };
+export { Main, Levels, HowToPlay, Game };
