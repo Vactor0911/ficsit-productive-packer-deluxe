@@ -1,9 +1,12 @@
 import { Box, Container, keyframes, Stack, Typography } from "@mui/material";
 import Logo from "/Logo.png";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import Button from "../components/Button";
+import { useNavigate } from "react-router-dom";
 
 const Main = () => {
+  const navigate = useNavigate();
+
   // 로고 애니메이션
   const logoAnimation = useMemo(
     () =>
@@ -20,6 +23,16 @@ const Main = () => {
       }),
     []
   );
+
+  // 게임 시작 버튼 클릭
+  const handleStartGameButtonClick = useCallback(() => {
+    navigate("/levels");
+  }, [navigate]);
+
+  // 플레이 방법 버튼 클릭
+  const handleHowToPlayButtonClick = useCallback(() => {
+    navigate("/how-to-play");
+  }, [navigate]);
 
   return (
     <Container maxWidth="lg">
@@ -45,14 +58,14 @@ const Main = () => {
         />
 
         {/*게임 시작 */}
-        <Button>
+        <Button onClick={handleStartGameButtonClick}>
           <Typography variant="h4" color="white">
             게임 시작
           </Typography>
         </Button>
 
         {/* 플레이 방법 */}
-        <Button>
+        <Button onClick={handleHowToPlayButtonClick}>
           <Typography variant="h4" color="white">
             플레이 방법
           </Typography>
