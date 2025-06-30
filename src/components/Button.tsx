@@ -56,7 +56,16 @@ const Button = (props: ButtonProps) => {
           },
         }}
       >
-        <Box position="relative" zIndex={2}>
+        <Box
+          position="relative"
+          zIndex={2}
+          sx={{
+            "& .MuiTypography-root": {
+              color: "white",
+              fontWeight: 500,
+            },
+          }}
+        >
           {children}
         </Box>
 
