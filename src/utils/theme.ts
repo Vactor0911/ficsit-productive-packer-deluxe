@@ -12,9 +12,9 @@ declare module "@mui/material/styles" {
 
 // MUI Typography 색상 확장
 declare module "@mui/material/Typography" {
-    interface TypographyPropsColorOverrides {
-        black: true;
-    }
+  interface TypographyPropsColorOverrides {
+    black: true;
+  }
 }
 
 export const theme = responsiveFontSizes(
@@ -26,27 +26,12 @@ export const theme = responsiveFontSizes(
       black: {
         main: "#404040",
       },
+      background: {
+        default: "#29a995",
+      },
     },
     typography: {
       fontFamily: "Noto Sans KR, Noto Sans, sans-serif",
-      h1: {
-        fontWeight: 700,
-      },
-      h2: {
-        fontWeight: 700,
-      },
-      h3: {
-        fontWeight: 700,
-      },
-      h4: {
-        fontWeight: 700,
-      },
-      h5: {
-        fontWeight: 700,
-      },
-      h6: {
-        fontWeight: 700,
-      },
     },
   })
 );

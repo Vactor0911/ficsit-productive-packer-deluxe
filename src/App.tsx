@@ -6,20 +6,18 @@ import { theme } from "./utils/theme";
 
 const App = () => {
   return (
-    <>
+    <ThemeProvider theme={theme}>
       <CssBaseline />
-      <ThemeProvider theme={theme}>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Main />} />
-            <Route path="levels" element={<Levels />} />
-            <Route path="how-to-play" element={<HowToPlay />} />
-            <Route path="game" element={<Game />} />
-            <Route path="*" element={<Navigate to="/" />} />
-          </Routes>
-        </BrowserRouter>
-      </ThemeProvider>
-    </>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Main />} />
+          <Route path="levels" element={<Levels />} />
+          <Route path="how-to-play" element={<HowToPlay />} />
+          <Route path="game" element={<Game />} />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 };
 
