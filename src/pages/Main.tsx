@@ -37,9 +37,10 @@ const Main = () => {
   return (
     <Container maxWidth="lg">
       <Stack
-        minHeight="100vh"
+        height="100vh"
         justifyContent="center"
         alignItems="center"
+        padding={4}
         gap={3}
       >
         {/* 로고 이미지 */}
