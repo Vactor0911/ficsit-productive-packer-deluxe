@@ -8,7 +8,13 @@ interface PanelProps extends BoxProps {
 }
 
 const Panel = (props: PanelProps) => {
-  const { children, thickness = 1, backgroundColor, sx, ...others } = props;
+  const {
+    children,
+    thickness = 1,
+    backgroundColor = "white",
+    sx,
+    ...others
+  } = props;
 
   const calculatedThickness = useMemo(() => {
     return calculatePixel(thickness);
