@@ -65,6 +65,8 @@ const levels = [
 const Levels = () => {
   const navigate = useNavigate();
 
+  const SCORE = 1234567890; // 예시 점수
+
   // 호버 애니메이션
   const hoverAnimation = useMemo(
     () =>
@@ -100,7 +102,7 @@ const Levels = () => {
 
   return (
     <Container maxWidth="md">
-      <Stack gap={2} paddingY={3}>
+      <Stack gap={2} paddingY={4}>
         {levels.map((level) => (
           <ButtonBase
             key={`level-button-${level.level}`}
@@ -156,7 +158,7 @@ const Levels = () => {
               />
 
               {/* 레벨 정보 */}
-              <Stack flex={1} textAlign="left">
+              <Stack flex={1} textAlign="left" overflow="hidden">
                 {/* 레벨 */}
                 <Typography variant="h5">레벨 {level.level}</Typography>
 
@@ -170,8 +172,16 @@ const Levels = () => {
                 {/* 최고 점수 */}
                 <Typography variant="subtitle1">최고 점수:</Typography>
 
-                <Typography variant="h6" color="primary">
-                  홍길동: 1,234
+                <Typography
+                  variant="h6"
+                  color="primary"
+                  sx={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  홍길동: {SCORE.toLocaleString()}
                 </Typography>
               </Stack>
             </Stack>
