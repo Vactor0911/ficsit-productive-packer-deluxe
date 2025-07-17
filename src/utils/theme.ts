@@ -50,6 +50,22 @@ export const theme = responsiveFontSizes(
       h6: {
         fontWeight: "bold",
       },
+      subtitle1: {
+        fontWeight: 500,
+      },
+      subtitle2: {
+        fontWeight: 500,
+      },
+    },
+    components: {
+      MuiTypography: {
+        styleOverrides: {
+          root: {
+            wordBreak: "keep-all",
+            textWrap: "pretty",
+          },
+        },
+      },
     },
   })
 );
