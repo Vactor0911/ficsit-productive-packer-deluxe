@@ -1,49 +1,42 @@
-import { Box, StackProps } from "@mui/material";
+import { Box, type BoxProps } from "@mui/material";
+import { calculatePixel } from "../utils";
+import { useMemo } from "react";
 
-interface PanelProps extends StackProps {
-  color?: string;
-  thickness?: string;
-  padding?: number | string;
-  children?: React.ReactNode;
+interface PanelProps extends BoxProps {
+  thickness?: number | string;
+  backgroundColor?: string;
 }
 
 const Panel = (props: PanelProps) => {
-  const {
-    color = "white",
-    thickness = "10px",
-    padding = "0",
-    children,
-    ...others
-  } = props;
+  const { children, thickness = 1, backgroundColor, sx, ...others } = props;
 
-  const calcSize = (size: number | string) => {
-    if (typeof size === "string") {
-      return size;
-    }
-    return `${size * 8}px`;
-  };
+  const calculatedThickness = useMemo(() => {
+    return calculatePixel(thickness);
+  }, [thickness]);
 
   return (
     <Box
-      padding={padding}
-      paddingBottom={`calc(${calcSize(padding)} + ${thickness})`}
       border="2px solid black"
+      height={"100%"}
+      marginBottom={calculatedThickness}
       position="relative"
-      boxShadow={`0 ${thickness} 0 rgba(0, 0, 0, 0.15)`}
-      {...others}
       sx={{
-        backgroundColor: color,
-        "&:before": {
-          content: "''",
+        backgroundColor: backgroundColor,
+        "&:after": {
+          content: '""',
+          width: "calc(100% + 4px)",
+          height: `calc(${calculatedThickness} + 2px)`,
           position: "absolute",
-          bottom: 0,
-          left: 0,
-          width: "100%",
-          height: thickness,
-          backgroundColor: "rgba(0, 0, 0, 0.25)",
-          borderTop: "2px solid black",
+          bottom: `calc(-${calculatedThickness} - 2px)`,
+          left: "-2px",
+          border: "2px solid black",
+          backgroundColor: backgroundColor,
+          filter: "brightness(80%) saturate(1.4)",
+          boxShadow: `0 ${calculatedThickness} 0 rgba(0, 0, 0, 0.15)`,
         },
+        ...sx,
       }}
+      {...others}
     >
       {children}
     </Box>

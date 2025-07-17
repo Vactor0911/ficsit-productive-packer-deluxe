@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="currentColor">
+    <path d="M 0 0 16 0 L 0 16 Z" fill="inherit" />
+    <path d="M 64 0 L 48 0 L 0 48 L 0 64 L 16 64 L 64 16 Z" fill="inherit" />
+    <path d="M 64 64 L 48 64 L 64 48 Z" fill="inherit" />
+</svg>

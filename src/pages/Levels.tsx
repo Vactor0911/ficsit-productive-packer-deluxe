@@ -1,11 +1,11 @@
-import { Box, keyframes, Stack, Typography } from "@mui/material";
-import { useCallback, useState } from "react";
-import StarBorderRoundedIcon from "@mui/icons-material/StarBorderRounded";
-import Button from "../components/Button";
-import { createSearchParams, useNavigate } from "react-router-dom";
-import { playEffect } from "../utils";
-import ButtonHoverAudio from "../assets/audio/button_hover.mp3";
-import GameStartAudio from "../assets/audio/game_start.mp3";
+import {
+  Box,
+  ButtonBase,
+  Container,
+  keyframes,
+  Stack,
+  Typography,
+} from "@mui/material";
 import {
   Level1,
   Level2,
@@ -14,167 +14,188 @@ import {
   Level5,
   Level6,
 } from "../assets/images/levels";
+import Button from "../components/Button";
+import StarTwoToneIcon from "@mui/icons-material/StarTwoTone";
+import { useCallback, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
+import { playEffect } from "../utils";
+import ButtonHoverAudio from "../assets/audio/button_hover.mp3";
+import ButtonClickAudio from "../assets/audio/button_click.mp3";
 
-const HoverAnimation = keyframes`
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(100%);
-  }
-`;
+// 게임 레벨 데이터
+const levels = [
+  {
+    level: 1,
+    stars: 0,
+    maxScore: "",
+    image: Level1,
+  },
+  {
+    level: 2,
+    stars: 0,
+    maxScore: "",
+    image: Level2,
+  },
+  {
+    level: 3,
+    stars: 0,
+    maxScore: "",
+    image: Level3,
+  },
+  {
+    level: 4,
+    stars: 0,
+    maxScore: "",
+    image: Level4,
+  },
+  {
+    level: 5,
+    stars: 0,
+    maxScore: "",
+    image: Level5,
+  },
+  {
+    level: 6,
+    stars: 0,
+    maxScore: "",
+    image: Level6,
+  },
+];
 
 const Levels = () => {
-  // 레벨 데이터
-  const [levels, setLevels] = useState([
-    {
-      level: 1,
-      image: Level1,
-      stars: 0,
-      score: 0,
-    },
-    {
-      level: 2,
-      image: Level2,
-      stars: 0,
-      score: 0,
-    },
-    {
-      level: 3,
-      image: Level3,
-      stars: 0,
-      score: 0,
-    },
-    {
-      level: 4,
-      image: Level4,
-      stars: 0,
-      score: 0,
-    },
-    {
-      level: 5,
-      image: Level5,
-      stars: 0,
-      score: 0,
-    },
-    {
-      level: 6,
-      image: Level6,
-      stars: 0,
-      score: 0,
-    },
-  ]);
+  const navigate = useNavigate();
 
-  // 레벨 선택 버튼 호버 핸들러
-  const handleLevelButtonHover = useCallback(() => {
+  const SCORE = 1234567890; // 예시 점수
+
+  // 호버 애니메이션
+  const hoverAnimation = useMemo(
+    () =>
+      keyframes({
+        "0%": {
+          transform: "translateX(-100%)",
+        },
+        "100%": {
+          transform: "translateX(100%)",
+        },
+      }),
+    []
+  );
+
+  // 레벨 버튼 호버
+  const handleHover = useCallback(() => {
     playEffect(ButtonHoverAudio);
   }, []);
 
-  // 레벨 선택 버튼 클릭 핸들러
-  const navigate = useNavigate();
-  const handleLevelButtonClick = useCallback(
+  // 레벨 버튼 클릭
+  const handleClick = useCallback(
     (level: number) => {
-      playEffect(GameStartAudio);
-      navigate({
-        pathname: "/game",
-        search: `?${createSearchParams({
-          level: `${level}`,
-        })}`,
-      });
+      playEffect(ButtonClickAudio);
+      navigate(`/game/${level}`);
     },
     [navigate]
   );
 
-  // 메인 버튼 클릭 핸들러
+  // 메인 화면으로 버튼 클릭
   const handleMainButtonClick = useCallback(() => {
     navigate("/");
   }, [navigate]);
 
   return (
-    <Stack padding="40px 0" alignItems="center" gap={2}>
-      {levels.map((level) => (
-        <Stack
-          key={level.level}
-          direction="row"
-          gap={2}
-          padding={1}
-          border="2px solid black"
-          width={{
-            xs: "80%",
-            sm: "50%",
-            md: "35%",
-          }}
-          minWidth={{
-            sm: "450px",
-          }}
-          maxWidth="750px"
-          boxShadow="0 10px 0 rgba(0, 0, 0, 0.15)"
-          sx={{
-            backgroundColor: "white",
-            cursor: "pointer",
-            position: "relative",
-            overflow: "hidden",
-            "&:hover": {
-              backgroundColor: "#b6e5d6",
-              "&:before": {
-                content: '""',
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: "200%",
-                height: "100%",
-                zIndex: 2,
-                transform: "translateX(-100%)",
-                background: `linear-gradient(
-                  150deg,
-                  transparent 40%,
-                  rgba(255, 255, 255, 0.25) 40%,
-                  rgba(255, 255, 255, 0.25) 60%,
-                  transparent 60%
-                )`,
-                animation: `${HoverAnimation} 0.6s linear`,
-              },
-            },
-          }}
-          onMouseEnter={handleLevelButtonHover}
-          onClick={() => handleLevelButtonClick(level.level)}
-        >
-          <Stack
-            justifyContent="center"
-            alignItems="center"
+    <Container maxWidth="md">
+      <Stack gap={2} paddingY={4}>
+        {levels.map((level) => (
+          <ButtonBase
+            key={`level-button-${level.level}`}
+            disableRipple
+            onMouseEnter={handleHover}
+            onClick={() => handleClick(level.level)}
             sx={{
-              img: {
-                height: {
-                  xs: "80px",
-                  sm: "100px",
-                  md: "120px",
-                },
-              },
+              width: "100%",
+              boxShadow: `0 8px 0 rgba(0, 0, 0, 0.15)`,
             }}
           >
-            <img src={level.image || ""} alt={`Level${level.level}`} />
-          </Stack>
-          <Stack gap={0.5} justifyContent="center">
-            <Typography variant="h2" lineHeight="1.25em">
-              레벨 {level.level}
-            </Typography>
-            <Stack direction="row">
-              {/* TODO: 별 SVG 이미지 변경, 반복문 사용 */}
-              <StarBorderRoundedIcon fontSize="large" />
-              <StarBorderRoundedIcon fontSize="large" />
-              <StarBorderRoundedIcon fontSize="large" />
+            <Stack
+              width="100%"
+              direction="row"
+              alignItems="center"
+              padding={2}
+              paddingY={1}
+              gap={2}
+              sx={{
+                backgroundColor: "white",
+                border: "2px solid black",
+                position: "relative",
+                overflow: "hidden",
+                "&:hover": {
+                  backgroundColor: "#b6e5d6",
+                  "&:before": {
+                    content: '""',
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "200%",
+                    height: "100%",
+                    zIndex: 2,
+                    transform: "translateX(-100%)",
+                    background: `linear-gradient(
+                      150deg,
+                      transparent 40%,
+                      rgba(255, 255, 255, 0.25) 40%,
+                      rgba(255, 255, 255, 0.25) 60%,
+                      transparent 60%
+                    )`,
+                    animation: `${hoverAnimation} 0.6s linear`,
+                  },
+                },
+              }}
+            >
+              {/* 레벨 이미지 */}
+              <Box
+                component="img"
+                alt={`Level ${level.level}`}
+                src={level.image}
+                height="100px"
+              />
+
+              {/* 레벨 정보 */}
+              <Stack flex={1} textAlign="left" overflow="hidden">
+                {/* 레벨 */}
+                <Typography variant="h5">레벨 {level.level}</Typography>
+
+                {/* 별 */}
+                <Stack direction="row" alignItems="center">
+                  <StarTwoToneIcon fontSize="large" />
+                  <StarTwoToneIcon fontSize="large" />
+                  <StarTwoToneIcon fontSize="large" />
+                </Stack>
+
+                {/* 최고 점수 */}
+                <Typography variant="subtitle1">최고 점수:</Typography>
+
+                <Typography
+                  variant="h6"
+                  color="primary"
+                  sx={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  홍길동: {SCORE.toLocaleString()}
+                </Typography>
+              </Stack>
             </Stack>
-            <Typography variant="subtitle1">최고 점수:</Typography>
-            <Typography variant="h3" color="primary">
-              홍길동: 1,234
-            </Typography>
-          </Stack>
-        </Stack>
-      ))}
-      <Box marginTop={2}>
-        <Button text="메인 화면으로" onClick={handleMainButtonClick} />
-      </Box>
-    </Stack>
+          </ButtonBase>
+        ))}
+
+        {/* 메인 화면으로 버튼 */}
+        <Box marginX="auto" marginY={5}>
+          <Button onClick={handleMainButtonClick}>
+            <Typography variant="h4">메인 화면으로</Typography>
+          </Button>
+        </Box>
+      </Stack>
+    </Container>
   );
 };
 

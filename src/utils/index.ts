@@ -1,76 +1,33 @@
-import { createTheme } from "@mui/material";
-import { musicAudio, effectAudios } from "../App";
+import { effectAudios, musicAudio } from "./audio";
 
-export const theme = createTheme({
-  palette: {
-    background: {
-      default: "#29a995",
-    },
-    primary: {
-      main: "#e59344",
-    },
-  },
-  typography: {
-    fontFamily: ["Pretendard-Regular", "sans-serif"].join(","),
-    h1: {
-      fontSize: "2em",
-      lineHeight: "1.5em",
-      fontWeight: "bold",
-    },
-    h2: {
-      fontSize: "1.5em",
-      lineHeight: "1.25em",
-      fontWeight: "bold",
-    },
-    h3: {
-      fontSize: "1.17em",
-      lineHeight: "1.17em",
-      fontWeight: "bold",
-    },
-    h4: {
-      fontSize: "1em",
-      lineHeight: "1em",
-      fontWeight: "bold",
-    },
-    h5: {
-      fontSize: "0.83em",
-      lineHeight: "0.83em",
-      fontWeight: "bold",
-    },
-    h6: {
-      fontSize: "0.67em",
-      lineHeight: "0.67em",
-      fontWeight: "bold",
-    },
-    subtitle1: {
-      fontSize: "1em",
-      lineHeight: "1.5em",
-    },
-    subtitle2: {
-      fontSize: "0.83em",
-      lineHeight: "0.83em",
-    },
-  },
-  components: {
-    MuiCssBaseline: {
-      styleOverrides: {
-        "#root": {
-          userSelect: "none",
-          wordBreak: "keep-all",
-        },
-      },
-    },
-  },
-});
+/**
+ * 숫자 혹은 문자열 형태의 값을 px 단위로 변환하는 함수
+ * @param value px로 변환할 값
+ * @returns px 단위로 변환된 문자열
+ */
+export const calculatePixel = (value: number | string) => {
+  if (typeof value === "number") {
+    return `${value * 8}px`;
+  }
+  return value;
+};
 
-// 오디오 재생
+/**
+ * 배경 음악을 재생하는 함수
+ * @param src 음악 파일의 경로
+ * @param volume 음악 볼륨 (기본값: 0.3)
+ */
 export const playMusic = (src: string, volume = 0.3) => {
   musicAudio.src = src;
   musicAudio.volume = volume;
   musicAudio.play();
 };
 
-// 효과음 재생
+/**
+ * 효과음을 재생하는 함수
+ * @param src 효과음 파일의 경로
+ * @param volume 효과음 볼륨 (기본값: 0.3)
+ */
 export const playEffect = (src: string, volume = 0.3) => {
   for (const audio of effectAudios) {
     if (audio.paused) {
