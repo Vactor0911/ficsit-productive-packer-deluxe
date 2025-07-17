@@ -32,7 +32,17 @@ const HowToPlay = () => {
         >
           {/* 플레이 방법 */}
           <StyledOverlayScrollbarsComponent defer>
-            <Stack paddingRight={2} paddingY={6} gap={3}>
+            <Stack
+              paddingRight={2}
+              paddingY={{
+                xs: 0,
+                md: 6,
+              }}
+              paddingBottom={{
+                xs: 6,
+              }}
+              gap={3}
+            >
               {/* 헤더 */}
               <Typography variant="h4" textAlign="center">
                 FICSIT 생산 포장업체에 오신 것을 환영합니다!
