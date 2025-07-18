@@ -37,7 +37,7 @@ const Main = () => {
   return (
     <Container maxWidth="lg">
       <Stack
-        height="100vh"
+        minHeight="100vh"
         justifyContent="center"
         alignItems="center"
         padding={4}
