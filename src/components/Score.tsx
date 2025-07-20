@@ -171,6 +171,7 @@ const Score = (props: ScoreProps) => {
           ref={scoreDeltaRef}
           css={{
             fontSize: "0.5em",
+            WebkitTextStroke: variant === "total" ? "none" : "0.1em black",
             position: "absolute",
             top: 0,
             left: "0",
@@ -184,7 +185,7 @@ const Score = (props: ScoreProps) => {
             },
           }}
         >
-          {`+ ${scoreDelta}`}
+          {`+${scoreDelta}`}
         </span>
       </Typography>
     </Stack>
