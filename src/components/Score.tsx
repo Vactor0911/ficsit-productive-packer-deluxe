@@ -128,8 +128,6 @@ const Score = (props: ScoreProps) => {
           scoreDeltaElement.classList.add("animate-score-delta");
         });
       }
-    } else {
-        // TODO: 총점 애니메이션
     }
   }, [variant]);
 
@@ -142,7 +140,31 @@ const Score = (props: ScoreProps) => {
       setScoreDelta(delta);
 
       // 점수 최신화
-      setLocalScore(score);
+      if (variant === "total") {
+        const startScore = localScore;
+        const targetScore = score;
+        const totalDuration = 1000;
+        const updateInterval = 100;
+        const totalSteps = totalDuration / updateInterval;
+        const stepSize = (targetScore - startScore) / totalSteps;
+
+        let currentStep = 0;
+
+        const interval = setInterval(() => {
+          currentStep++;
+          const newScore = Math.round(startScore + stepSize * currentStep);
+          setLocalScore(newScore);
+
+          if (currentStep >= totalSteps) {
+            clearInterval(interval);
+            setLocalScore(targetScore);
+          }
+        }, updateInterval);
+
+        return () => clearInterval(interval); // cleanup on unmount or re-run
+      } else {
+        setLocalScore(score);
+      }
 
       // 애니메이션 실행
       executeAnimation();
@@ -229,7 +251,8 @@ const Score = (props: ScoreProps) => {
             },
           }}
         >
-          {`+${scoreDelta}`}
+          {scoreDelta > 0 && "+"}
+          {scoreDelta}
         </span>
       </Typography>
     </Stack>
