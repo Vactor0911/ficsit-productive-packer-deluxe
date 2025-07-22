@@ -63,6 +63,7 @@ const Score = (props: ScoreProps) => {
 
   // 점수
   const [localScore, setLocalScore] = useState(score);
+  const localScoreRef = useRef(localScore);
   const [scoreDelta, setScoreDelta] = useState(0);
 
   // Typography 높이 감지
@@ -134,34 +135,30 @@ const Score = (props: ScoreProps) => {
   // 점수 변경 감지
   useEffect(() => {
     // 점수 업데이트
-    if (score !== localScore) {
+    if (score !== localScoreRef.current) {
       // 점수 차이 계산
-      const delta = score - localScore;
+      const delta = score - localScoreRef.current;
       setScoreDelta(delta);
 
       // 점수 최신화
       if (variant === "total") {
-        const startScore = localScore;
-        const targetScore = score;
-        const totalDuration = 1000;
-        const updateInterval = 100;
-        const totalSteps = totalDuration / updateInterval;
-        const stepSize = (targetScore - startScore) / totalSteps;
+        const startTime = performance.now();
+        const duration = 500; // 0.5초 TODO: 지속 시간 조정
+        const start = localScoreRef.current;
+        const end = score;
 
-        let currentStep = 0;
+        const frame = (currentTime: number) => {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1); // [0, 1] 범위
+          const currentValue = Math.floor(start + (end - start) * progress);
+          setLocalScore(currentValue);
 
-        const interval = setInterval(() => {
-          currentStep++;
-          const newScore = Math.round(startScore + stepSize * currentStep);
-          setLocalScore(newScore);
-
-          if (currentStep >= totalSteps) {
-            clearInterval(interval);
-            setLocalScore(targetScore);
+          if (progress < 1) {
+            requestAnimationFrame(frame);
           }
-        }, updateInterval);
+        };
 
-        return () => clearInterval(interval); // cleanup on unmount or re-run
+        requestAnimationFrame(frame);
       } else {
         setLocalScore(score);
       }
@@ -169,7 +166,7 @@ const Score = (props: ScoreProps) => {
       // 애니메이션 실행
       executeAnimation();
     }
-  }, [executeAnimation, localScore, score, variant]);
+  }, [executeAnimation, score, variant]);
 
   return (
     <Stack direction="row" alignItems="center" gap={1}>
