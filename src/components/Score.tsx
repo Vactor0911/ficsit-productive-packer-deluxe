@@ -202,7 +202,7 @@ const Score = (props: ScoreProps) => {
       {/* 점수 */}
       <Typography
         ref={scoreTextRef}
-        variant="h4"
+        variant={typographyProps?.variant || "h4"}
         color={getScoreTextColor()}
         position="relative"
         sx={{
