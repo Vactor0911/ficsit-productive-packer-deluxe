@@ -18,8 +18,8 @@ const Timer = () => {
       }}
     >
       <Stack
-        width="95%"
-        height="95%"
+        width="95.5%"
+        height="95.5%"
         justifyContent="center"
         alignItems="center"
         bgcolor={theme.palette.primary.main}
@@ -32,8 +32,8 @@ const Timer = () => {
           bgcolor="white"
         >
           <Stack
-            width="90%"
-            height="90%"
+            width="93%"
+            height="93%"
             alignItems="center"
             paddingTop={1}
             bgcolor="#666666"

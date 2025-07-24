@@ -48,11 +48,8 @@ const Main = () => {
           component="img"
           alt="Logo"
           src={Logo}
-          width={{
-            xs: "80vw",
-            sm: "60vw",
-            md: "40vw",
-          }}
+          width="60vw"
+          minWidth="300px"
           maxWidth="600px"
           marginBottom={3}
           sx={{ animation: `${logoAnimation} 4s ease-in-out infinite` }}

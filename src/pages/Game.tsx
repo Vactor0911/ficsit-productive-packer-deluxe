@@ -14,13 +14,18 @@ const Game = () => {
   return (
     <Stack height="100vh">
       {/* 점수 판 */}
-      <Container maxWidth="md">
+      <Container
+        maxWidth="md"
+        sx={{
+          maxWidth: "700px !important",
+        }}
+      >
         <Panel height="17vh" marginTop="2vh" backgroundColor="#fffff7">
           <Stack
             height="100%"
             direction="row"
-            padding="1vh"
-            paddingY="1.3vh"
+            padding={1}
+            paddingY={1.5}
             gap={1}
           >
             {/* 타이머 */}
@@ -31,13 +36,7 @@ const Game = () => {
               <Typography variant="subtitle1">최종 점수 :</Typography>
 
               {/* 최종 점수 */}
-              <Box
-                sx={{
-                  "& .MuiTypography-root": {
-                    fontSize: "4.5rem",
-                  },
-                }}
-              >
+              <Box>
                 <Score
                   variant="total"
                   score={score}
