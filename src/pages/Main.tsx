@@ -3,9 +3,11 @@ import Logo from "/Logo.png";
 import { useCallback, useMemo } from "react";
 import Button from "../components/Button";
 import { useNavigate } from "react-router-dom";
+import { useIsMobileLandscape } from "../utils";
 
 const Main = () => {
   const navigate = useNavigate();
+  const isMobileLandscape = useIsMobileLandscape();
 
   // 로고 애니메이션
   const logoAnimation = useMemo(
@@ -37,8 +39,9 @@ const Main = () => {
   return (
     <Container maxWidth="lg">
       <Stack
+        direction={isMobileLandscape ? "row" : "column"}
         minHeight="100vh"
-        justifyContent="center"
+        justifyContent={isMobileLandscape ? "space-evenly" : "center"}
         alignItems="center"
         padding={4}
         gap={3}
@@ -48,26 +51,30 @@ const Main = () => {
           component="img"
           alt="Logo"
           src={Logo}
-          width="60vw"
-          minWidth="300px"
+          width={isMobileLandscape ? "auto" : "60vw"}
+          height={isMobileLandscape ? "60vh" : "auto"}
+          minWidth={isMobileLandscape ? "auto" : "280px"}
           maxWidth="600px"
           marginBottom={3}
           sx={{ animation: `${logoAnimation} 4s ease-in-out infinite` }}
         />
 
-        {/*게임 시작 */}
-        <Button onClick={handleStartGameButtonClick}>
-          <Typography variant="h4" color="white">
-            게임 시작
-          </Typography>
-        </Button>
+        {/* 버튼 컨테이너 */}
+        <Stack gap={3}>
+          {/*게임 시작 */}
+          <Button onClick={handleStartGameButtonClick}>
+            <Typography variant="h4" color="white">
+              게임 시작
+            </Typography>
+          </Button>
 
-        {/* 플레이 방법 */}
-        <Button onClick={handleHowToPlayButtonClick}>
-          <Typography variant="h4" color="white">
-            플레이 방법
-          </Typography>
-        </Button>
+          {/* 플레이 방법 */}
+          <Button onClick={handleHowToPlayButtonClick}>
+            <Typography variant="h4" color="white">
+              플레이 방법
+            </Typography>
+          </Button>
+        </Stack>
       </Stack>
     </Container>
   );

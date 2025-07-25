@@ -4,9 +4,11 @@ import StyledOverlayScrollbarsComponent from "../components/StyledOverlayScrollb
 import Button from "../components/Button";
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import { useIsMobileLandscape } from "../utils";
 
 const HowToPlay = () => {
   const navigate = useNavigate();
+  const isMobileLandscape = useIsMobileLandscape();
 
   const handleBackToMenuButtonClick = useCallback(() => {
     navigate("/");
@@ -17,11 +19,11 @@ const HowToPlay = () => {
       <Stack
         height="100vh"
         paddingY={{
-          xs: 4,
-          md: 10,
+          xs: isMobileLandscape ? 2 : 4,
+          md: isMobileLandscape ? 2 : 10,
         }}
         paddingBottom={{
-          xs: 10,
+          xs: isMobileLandscape ? 7 : 10,
         }}
       >
         <Panel

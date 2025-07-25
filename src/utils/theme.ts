@@ -47,5 +47,6 @@ export const theme = responsiveFontSizes(
         },
       },
     },
-  })
+  }),
+  { factor: 10 }
 );
