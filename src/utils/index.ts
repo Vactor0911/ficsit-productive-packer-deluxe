@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { effectAudios, musicAudio } from "./audio";
 
 /**
@@ -37,4 +38,29 @@ export const playEffect = (src: string, volume = 0.3) => {
       break;
     }
   }
+};
+
+/**
+ * 현재 화면이 모바일 환경에서 가로 모드인지 여부를 반환하는 훅
+ * @returns 현재 화면이 모바일 환경에서 가로 모드인지 여부
+ */
+export const useIsMobileLandscape = () => {
+  const [isMobileLandscape, setIsMobileLandscape] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobileLandscape(
+        window.innerHeight < (window.innerWidth * 0.75) && window.innerWidth < 768
+      );
+    };
+
+    handleResize(); // 초기 상태 설정
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  return isMobileLandscape;
 };
