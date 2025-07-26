@@ -3,14 +3,23 @@ import Panel from "../components/Panel";
 import Score from "../components/Score";
 import { useState } from "react";
 import Timer from "../components/Timer";
+import { useIsMobileLandscape } from "../utils";
 
 const Game = () => {
+  const isMobileLandscape = useIsMobileLandscape();
+
   const [score, setScore] = useState(1234);
 
   // const handleScoreAdd = useCallback(() => {
   //   setScore((prevScore) => prevScore + Math.floor(Math.random() * 1000));
   // }, []);
 
+  // 모바일 가로 화면
+  if (isMobileLandscape) {
+    return null;
+  }
+
+  // 기본 화면
   return (
     <Stack height="100vh">
       {/* 점수 판 */}
@@ -18,14 +27,24 @@ const Game = () => {
         maxWidth="md"
         sx={{
           maxWidth: "700px !important",
+          marginTop: {
+            xs: 1,
+            md: 2,
+          },
         }}
       >
-        <Panel height="17vh" marginTop="2vh" backgroundColor="#fffff7">
+        <Panel backgroundColor="#fffff7">
           <Stack
-            height="100%"
             direction="row"
-            padding={1}
-            paddingY={1.5}
+            height="100%"
+            padding={{
+              xs: 0.5,
+              md: 1,
+            }}
+            paddingY={{
+              xs: 0.5,
+              md: 1.5,
+            }}
             gap={1}
           >
             {/* 타이머 */}

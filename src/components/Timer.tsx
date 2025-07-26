@@ -35,12 +35,16 @@ const Timer = () => {
             width="93%"
             height="93%"
             alignItems="center"
-            paddingTop={1}
+            paddingTop="10%"
             bgcolor="#666666"
             color="white"
           >
-            <Typography variant="subtitle2">시간:</Typography>
-            <Typography variant="h5">12.3초</Typography>
+            <Typography variant="subtitle2" fontSize="80%">
+              시간:
+            </Typography>
+            <Typography variant="h5" fontSize="90%">
+              12.3초
+            </Typography>
           </Stack>
         </Stack>
       </Stack>
