@@ -108,7 +108,7 @@ const HowToPlay = () => {
                 보너스 타일
               </Typography>
               <Typography variant="subtitle1">
-                때떄로 패키지에 보너스 타일이 생성됩니다. 사라지기 전에 이
+                때때로 패키지에 보너스 타일이 생성됩니다. 사라지기 전에 이
                 타일에 블록을 떨어뜨리면 해당 블록이 보통 포인트의 4배를 얻게
                 됩니다!
               </Typography>
