@@ -20,7 +20,7 @@ import { useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { playEffect } from "../utils";
 import ButtonHoverAudio from "../assets/audio/button_hover.mp3";
-import ButtonClickAudio from "../assets/audio/button_click.mp3";
+import GameStartAudio from "../assets/audio/game_start.mp3";
 
 // 게임 레벨 데이터
 const levels = [
@@ -89,7 +89,7 @@ const Levels = () => {
   // 레벨 버튼 클릭
   const handleClick = useCallback(
     (level: number) => {
-      playEffect(ButtonClickAudio);
+      playEffect(GameStartAudio);
       navigate(`/game/${level}`);
     },
     [navigate]

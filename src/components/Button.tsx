@@ -69,6 +69,7 @@ const Button = (props: ButtonProps) => {
         backgroundColor={theme.palette.primary.main}
         thickness={1.5 - pushedSize}
         display="inline-flex"
+        height="auto"
         sx={{
           "& .MuiTypography-root": {
             WebkitTextStroke: "4px black",
