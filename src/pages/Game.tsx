@@ -8,7 +8,7 @@ import { useIsMobileLandscape } from "../utils";
 const Game = () => {
   const isMobileLandscape = useIsMobileLandscape();
 
-  const [score, setScore] = useState(1234);
+  const [score, setScore] = useState(1234567890);
 
   // const handleScoreAdd = useCallback(() => {
   //   setScore((prevScore) => prevScore + Math.floor(Math.random() * 1000));
@@ -50,20 +50,18 @@ const Game = () => {
             {/* 타이머 */}
             <Timer />
 
-            <Stack gap={1} flex={1}>
+            <Stack gap={1} flex={1} overflow="hidden">
               {/* 헤더 */}
               <Typography variant="subtitle1">최종 점수 :</Typography>
 
               {/* 최종 점수 */}
-              <Box>
-                <Score
-                  variant="total"
-                  score={score}
-                  typographyProps={{
-                    variant: "h2",
-                  }}
-                />
-              </Box>
+              <Score
+                variant="total"
+                score={score}
+                typographyProps={{
+                  variant: "h2",
+                }}
+              />
             </Stack>
           </Stack>
         </Panel>
