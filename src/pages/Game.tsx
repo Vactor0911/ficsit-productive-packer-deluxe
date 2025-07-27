@@ -34,18 +34,26 @@ const Game = () => {
           <Stack
             direction="row"
             height="100%"
-            padding={{
-              xs: 0.5,
-              md: 1,
-            }}
-            paddingY={{
-              xs: 0.5,
-              md: 1.5,
-            }}
+            padding={
+              isMobileLandscape
+                ? 0.5
+                : {
+                    xs: 0.5,
+                    md: 1,
+                  }
+            }
+            paddingY={
+              isMobileLandscape
+                ? 0.5
+                : {
+                    xs: 0.5,
+                    md: 1.5,
+                  }
+            }
             gap={1}
           >
             {/* 타이머 */}
-            <Box fontSize={isMobileLandscape ? "0.7em" : "inherit"}>
+            <Box fontSize={isMobileLandscape ? "0.65rem" : "inherit"}>
               <Timer />
             </Box>
 

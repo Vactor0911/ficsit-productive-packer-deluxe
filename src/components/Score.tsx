@@ -63,14 +63,12 @@ const Score = (props: ScoreProps) => {
   // Typography 높이 감지
   useEffect(() => {
     const element = scoreTextRef.current;
-    console.log("Score text element:", element);
     if (!element) return;
 
     const observer = new ResizeObserver((entries) => {
       for (const entry of entries) {
         const height = entry.contentRect.height;
         setCoinImageHeight(height);
-        console.log("Coin image height:", height);
       }
     });
 
