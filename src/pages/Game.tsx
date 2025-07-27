@@ -1,7 +1,7 @@
 import { Box, Container, Stack, Typography } from "@mui/material";
 import Panel from "../components/Panel";
 import Score from "../components/Score";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import Timer from "../components/Timer";
 import { useIsMobileLandscape } from "../utils";
 
@@ -14,23 +14,20 @@ const Game = () => {
   //   setScore((prevScore) => prevScore + Math.floor(Math.random() * 1000));
   // }, []);
 
-  // 모바일 가로 화면
-  if (isMobileLandscape) {
-    return null;
-  }
-
-  // 기본 화면
   return (
     <Stack height="100vh">
       {/* 점수 판 */}
       <Container
-        maxWidth="md"
+        maxWidth={isMobileLandscape ? "xs" : "md"}
         sx={{
-          maxWidth: "700px !important",
-          marginTop: {
-            xs: 1,
-            md: 2,
-          },
+          height: isMobileLandscape ? "80px" : "auto",
+          maxWidth: isMobileLandscape ? "auto" : "700px !important",
+          marginTop: isMobileLandscape
+            ? 1
+            : {
+                xs: 1,
+                md: 2,
+              },
         }}
       >
         <Panel backgroundColor="#fffff7">
@@ -48,20 +45,16 @@ const Game = () => {
             gap={1}
           >
             {/* 타이머 */}
-            <Timer />
+            <Box fontSize={isMobileLandscape ? "0.7em" : "inherit"}>
+              <Timer />
+            </Box>
 
-            <Stack gap={1} flex={1} overflow="hidden">
+            <Stack gap={isMobileLandscape ? 0 : 1} flex={1} overflow="hidden">
               {/* 헤더 */}
               <Typography variant="subtitle1">최종 점수 :</Typography>
 
               {/* 최종 점수 */}
-              <Score
-                variant="total"
-                score={score}
-                typographyProps={{
-                  variant: "h2",
-                }}
-              />
+              <Score variant="total" score={score} />
             </Stack>
           </Stack>
         </Panel>

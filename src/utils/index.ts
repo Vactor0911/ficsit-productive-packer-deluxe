@@ -50,7 +50,7 @@ export const useIsMobileLandscape = () => {
   useEffect(() => {
     const handleResize = () => {
       setIsMobileLandscape(
-        window.innerHeight < (window.innerWidth * 0.75) && window.innerWidth < 768
+        window.innerHeight < window.innerWidth * 0.6 && window.innerWidth < 1200
       );
     };
 
