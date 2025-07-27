@@ -4,6 +4,7 @@ import Score from "../components/Score";
 import { useCallback, useState } from "react";
 import Timer from "../components/Timer";
 import { useIsMobileLandscape } from "../utils";
+import ConveyorSupport from "../components/ConveyorSupport";
 
 const Game = () => {
   const isMobileLandscape = useIsMobileLandscape();
@@ -67,6 +68,20 @@ const Game = () => {
           </Stack>
         </Panel>
       </Container>
+
+      {/* 상부 지지대 */}
+      <ConveyorSupport marginTop={1.5} />
+
+      {/* 컨베이어 벨트 */}
+      <Box flex={1} />
+
+      {/* 하부 지지대 */}
+      <ConveyorSupport
+        marginBottom={{
+          xs: 1.5,
+          md: 3,
+        }}
+      />
     </Stack>
   );
 };
