@@ -5,6 +5,7 @@ import { useCallback, useState } from "react";
 import Timer from "../components/Timer";
 import { useIsMobileLandscape } from "../utils";
 import ConveyorSupport from "../components/ConveyorSupport";
+import Marquee from "react-fast-marquee";
 
 const Game = () => {
   const isMobileLandscape = useIsMobileLandscape();
@@ -72,15 +73,79 @@ const Game = () => {
       {/* 상부 지지대 */}
       <ConveyorSupport marginTop={1.5} />
 
-      {/* 컨베이어 벨트 */}
-      <Box flex={1} />
+      {/* 컨베이어 */}
+      <Stack
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+        flex={1}
+        position="relative"
+      >
+        {/* 박스 */}
+        <Box
+          width={{
+            xs: "100vw",
+            md: "50vw",
+          }}
+          maxWidth="700px"
+          height="90%"
+          marginX={3}
+          bgcolor="red"
+        />
+
+        {/* 컨베이어 벨트 */}
+        <Box position="absolute" width="100%" height="100%" zIndex={-1}>
+          <Marquee
+            autoFill
+            direction="right"
+            speed={500}
+            play={false}
+            css={{
+              width: "100%",
+              height: "100%",
+              position: "relative",
+              overflow: "hidden",
+              background: "#4d4d4d",
+              "& .rfm-child": {
+                height: "100%",
+              },
+            }}
+          >
+            <Box
+              width={{
+                sm: "220px",
+                xs: "110px",
+              }}
+              height="100%"
+              sx={{
+                background: `
+          conic-gradient(from -15deg at calc(100% - 2px), #0000 210deg, #4d4d4d 0),
+          conic-gradient(from -15deg at 100%, #4d4d4d 210deg, #000 0)`,
+                backgroundSize: {
+                  sm: "220px 100%",
+                  xs: "110px 100%",
+                },
+              }}
+            />
+          </Marquee>
+        </Box>
+      </Stack>
 
       {/* 하부 지지대 */}
       <ConveyorSupport
         marginBottom={{
-          xs: 1.5,
-          md: 3,
+          xs: 2.5,
+          md: 5,
         }}
+      />
+
+      {/* 모바일, 태블릿용 블록 컨테이너 */}
+      <Box
+        display={{
+          xs: "block",
+          md: "none",
+        }}
+        flex={1}
       />
     </Stack>
   );
