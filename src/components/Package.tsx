@@ -59,7 +59,17 @@ const Package = () => {
           bgcolor="#d6d1b5"
           border="2px solid black"
           overflow="hidden"
-        />
+        >
+          <Typography
+            variant="subtitle2"
+            fontFamily="'Libre Barcode 39'"
+            textAlign="center"
+            lineHeight={1}
+            color="#515045"
+          >
+            Ficsit
+          </Typography>
+        </Box>
       </Stack>
     </Stack>
   );
