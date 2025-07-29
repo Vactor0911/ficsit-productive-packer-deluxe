@@ -83,10 +83,14 @@ const Game = () => {
       >
         {/* 박스 */}
         <Box
-          width={{
-            xs: "100vw",
-            md: "50vw",
-          }}
+          width={
+            isMobileLandscape
+              ? "50vw"
+              : {
+                  xs: "100vw",
+                  md: "50vw",
+                }
+          }
           maxWidth="700px"
           height="90%"
           marginX={3}
@@ -112,19 +116,27 @@ const Game = () => {
             }}
           >
             <Box
-              width={{
-                sm: "220px",
-                xs: "110px",
-              }}
+              width={
+                isMobileLandscape
+                  ? "120px"
+                  : {
+                      xs: "120px",
+                      sm: "180px",
+                      md: "240px",
+                    }
+              }
               height="100%"
               sx={{
                 background: `
-          conic-gradient(from -15deg at calc(100% - 2px), #0000 210deg, #4d4d4d 0),
-          conic-gradient(from -15deg at 100%, #4d4d4d 210deg, #000 0)`,
-                backgroundSize: {
-                  sm: "220px 100%",
-                  xs: "110px 100%",
-                },
+                  conic-gradient(from -15deg at calc(100% - 2px), #0000 210deg, #4d4d4d 0),
+                  conic-gradient(from -15deg at 100%, #4d4d4d 210deg, #000 0)`,
+                backgroundSize: isMobileLandscape
+                  ? "120px 100%"
+                  : {
+                      xs: "120px 100%",
+                      sm: "180px 100%",
+                      md: "240px 100%",
+                    },
               }}
             />
           </Marquee>
@@ -141,10 +153,14 @@ const Game = () => {
 
       {/* 모바일, 태블릿용 블록 컨테이너 */}
       <Box
-        display={{
-          xs: "block",
-          md: "none",
-        }}
+        display={
+          isMobileLandscape
+            ? "none"
+            : {
+                xs: "block",
+                md: "none",
+              }
+        }
         flex={1}
       />
     </Stack>
