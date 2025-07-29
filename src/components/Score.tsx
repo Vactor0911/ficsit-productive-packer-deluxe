@@ -1,17 +1,10 @@
-import {
-  Box,
-  keyframes,
-  Stack,
-  Typography,
-  useTheme,
-  type TypographyProps,
-} from "@mui/material";
+import { Box, keyframes, Stack, Typography, useTheme } from "@mui/material";
 import CoinImage from "../assets/images/coin.svg";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useIsMobileLandscape } from "../utils";
 
 interface ScoreProps {
   variant?: "default" | "total" | "bonus";
-  typographyProps?: TypographyProps;
   score?: number;
 }
 
@@ -50,9 +43,10 @@ const coinAnimation = keyframes`
 `;
 
 const Score = (props: ScoreProps) => {
-  const { variant = "default", score = 0, typographyProps } = props;
+  const { variant = "default", score = 0 } = props;
 
   const theme = useTheme();
+  const isMobileLandscape = useIsMobileLandscape();
 
   const CoinImageRef = useRef<HTMLImageElement>(null);
   const scoreTextRef = useRef<HTMLSpanElement>(null);
@@ -179,7 +173,7 @@ const Score = (props: ScoreProps) => {
               ref={CoinImageRef}
               component="img"
               src={CoinImage}
-              height={`calc(${coinImageHeight}px - 0.5em)`}
+              height={`calc(${coinImageHeight}px - 0.75em)`}
               marginTop="0.25em"
               position={index === 0 ? "relative" : "absolute"}
               top={0}
@@ -202,9 +196,10 @@ const Score = (props: ScoreProps) => {
       {/* 점수 */}
       <Typography
         ref={scoreTextRef}
-        variant={typographyProps?.variant || "h4"}
+        variant="h2"
         color={getScoreTextColor()}
         position="relative"
+        fontSize={isMobileLandscape ? "2em !important" : "auto"}
         sx={{
           WebkitTextStroke: variant === "total" ? "none" : "0.1em black",
           paintOrder: variant === "total" ? "none" : "stroke fill",
@@ -213,7 +208,6 @@ const Score = (props: ScoreProps) => {
             animation: `${scoreScaleAnimation} 0.25s ease-out forwards`,
           },
         }}
-        {...typographyProps}
       >
         {/* 보너스 점수 표기 */}
         {variant === "bonus" && (

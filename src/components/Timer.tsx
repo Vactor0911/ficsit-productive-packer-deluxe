@@ -1,4 +1,4 @@
-import { Stack, Typography, useTheme } from "@mui/material";
+import { Box, Stack, Typography, useTheme } from "@mui/material";
 
 const Timer = () => {
   const theme = useTheme();
@@ -25,26 +25,42 @@ const Timer = () => {
         bgcolor={theme.palette.primary.main}
       >
         <Stack
-          width="75%"
-          height="75%"
+          width="70%"
+          height="70%"
           justifyContent="center"
           alignItems="center"
           bgcolor="white"
         >
           <Stack
-            width="93%"
-            height="93%"
+            width="90%"
+            height="90%"
             alignItems="center"
-            paddingTop="10%"
+            paddingTop="5%"
+            justifyContent="space-evenly"
             bgcolor="#666666"
             color="white"
+            fontSize={{
+              xs: "1em",
+              md: "1.25em",
+            }}
           >
-            <Typography variant="subtitle2" fontSize="80%">
+            {/* 텍스트 */}
+            <Typography variant="subtitle2" fontSize="60%" lineHeight="60%">
               시간:
             </Typography>
-            <Typography variant="h5" fontSize="90%">
+
+            {/* 잔여 시간 */}
+            <Typography
+              variant="subtitle2"
+              fontSize="100%"
+              lineHeight="100%"
+              fontWeight="bold"
+            >
               12.3초
             </Typography>
+
+            {/* 여백 */}
+            <Box />
           </Stack>
         </Stack>
       </Stack>

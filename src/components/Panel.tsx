@@ -23,7 +23,7 @@ const Panel = (props: PanelProps) => {
   return (
     <Box
       border="2px solid black"
-      height={"100%"}
+      height="100%"
       marginBottom={calculatedThickness}
       position="relative"
       sx={{
