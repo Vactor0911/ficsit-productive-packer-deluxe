@@ -1,9 +1,6 @@
 import { Box, Stack, Typography } from "@mui/material";
-import { useIsMobileLandscape } from "../utils";
 
 const Package = () => {
-  const isMobileLandscape = useIsMobileLandscape();
-
   return (
     <Stack
       width="100%"
