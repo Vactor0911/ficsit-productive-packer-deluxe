@@ -6,6 +6,7 @@ import Timer from "../components/Timer";
 import { useIsMobileLandscape } from "../utils";
 import ConveyorSupport from "../components/ConveyorSupport";
 import Marquee from "react-fast-marquee";
+import Package from "../components/Package";
 
 const Game = () => {
   const isMobileLandscape = useIsMobileLandscape();
@@ -95,6 +96,44 @@ const Game = () => {
           height="90%"
           marginX={3}
           bgcolor="red"
+        >
+          <Package />
+        </Box>
+
+        {/* 좌측 패널 */}
+        <Box
+          display={
+            isMobileLandscape
+              ? "block"
+              : {
+                  xs: "none",
+                  md: "block",
+                }
+          }
+          position="absolute"
+          width="20vw"
+          height="100%"
+          bgcolor="blue"
+          top={0}
+          left={0}
+        />
+
+        {/* 우측 패널 */}
+        <Box
+          display={
+            isMobileLandscape
+              ? "block"
+              : {
+                  xs: "none",
+                  md: "block",
+                }
+          }
+          position="absolute"
+          width="20vw"
+          height="100%"
+          bgcolor="blue"
+          top={0}
+          right={0}
         />
 
         {/* 컨베이어 벨트 */}
@@ -162,6 +201,7 @@ const Game = () => {
               }
         }
         flex={1}
+        bgcolor="blue"
       />
     </Stack>
   );
