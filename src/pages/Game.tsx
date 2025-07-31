@@ -11,6 +11,8 @@ import BlockContainer from "../components/BlockContainer";
 import MobileBlockContainer from "../components/MobileBlockContainer";
 import { useAtomValue } from "jotai";
 import { vhAtom } from "../states";
+import ScorePanel from "../components/ScorePanel";
+import Button from "../components/Button";
 
 const Game = () => {
   const isMobileLandscape = useIsMobileLandscape();
@@ -135,19 +137,60 @@ const Game = () => {
           <Box
             display={
               isMobileLandscape
-                ? "block"
+                ? "inline-flex"
                 : {
                     xs: "none",
-                    md: "block",
+                    md: "inline-flex",
                   }
             }
             position="absolute"
             width="20vw"
             height="100%"
-            bgcolor="blue"
             top={0}
             right={0}
-          />
+            zIndex={20}
+          >
+            <Stack
+              width={{
+                xs: "100%",
+                lg: "75%",
+                xl: "60%",
+              }}
+              justifyContent={
+                isMobileLandscape ? "space-between" : "space-evenly"
+              }
+            >
+              {/* 점수 패널 */}
+              <Box>
+                <ScorePanel />
+              </Box>
+
+              {/* 보내기 버튼 */}
+              <Button
+                fullWidth
+                slots={{
+                  panelProps: isMobileLandscape
+                    ? {
+                        padding: 0,
+                        paddingY: 0.5,
+                      }
+                    : {},
+                }}
+              >
+                <Stack
+                  width="100%"
+                  direction="row"
+                  justifyContent="center"
+                  alignItems="center"
+                  gap={1}
+                >
+                  <Typography variant={isMobileLandscape ? "h6" : "h4"}>
+                    보내기
+                  </Typography>
+                </Stack>
+              </Button>
+            </Stack>
+          </Box>
 
           {/* 컨베이어 벨트 */}
           <Box position="absolute" width="100%" height="100%" zIndex={-1}>

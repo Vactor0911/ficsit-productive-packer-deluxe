@@ -1,5 +1,5 @@
 import { Box, ButtonBase, useTheme, type ButtonBaseProps } from "@mui/material";
-import Panel from "./Panel";
+import Panel, { type PanelProps } from "./Panel";
 import React, { useCallback, useState } from "react";
 import Marquee from "react-fast-marquee";
 import DiagonalPattern from "../assets/images/diagonal_pattern.svg?react";
@@ -9,10 +9,15 @@ import ButtonClickAudio from "../assets/audio/button_click.mp3";
 
 interface ButtonProps extends ButtonBaseProps {
   children: React.ReactNode;
+  fullWidth?: boolean;
+  slots?: {
+    buttonProps?: ButtonBaseProps;
+    panelProps?: PanelProps;
+  };
 }
 
 const Button = (props: ButtonProps) => {
-  const { children, onClick, sx, ...others } = props;
+  const { children, fullWidth, slots, onClick } = props;
 
   const theme = useTheme();
   const [pushedSize, setPushedSize] = useState(0);
@@ -59,9 +64,9 @@ const Button = (props: ButtonProps) => {
         "&:hover .pattern-container": {
           display: "block",
         },
-        ...sx,
+        ...slots?.buttonProps?.sx,
       }}
-      {...others}
+      {...slots?.buttonProps}
     >
       <Panel
         padding={1.5}
@@ -69,6 +74,7 @@ const Button = (props: ButtonProps) => {
         backgroundColor={theme.palette.primary.main}
         thickness={1.5 - pushedSize}
         display="inline-flex"
+        width={fullWidth ? "100%" : "auto"}
         height="auto"
         sx={{
           "& .MuiTypography-root": {
@@ -76,9 +82,13 @@ const Button = (props: ButtonProps) => {
             paintOrder: "stroke fill",
             textShadow: "4px 4px 0 rgba(0, 0, 0, 0.25)",
           },
+          ...slots?.panelProps?.sx,
         }}
+        {...slots?.panelProps}
       >
         <Box
+          width="100%"
+          height="100%"
           position="relative"
           zIndex={2}
           sx={{

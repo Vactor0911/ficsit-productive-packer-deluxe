@@ -2,7 +2,7 @@ import { Box, type BoxProps } from "@mui/material";
 import { calculatePixel } from "../utils";
 import { useMemo } from "react";
 
-interface PanelProps extends BoxProps {
+export interface PanelProps extends BoxProps {
   thickness?: number | string;
   backgroundColor?: string;
 }
