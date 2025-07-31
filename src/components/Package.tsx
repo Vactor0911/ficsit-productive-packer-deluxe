@@ -36,7 +36,7 @@ const Package = () => {
             top={0}
             left={0}
           >
-            <Box width="80%" height="80%" bgcolor="red" />
+            <Box width="80%" height="90%" bgcolor="red" />
           </Stack>
         </Stack>
       </Stack>
