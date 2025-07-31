@@ -4,10 +4,14 @@ import { useCallback, useMemo } from "react";
 import Button from "../components/Button";
 import { useNavigate } from "react-router-dom";
 import { useIsMobileLandscape } from "../utils";
+import { useAtomValue } from "jotai";
+import { vhAtom } from "../states";
 
 const Main = () => {
   const navigate = useNavigate();
   const isMobileLandscape = useIsMobileLandscape();
+
+  const vh = useAtomValue(vhAtom);
 
   // 로고 애니메이션
   const logoAnimation = useMemo(
@@ -40,7 +44,7 @@ const Main = () => {
     <Container maxWidth="lg">
       <Stack
         direction={isMobileLandscape ? "row" : "column"}
-        minHeight="100vh"
+        minHeight={`${vh * 100}px`}
         justifyContent={isMobileLandscape ? "space-evenly" : "center"}
         alignItems="center"
         padding={4}
@@ -52,7 +56,7 @@ const Main = () => {
           alt="Logo"
           src={Logo}
           width={isMobileLandscape ? "auto" : "60vw"}
-          height={isMobileLandscape ? "60vh" : "auto"}
+          height={isMobileLandscape ? `${vh * 60}px` : "auto"}
           minWidth={isMobileLandscape ? "auto" : "280px"}
           maxWidth="600px"
           marginBottom={3}

@@ -9,18 +9,21 @@ import Marquee from "react-fast-marquee";
 import Package from "../components/Package";
 import BlockContainer from "../components/BlockContainer";
 import MobileBlockContainer from "../components/MobileBlockContainer";
+import { useAtomValue } from "jotai";
+import { vhAtom } from "../states";
 
 const Game = () => {
   const isMobileLandscape = useIsMobileLandscape();
 
   const [score, setScore] = useState(1234567890);
+  const vh = useAtomValue(vhAtom);
 
   // const handleScoreAdd = useCallback(() => {
   //   setScore((prevScore) => prevScore + Math.floor(Math.random() * 1000));
   // }, []);
 
   return (
-    <Stack height="100vh">
+    <Stack height={`${vh * 100}px`}>
       {/* 점수 판 */}
       <Container
         maxWidth={isMobileLandscape ? "xs" : "md"}
@@ -60,11 +63,31 @@ const Game = () => {
             gap={1}
           >
             {/* 타이머 */}
-            <Box fontSize={isMobileLandscape ? "0.65rem" : "inherit"}>
+            <Box
+              fontSize={
+                isMobileLandscape
+                  ? "0.65rem"
+                  : {
+                      xs: "0.8rem",
+                      sm: "inherit",
+                    }
+              }
+            >
               <Timer />
             </Box>
 
-            <Stack gap={isMobileLandscape ? 0 : 1} flex={1} overflow="hidden">
+            <Stack
+              gap={
+                isMobileLandscape
+                  ? 0
+                  : {
+                      xs: 0,
+                      md: 1,
+                    }
+              }
+              flex={1}
+              overflow="hidden"
+            >
               {/* 헤더 */}
               <Typography variant="subtitle1">최종 점수 :</Typography>
 
@@ -212,7 +235,7 @@ const Game = () => {
               }
         }
         minHeight="150px"
-        flex={0.75}
+        flex={1}
       >
         <MobileBlockContainer />
       </Box>

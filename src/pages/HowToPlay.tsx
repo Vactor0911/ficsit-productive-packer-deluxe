@@ -5,11 +5,16 @@ import Button from "../components/Button";
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useIsMobileLandscape } from "../utils";
+import { useAtomValue } from "jotai";
+import { vhAtom } from "../states";
 
 const HowToPlay = () => {
   const navigate = useNavigate();
   const isMobileLandscape = useIsMobileLandscape();
 
+  const vh = useAtomValue(vhAtom);
+
+  // 메뉴로 돌아가기 버튼 클릭
   const handleBackToMenuButtonClick = useCallback(() => {
     navigate("/");
   }, [navigate]);
@@ -17,7 +22,7 @@ const HowToPlay = () => {
   return (
     <Container maxWidth="md">
       <Stack
-        height="100vh"
+        height={`${vh * 100}px`}
         paddingY={{
           xs: isMobileLandscape ? 2 : 4,
           md: isMobileLandscape ? 2 : 10,
