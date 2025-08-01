@@ -17,7 +17,7 @@ interface ButtonProps extends ButtonBaseProps {
 }
 
 const Button = (props: ButtonProps) => {
-  const { children, fullWidth, slots, onClick } = props;
+  const { children, fullWidth, slots, onClick, disabled } = props;
 
   const theme = useTheme();
   const [pushedSize, setPushedSize] = useState(0);
@@ -59,32 +59,37 @@ const Button = (props: ButtonProps) => {
       onTouchCancel={handleMouseUp}
       onMouseEnter={handleHover}
       onClick={handleClick}
-      sx={{
-        marginTop: pushedSize,
-        "&:hover .pattern-container": {
-          display: "block",
+      disabled={disabled}
+      {...(slots?.buttonProps && {
+        ...slots.buttonProps,
+        sx: {
+          marginTop: pushedSize,
+          "&:hover .pattern-container": {
+            display: "block",
+          },
+          ...slots?.buttonProps?.sx,
         },
-        ...slots?.buttonProps?.sx,
-      }}
-      {...slots?.buttonProps}
+      })}
     >
       <Panel
         padding={1.5}
         paddingY={2}
-        backgroundColor={theme.palette.primary.main}
+        backgroundColor={disabled ? "#666666" : theme.palette.primary.main}
         thickness={1.5 - pushedSize}
         display="inline-flex"
         width={fullWidth ? "100%" : "auto"}
         height="auto"
-        sx={{
-          "& .MuiTypography-root": {
-            WebkitTextStroke: "4px black",
-            paintOrder: "stroke fill",
-            textShadow: "4px 4px 0 rgba(0, 0, 0, 0.25)",
+        {...(slots?.panelProps && {
+          ...slots.panelProps,
+          sx: {
+            "& .MuiTypography-root": {
+              WebkitTextStroke: "4px black",
+              paintOrder: "stroke fill",
+              textShadow: "4px 4px 0 rgba(0, 0, 0, 0.25)",
+            },
+            ...slots?.panelProps?.sx,
           },
-          ...slots?.panelProps?.sx,
-        }}
-        {...slots?.panelProps}
+        })}
       >
         <Box
           width="100%"
@@ -93,7 +98,7 @@ const Button = (props: ButtonProps) => {
           zIndex={2}
           sx={{
             "& .MuiTypography-root": {
-              color: "white",
+              color: disabled ? "#b3b3b3" : "white",
               fontWeight: 500,
             },
           }}

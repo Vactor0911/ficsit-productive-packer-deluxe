@@ -12,7 +12,7 @@ import MobileBlockContainer from "../components/MobileBlockContainer";
 import { useAtomValue } from "jotai";
 import { vhAtom } from "../states";
 import ScorePanel from "../components/ScorePanel";
-import Button from "../components/Button";
+import SendButton from "../components/SendButton";
 
 const Game = () => {
   const isMobileLandscape = useIsMobileLandscape();
@@ -166,29 +166,7 @@ const Game = () => {
               </Box>
 
               {/* 보내기 버튼 */}
-              <Button
-                fullWidth
-                slots={{
-                  panelProps: isMobileLandscape
-                    ? {
-                        padding: 0,
-                        paddingY: 0.5,
-                      }
-                    : {},
-                }}
-              >
-                <Stack
-                  width="100%"
-                  direction="row"
-                  justifyContent="center"
-                  alignItems="center"
-                  gap={1}
-                >
-                  <Typography variant={isMobileLandscape ? "h6" : "h4"}>
-                    보내기
-                  </Typography>
-                </Stack>
-              </Button>
+              <SendButton />
             </Stack>
           </Box>
 

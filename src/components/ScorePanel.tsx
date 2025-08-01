@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import Panel from "./Panel";
 import { useIsMobileLandscape } from "../utils";
 import Score from "./Score";
