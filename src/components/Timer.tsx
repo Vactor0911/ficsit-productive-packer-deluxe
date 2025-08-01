@@ -32,11 +32,11 @@ const Timer = () => {
           bgcolor="white"
         >
           <Stack
-            width="90%"
-            height="90%"
-            alignItems="center"
+            width="92%"
+            height="92%"
             paddingTop="5%"
             justifyContent="space-evenly"
+            alignItems="center"
             bgcolor="#666666"
             color="white"
             fontSize={{

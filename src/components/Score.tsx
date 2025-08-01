@@ -89,6 +89,16 @@ const Score = (props: ScoreProps) => {
     }
   }, [theme.palette.primary.main, variant]);
 
+  // 점수 텍스트 크기
+  const getScoreTextSize = useCallback(() => {
+    switch (variant) {
+      case "total":
+        return isMobileLandscape ? "2em !important" : "inherit";
+      default:
+        return isMobileLandscape ? "1.25em !important" : "inherit";
+    }
+  }, [isMobileLandscape, variant]);
+
   // 애니메이션 실행
   const executeAnimation = useCallback(() => {
     // 코인 이미지 애니메이션
@@ -163,18 +173,21 @@ const Score = (props: ScoreProps) => {
   }, [executeAnimation, score, variant]);
 
   return (
-    <Stack direction="row" alignItems="center" gap={1}>
+    <Stack
+      direction="row"
+      alignItems="center"
+      gap={isMobileLandscape ? 0.5 : 1}
+    >
       {/* 코인 이미지 */}
       {variant !== "bonus" && (
-        <Box position="relative">
+        <Stack justifyContent="center" position="relative">
           {Array.from({ length: 2 }).map((_, index) => (
             <Box
               key={index}
               ref={CoinImageRef}
               component="img"
               src={CoinImage}
-              height={`calc(${coinImageHeight}px - 0.75em)`}
-              marginTop="0.25em"
+              height={`calc(${coinImageHeight}px - 0.5em)`}
               position={index === 0 ? "relative" : "absolute"}
               top={0}
               left={0}
@@ -190,16 +203,16 @@ const Score = (props: ScoreProps) => {
               }}
             />
           ))}
-        </Box>
+        </Stack>
       )}
 
       {/* 점수 */}
       <Typography
         ref={scoreTextRef}
-        variant="h2"
+        variant={variant === "total" ? "h2" : "h3"}
         color={getScoreTextColor()}
         position="relative"
-        fontSize={isMobileLandscape ? "2em !important" : "auto"}
+        fontSize={getScoreTextSize()}
         sx={{
           WebkitTextStroke: variant === "total" ? "none" : "0.1em black",
           paintOrder: variant === "total" ? "none" : "stroke fill",

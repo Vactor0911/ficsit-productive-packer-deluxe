@@ -9,18 +9,23 @@ import Marquee from "react-fast-marquee";
 import Package from "../components/Package";
 import BlockContainer from "../components/BlockContainer";
 import MobileBlockContainer from "../components/MobileBlockContainer";
+import { useAtomValue } from "jotai";
+import { vhAtom } from "../states";
+import ScorePanel from "../components/ScorePanel";
+import SendButton from "../components/SendButton";
 
 const Game = () => {
   const isMobileLandscape = useIsMobileLandscape();
 
   const [score, setScore] = useState(1234567890);
+  const vh = useAtomValue(vhAtom);
 
   // const handleScoreAdd = useCallback(() => {
   //   setScore((prevScore) => prevScore + Math.floor(Math.random() * 1000));
   // }, []);
 
   return (
-    <Stack height="100vh">
+    <Stack height={`${vh * 100}px`}>
       {/* 점수 판 */}
       <Container
         maxWidth={isMobileLandscape ? "xs" : "md"}
@@ -60,11 +65,31 @@ const Game = () => {
             gap={1}
           >
             {/* 타이머 */}
-            <Box fontSize={isMobileLandscape ? "0.65rem" : "inherit"}>
+            <Box
+              fontSize={
+                isMobileLandscape
+                  ? "0.65rem"
+                  : {
+                      xs: "0.8rem",
+                      sm: "inherit",
+                    }
+              }
+            >
               <Timer />
             </Box>
 
-            <Stack gap={isMobileLandscape ? 0 : 1} flex={1} overflow="hidden">
+            <Stack
+              gap={
+                isMobileLandscape
+                  ? 0
+                  : {
+                      xs: 0,
+                      md: 1,
+                    }
+              }
+              flex={1}
+              overflow="hidden"
+            >
               {/* 헤더 */}
               <Typography variant="subtitle1">최종 점수 :</Typography>
 
@@ -112,19 +137,38 @@ const Game = () => {
           <Box
             display={
               isMobileLandscape
-                ? "block"
+                ? "inline-flex"
                 : {
                     xs: "none",
-                    md: "block",
+                    md: "inline-flex",
                   }
             }
             position="absolute"
             width="20vw"
             height="100%"
-            bgcolor="blue"
             top={0}
             right={0}
-          />
+            zIndex={20}
+          >
+            <Stack
+              width={{
+                xs: "100%",
+                lg: "75%",
+                xl: "60%",
+              }}
+              justifyContent={
+                isMobileLandscape ? "space-between" : "space-evenly"
+              }
+            >
+              {/* 점수 패널 */}
+              <Box>
+                <ScorePanel />
+              </Box>
+
+              {/* 보내기 버튼 */}
+              <SendButton />
+            </Stack>
+          </Box>
 
           {/* 컨베이어 벨트 */}
           <Box position="absolute" width="100%" height="100%" zIndex={-1}>
@@ -212,7 +256,7 @@ const Game = () => {
               }
         }
         minHeight="150px"
-        flex={0.75}
+        flex={1}
       >
         <MobileBlockContainer />
       </Box>

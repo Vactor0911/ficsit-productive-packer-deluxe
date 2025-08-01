@@ -1,5 +1,5 @@
 import { Box, ButtonBase, useTheme, type ButtonBaseProps } from "@mui/material";
-import Panel from "./Panel";
+import Panel, { type PanelProps } from "./Panel";
 import React, { useCallback, useState } from "react";
 import Marquee from "react-fast-marquee";
 import DiagonalPattern from "../assets/images/diagonal_pattern.svg?react";
@@ -9,10 +9,15 @@ import ButtonClickAudio from "../assets/audio/button_click.mp3";
 
 interface ButtonProps extends ButtonBaseProps {
   children: React.ReactNode;
+  fullWidth?: boolean;
+  slots?: {
+    buttonProps?: ButtonBaseProps;
+    panelProps?: PanelProps;
+  };
 }
 
 const Button = (props: ButtonProps) => {
-  const { children, onClick, sx, ...others } = props;
+  const { children, fullWidth, slots, onClick, disabled } = props;
 
   const theme = useTheme();
   const [pushedSize, setPushedSize] = useState(0);
@@ -54,36 +59,46 @@ const Button = (props: ButtonProps) => {
       onTouchCancel={handleMouseUp}
       onMouseEnter={handleHover}
       onClick={handleClick}
-      sx={{
-        marginTop: pushedSize,
-        "&:hover .pattern-container": {
-          display: "block",
+      disabled={disabled}
+      {...{
+        ...slots?.buttonProps,
+        sx: {
+          marginTop: pushedSize,
+          "&:hover .pattern-container": {
+            display: "block",
+          },
+          ...slots?.buttonProps?.sx,
         },
-        ...sx,
       }}
-      {...others}
     >
       <Panel
         padding={1.5}
         paddingY={2}
-        backgroundColor={theme.palette.primary.main}
+        backgroundColor={disabled ? "#666666" : theme.palette.primary.main}
         thickness={1.5 - pushedSize}
         display="inline-flex"
+        width={fullWidth ? "100%" : "auto"}
         height="auto"
-        sx={{
-          "& .MuiTypography-root": {
-            WebkitTextStroke: "4px black",
-            paintOrder: "stroke fill",
-            textShadow: "4px 4px 0 rgba(0, 0, 0, 0.25)",
+        {...{
+          ...slots?.panelProps,
+          sx: {
+            "& .MuiTypography-root": {
+              WebkitTextStroke: "4px black",
+              paintOrder: "stroke fill",
+              textShadow: "4px 4px 0 rgba(0, 0, 0, 0.25)",
+            },
+            ...slots?.panelProps?.sx,
           },
         }}
       >
         <Box
+          width="100%"
+          height="100%"
           position="relative"
           zIndex={2}
           sx={{
             "& .MuiTypography-root": {
-              color: "white",
+              color: disabled ? "#b3b3b3" : "white",
               fontWeight: 500,
             },
           }}
