@@ -60,8 +60,8 @@ const Button = (props: ButtonProps) => {
       onMouseEnter={handleHover}
       onClick={handleClick}
       disabled={disabled}
-      {...(slots?.buttonProps && {
-        ...slots.buttonProps,
+      {...{
+        ...slots?.buttonProps,
         sx: {
           marginTop: pushedSize,
           "&:hover .pattern-container": {
@@ -69,7 +69,7 @@ const Button = (props: ButtonProps) => {
           },
           ...slots?.buttonProps?.sx,
         },
-      })}
+      }}
     >
       <Panel
         padding={1.5}
@@ -79,8 +79,8 @@ const Button = (props: ButtonProps) => {
         display="inline-flex"
         width={fullWidth ? "100%" : "auto"}
         height="auto"
-        {...(slots?.panelProps && {
-          ...slots.panelProps,
+        {...{
+          ...slots?.panelProps,
           sx: {
             "& .MuiTypography-root": {
               WebkitTextStroke: "4px black",
@@ -89,7 +89,7 @@ const Button = (props: ButtonProps) => {
             },
             ...slots?.panelProps?.sx,
           },
-        })}
+        }}
       >
         <Box
           width="100%"
