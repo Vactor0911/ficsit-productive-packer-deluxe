@@ -7,12 +7,18 @@ const ScorePanel = () => {
   const isMobileLandscape = useIsMobileLandscape();
 
   return (
-    <Panel padding={isMobileLandscape ? 0.5 : 1} backgroundColor="#5ba6c5">
+    <Panel
+      padding={isMobileLandscape ? 0.5 : 1}
+      backgroundColor="#5ba6c5"
+      display="flex"
+      justifyContent="center"
+    >
       <Stack
-        width="100%"
+        maxWidth="90%"
         height="100%"
+        display="inline-flex"
         justifyContent="center"
-        alignItems="center"
+        alignItems="stretch"
         gap={isMobileLandscape ? 0 : 0.5}
       >
         {/* 포장 점수 */}
@@ -21,16 +27,18 @@ const ScorePanel = () => {
           color="white"
           noWrap
           fontSize={isMobileLandscape ? "0.65rem" : "inherit"}
+          textAlign="center"
         >
           포장 점수:
         </Typography>
-        <Box
+        <Stack
+          alignItems="center"
           padding={isMobileLandscape ? "0 8px" : "2px 16px"}
           borderRadius="50px"
           bgcolor="#49859d"
         >
           <Score variant="default" score={0} />
-        </Box>
+        </Stack>
 
         {/* 채우기 보너스 */}
         <Typography
@@ -38,16 +46,18 @@ const ScorePanel = () => {
           color="white"
           noWrap
           fontSize={isMobileLandscape ? "0.65rem" : "inherit"}
+          textAlign="center"
         >
           채우기 보너스:
         </Typography>
-        <Box
+        <Stack
+          alignItems="center"
           padding={isMobileLandscape ? "0 8px" : "2px 16px"}
           borderRadius="50px"
           bgcolor="#49859d"
         >
           <Score variant="bonus" score={0} />
-        </Box>
+        </Stack>
 
         {/* 최종 배달 점수 */}
         <Typography
@@ -55,16 +65,18 @@ const ScorePanel = () => {
           color="white"
           noWrap
           fontSize={isMobileLandscape ? "0.65rem" : "inherit"}
+          textAlign="center"
         >
           최종 배달 점수:
         </Typography>
-        <Box
+        <Stack
+          alignItems="center"
           padding={isMobileLandscape ? "0 8px" : "2px 16px"}
           borderRadius="50px"
           bgcolor="#49859d"
         >
           <Score variant="default" score={0} />
-        </Box>
+        </Stack>
       </Stack>
     </Panel>
   );
