@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useIsMobileLandscape } from "../utils";
 import { useAtomValue } from "jotai";
 import { vhAtom } from "../states";
+import SendButton from "../components/SendButton";
 
 const HowToPlay = () => {
   const navigate = useNavigate();
@@ -48,7 +49,7 @@ const HowToPlay = () => {
               paddingBottom={{
                 xs: 6,
               }}
-              gap={3}
+              gap={4}
             >
               {/* 헤더 */}
               <Typography variant="h4" textAlign="center">
@@ -94,7 +95,9 @@ const HowToPlay = () => {
               </Typography>
 
               {/* 패키지 보내기 */}
-              <Box height="50px" />
+              <Stack width="50%" minWidth="160px" alignSelf="center">
+                <SendButton />
+              </Stack>
               <Typography variant="h4" textAlign="center">
                 패키지 보내기
               </Typography>
