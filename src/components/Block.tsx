@@ -1,139 +1,195 @@
-import { Stack, type StackProps } from "@mui/material";
+import { Box, Stack, Typography, type StackProps } from "@mui/material";
+import BlockData from "../assets/blocks.json";
+import CoinImage from "../assets/images/coin.svg";
 
 interface BlockProps extends StackProps {
   id: string;
-  grid: number[][];
-  color?: string;
+  blockId: number;
+  displayScore?: boolean;
 }
 
 const Block = (props: BlockProps) => {
-  const { id, grid, color = "#666666", ...others } = props;
+  const { id, blockId, displayScore = true, ...others } = props;
 
-  const offsetX = (4 - grid[0].length) * 5;
-  const offsetY = (4 - grid.length) * 5;
+  const block = BlockData.find((block) => block.id === blockId);
+
+  // 블록을 찾지 못하면 null 반환
+  if (!block) {
+    return null;
+  }
+
+  // 블록 데이터
+  const color = block.color || "#666666"; // 색상
+  const grid = block.grid || [[1]]; // 그리드 배열
+  const score = block.score || 0; // 점수
+
+  // 오프셋 계산
+  const offsetX = (4 - block.grid[0].length) * 5;
+  const offsetY = (4 - block.grid.length) * 5;
 
   return (
     <Stack justifyContent="center" alignItems="center" {...others}>
-      <svg width="100%" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-        {grid.map((row, i) =>
-          row.map((cell, j) => (
-            <g key={`${id}-grid-${i}-${j}`}>
-              {cell && (
-                <g>
-                  {/* 입체 표현 블록 */}
-                  {(i >= grid.length - 1 || !grid[i + 1][j]) && (
-                    <g>
-                      <rect
-                        x={j * 10 + offsetX}
-                        y={i * 10 + 10 + offsetY}
-                        width="10"
-                        height="2"
-                        fill={color}
-                        filter="brightness(70%)"
-                        stroke={color}
-                        strokeWidth={0.1}
-                      />
+      {/* 블록 */}
+      <Box position="relative">
+        <svg
+          width="100%"
+          viewBox="0 -1 40 44"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          {grid.map((row, i) =>
+            row.map((cell, j) => (
+              <g key={`${id}-grid-${i}-${j}`}>
+                {cell && (
+                  <g>
+                    {/* 입체 표현 블록 */}
+                    {(i >= grid.length - 1 || !grid[i + 1][j]) && (
+                      <g>
+                        <rect
+                          x={j * 10 + offsetX}
+                          y={i * 10 + 10 + offsetY}
+                          width="10"
+                          height="2"
+                          fill={color}
+                          filter="brightness(70%)"
+                          stroke={color}
+                          strokeWidth={0.1}
+                        />
 
-                      {/* 아래쪽 테두리 */}
-                      <line
-                        x1={j * 10 + offsetX}
-                        y1={i * 10 + 12 + offsetY}
-                        x2={j * 10 + 10 + offsetX}
-                        y2={i * 10 + 12 + offsetY}
-                        stroke="black"
-                        strokeWidth={0.5}
-                      />
-
-                      {/* 왼쪽 테두리 */}
-                      {(j === 0 || !grid[i][j - 1]) && (
+                        {/* 아래쪽 테두리 */}
                         <line
                           x1={j * 10 + offsetX}
-                          y1={i * 10 + 10 + offsetY}
-                          x2={j * 10 + offsetX}
-                          y2={i * 10 + 12 + offsetY}
-                          stroke="black"
-                          strokeWidth={0.5}
-                        />
-                      )}
-
-                      {/* 오른쪽 테두리 */}
-                      {(j === 4 || !grid[i][j + 1]) && (
-                        <line
-                          x1={j * 10 + 10 + offsetX}
-                          y1={i * 10 + 10 + offsetY}
+                          y1={i * 10 + 12 + offsetY}
                           x2={j * 10 + 10 + offsetX}
                           y2={i * 10 + 12 + offsetY}
                           stroke="black"
                           strokeWidth={0.5}
                         />
-                      )}
-                    </g>
-                  )}
 
-                  {/* 블록 */}
-                  <rect
-                    x={j * 10 + offsetX}
-                    y={i * 10 + offsetY}
-                    width="10"
-                    height="10"
-                    fill={color}
-                    stroke={color}
-                    strokeWidth={0.1}
-                  />
+                        {/* 왼쪽 테두리 */}
+                        {(j === 0 || !grid[i][j - 1]) && (
+                          <line
+                            x1={j * 10 + offsetX}
+                            y1={i * 10 + 10 + offsetY}
+                            x2={j * 10 + offsetX}
+                            y2={i * 10 + 12 + offsetY}
+                            stroke="black"
+                            strokeWidth={0.5}
+                          />
+                        )}
 
-                  {/* 위쪽 테두리 */}
-                  {(i === 0 || !grid[i - 1][j]) && (
-                    <line
-                      x1={j * 10 + offsetX}
-                      y1={i * 10 + offsetY}
-                      x2={j * 10 + 10 + offsetX}
-                      y2={i * 10 + offsetY}
-                      stroke="black"
-                      strokeWidth={0.5}
+                        {/* 오른쪽 테두리 */}
+                        {(j === 4 || !grid[i][j + 1]) && (
+                          <line
+                            x1={j * 10 + 10 + offsetX}
+                            y1={i * 10 + 10 + offsetY}
+                            x2={j * 10 + 10 + offsetX}
+                            y2={i * 10 + 12 + offsetY}
+                            stroke="black"
+                            strokeWidth={0.5}
+                          />
+                        )}
+                      </g>
+                    )}
+
+                    {/* 블록 */}
+                    <rect
+                      x={j * 10 + offsetX}
+                      y={i * 10 + offsetY}
+                      width="10"
+                      height="10"
+                      fill={color}
+                      stroke={color}
+                      strokeWidth={0.3}
                     />
-                  )}
 
-                  {/* 아래쪽 테두리 */}
-                  {(i >= grid.length - 1 || !grid[i + 1][j]) && (
-                    <line
-                      x1={j * 10 + offsetX}
-                      y1={i * 10 + 10 + offsetY}
-                      x2={j * 10 + 10 + offsetX}
-                      y2={i * 10 + 10 + offsetY}
-                      stroke="black"
-                      strokeWidth={0.5}
-                    />
-                  )}
+                    {/* 위쪽 테두리 */}
+                    {(i === 0 || !grid[i - 1][j]) && (
+                      <line
+                        x1={j * 10 + offsetX}
+                        y1={i * 10 + offsetY}
+                        x2={j * 10 + 10 + offsetX}
+                        y2={i * 10 + offsetY}
+                        stroke="black"
+                        strokeWidth={0.5}
+                      />
+                    )}
 
-                  {/* 왼쪽 테두리 */}
-                  {(j === 0 || !grid[i][j - 1]) && (
-                    <line
-                      x1={j * 10 + offsetX}
-                      y1={i * 10 + offsetY}
-                      x2={j * 10 + offsetX}
-                      y2={i * 10 + 10 + offsetY}
-                      stroke="black"
-                      strokeWidth={0.5}
-                    />
-                  )}
+                    {/* 아래쪽 테두리 */}
+                    {(i >= grid.length - 1 || !grid[i + 1][j]) && (
+                      <line
+                        x1={j * 10 + offsetX}
+                        y1={i * 10 + 10 + offsetY}
+                        x2={j * 10 + 10 + offsetX}
+                        y2={i * 10 + 10 + offsetY}
+                        stroke="black"
+                        strokeWidth={0.5}
+                      />
+                    )}
 
-                  {/* 오른쪽 테두리 */}
-                  {(j === 4 || !grid[i][j + 1]) && (
-                    <line
-                      x1={j * 10 + 10 + offsetX}
-                      y1={i * 10 + offsetY}
-                      x2={j * 10 + 10 + offsetX}
-                      y2={i * 10 + 10 + offsetY}
-                      stroke="black"
-                      strokeWidth={0.5}
-                    />
-                  )}
-                </g>
-              )}
-            </g>
-          ))
+                    {/* 왼쪽 테두리 */}
+                    {(j === 0 || !grid[i][j - 1]) && (
+                      <line
+                        x1={j * 10 + offsetX}
+                        y1={i * 10 + offsetY}
+                        x2={j * 10 + offsetX}
+                        y2={i * 10 + 10 + offsetY}
+                        stroke="black"
+                        strokeWidth={0.5}
+                      />
+                    )}
+
+                    {/* 오른쪽 테두리 */}
+                    {(j === 4 || !grid[i][j + 1]) && (
+                      <line
+                        x1={j * 10 + 10 + offsetX}
+                        y1={i * 10 + offsetY}
+                        x2={j * 10 + 10 + offsetX}
+                        y2={i * 10 + 10 + offsetY}
+                        stroke="black"
+                        strokeWidth={0.5}
+                      />
+                    )}
+                  </g>
+                )}
+              </g>
+            ))
+          )}
+        </svg>
+
+        {/* 점수 */}
+        {displayScore && (
+          <Box
+            width="32px"
+            height="32px"
+            position="absolute"
+            bottom={`${(4 - grid.length) * 10}px`}
+            right={`${(4 - grid[0].length) * 10}px`}
+          >
+            {/* 코인 이미지 */}
+            <Box
+              component="img"
+              src={CoinImage}
+              width="100%"
+              height="100%"
+              position="absolute"
+              top={0}
+              left={0}
+            />
+
+            {/* 점수 텍스트 */}
+            <Typography
+              variant="subtitle1"
+              textAlign="center"
+              color="white"
+              fontWeight="bold"
+              position="relative"
+              zIndex={1}
+            >
+              {score}
+            </Typography>
+          </Box>
         )}
-      </svg>
+      </Box>
     </Stack>
   );
 };

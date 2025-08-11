@@ -1,6 +1,7 @@
 import { Box, Stack } from "@mui/material";
 import Bolt from "./Bolt";
 import { useIsMobileLandscape } from "../utils";
+import Block from "./Block";
 
 const BlockContainer = () => {
   const isMobileLandscape = useIsMobileLandscape();
@@ -37,6 +38,12 @@ const BlockContainer = () => {
         {/* 볼트 장식 */}
         <Bolt top={boltOffset} right={boltOffset} />
         <Bolt bottom={boltOffset} right={boltOffset} />
+
+        {/* 블록 */}
+        <Block id="block-1" width="50%" height="25%" blockId={2} />
+        <Block id="block-2" width="50%" height="25%" blockId={5} />
+        <Block id="block-2" width="50%" height="25%" blockId={20} />
+        <Block id="block-2" width="50%" height="25%" blockId={17} />
       </Box>
 
       {/* 하부 지지대 */}
