@@ -1,4 +1,5 @@
 import { Box, Stack, Typography } from "@mui/material";
+import Board from "./Board";
 
 const Package = () => {
   return (
@@ -36,7 +37,7 @@ const Package = () => {
             top={0}
             left={0}
           >
-            <Box width="80%" height="90%" bgcolor="red" />
+            <Board />
           </Stack>
         </Stack>
       </Stack>

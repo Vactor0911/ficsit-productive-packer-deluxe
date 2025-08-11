@@ -93,7 +93,7 @@ const Score = (props: ScoreProps) => {
   const getScoreTextSize = useCallback(() => {
     switch (variant) {
       case "total":
-        return isMobileLandscape ? "2em !important" : "inherit";
+        return isMobileLandscape ? "2em !important" : "1.5rem";
       default:
         return isMobileLandscape ? "1.25em !important" : "inherit";
     }

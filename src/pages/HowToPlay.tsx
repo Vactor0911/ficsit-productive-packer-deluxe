@@ -38,8 +38,28 @@ const HowToPlay = () => {
           padding={2}
           position="relative"
         >
+          {/* 하단 그라데이션 장식 */}
+          <Box
+            position="absolute"
+            bottom={0}
+            left={0}
+            width="100%"
+            height="72px"
+            sx={{
+              background:
+                "linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, #d1fec1 90%)",
+            }}
+            zIndex={1}
+          />
+
           {/* 플레이 방법 */}
-          <StyledOverlayScrollbarsComponent defer>
+          <StyledOverlayScrollbarsComponent
+            defer
+            css={{
+              position: "absolute",
+              zIndex: 2,
+            }}
+          >
             <Stack
               paddingRight={2}
               paddingY={{

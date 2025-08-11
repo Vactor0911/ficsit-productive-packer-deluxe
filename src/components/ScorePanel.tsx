@@ -2,16 +2,20 @@ import { Stack, Typography } from "@mui/material";
 import Panel from "./Panel";
 import { useIsMobileLandscape } from "../utils";
 import Score from "./Score";
+import Bolt from "./Bolt";
 
 const ScorePanel = () => {
   const isMobileLandscape = useIsMobileLandscape();
+  const boltOffset = isMobileLandscape ? 4 : 8;
 
   return (
     <Panel
       padding={isMobileLandscape ? 0.5 : 1}
+      paddingBottom={isMobileLandscape ? 1 : 3}
       backgroundColor="#5ba6c5"
       display="flex"
       justifyContent="center"
+      position="relative"
     >
       <Stack
         maxWidth="90%"
@@ -78,6 +82,12 @@ const ScorePanel = () => {
           <Score variant="default" score={0} />
         </Stack>
       </Stack>
+
+      {/* 볼트 장식 */}
+      <Bolt top={boltOffset} left={boltOffset} />
+      <Bolt top={boltOffset} right={boltOffset} />
+      <Bolt bottom={boltOffset} left={boltOffset} />
+      <Bolt bottom={boltOffset} right={boltOffset} />
     </Panel>
   );
 };

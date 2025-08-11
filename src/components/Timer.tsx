@@ -5,6 +5,7 @@ const Timer = () => {
 
   return (
     <Stack
+      minHeight="60px"
       height="100%"
       justifyContent="center"
       alignItems="center"

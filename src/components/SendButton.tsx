@@ -37,7 +37,7 @@ const SendButton = (props: SendButtonProps) => {
         },
         panelProps: isMobileLandscape
           ? {
-              padding: 0,
+              padding: 1,
               paddingY: 0.5,
               sx: {
                 "& .MuiTypography-root": {
