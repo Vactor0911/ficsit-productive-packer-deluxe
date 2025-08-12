@@ -13,8 +13,20 @@ import { useAtomValue } from "jotai";
 import { vhAtom } from "../states";
 import ScorePanel from "../components/ScorePanel";
 import SendButton from "../components/SendButton";
+import { Navigate } from "react-router-dom";
 
 const Game = () => {
+  // URL 검증
+  const level = window.location.pathname.split("/").pop();
+  if (
+    !level ||
+    isNaN(Number(level)) ||
+    Number(level) < 1 ||
+    Number(level) > 6
+  ) {
+    return <Navigate to="/levels" />;
+  }
+
   const isMobileLandscape = useIsMobileLandscape();
 
   const [score, setScore] = useState(1234567890);
@@ -156,9 +168,7 @@ const Game = () => {
                 lg: "75%",
                 xl: "60%",
               }}
-              justifyContent={
-                isMobileLandscape ? "space-between" : "space-evenly"
-              }
+              justifyContent="space-evenly"
             >
               {/* 점수 패널 */}
               <Box>

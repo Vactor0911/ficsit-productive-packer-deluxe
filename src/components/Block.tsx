@@ -162,12 +162,34 @@ const Block = (props: BlockProps) => {
 
         {/* 점수 */}
         {displayScore && (
-          <Box
-            width={isMobileLandscape ? "16px" : "32px"}
-            height={isMobileLandscape ? "16px" : "32px"}
+          <Stack
+            width={
+              isMobileLandscape
+                ? "16px"
+                : {
+                    xs: "24px",
+                    sm: "32px",
+                  }
+            }
+            height={
+              isMobileLandscape
+                ? "16px"
+                : {
+                    xs: "24px",
+                    sm: "32px",
+                  }
+            }
+            justifyContent="center"
+            alignItems="center"
             position="absolute"
             bottom={`${(4 - grid.length) * 11.25}%`}
             right={`${(4 - grid[0].length) * 11.25}%`}
+            sx={{
+              transform: {
+                xs: "translate(25%, 25%)",
+                sm: "none",
+              },
+            }}
           >
             {/* 코인 이미지 */}
             <Box
@@ -182,17 +204,20 @@ const Block = (props: BlockProps) => {
 
             {/* 점수 텍스트 */}
             <Typography
-              variant="subtitle1"
+              variant="body2"
               textAlign="center"
               color="white"
               fontWeight="bold"
               fontSize={isMobileLandscape ? "0.5rem" : "inherit"}
               position="relative"
               zIndex={1}
+              sx={{
+                transform: "translateY(-7%)",
+              }}
             >
               {score}
             </Typography>
-          </Box>
+          </Stack>
         )}
       </Box>
     </Stack>

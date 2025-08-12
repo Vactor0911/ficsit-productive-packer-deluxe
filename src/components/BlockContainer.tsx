@@ -2,10 +2,14 @@ import { Box, Grid, Stack } from "@mui/material";
 import Bolt from "./Bolt";
 import { useIsMobileLandscape } from "../utils";
 import Block from "./Block";
+import { useAtom } from "jotai";
+import { blockIdQueueAtom } from "../states";
 
 const BlockContainer = () => {
   const isMobileLandscape = useIsMobileLandscape();
   const boltOffset = isMobileLandscape ? 4 : 8;
+
+  const [blockIdQueue] = useAtom(blockIdQueueAtom);
 
   return (
     <Stack
@@ -34,7 +38,18 @@ const BlockContainer = () => {
       />
 
       {/* 블록 컨테이너 */}
-      <Box height="calc(100% - 72px)" bgcolor="#666666" position="relative">
+      <Box
+        height={
+          isMobileLandscape
+            ? "calc(100% - 36px)"
+            : {
+                xs: "calc(100% - 36px)",
+                sm: "calc(100% - 72px)",
+              }
+        }
+        bgcolor="#666666"
+        position="relative"
+      >
         {/* 볼트 장식 */}
         <Bolt top={boltOffset} right={boltOffset} />
         <Bolt bottom={boltOffset} right={boltOffset} />
@@ -47,14 +62,15 @@ const BlockContainer = () => {
           padding={isMobileLandscape ? 1.5 : 3}
           flexWrap="wrap"
         >
-          <Block id="block-1" width="50%" height="25%" blockId={2} />
-          <Block id="block-1" width="50%" height="25%" blockId={5} />
-          <Block id="block-1" width="50%" height="25%" blockId={8} />
-          <Block id="block-1" width="50%" height="25%" blockId={12} />
-          <Block id="block-1" width="50%" height="25%" blockId={11} />
-          <Block id="block-1" width="50%" height="25%" blockId={20} />
-          <Block id="block-1" width="50%" height="25%" blockId={23} />
-          <Block id="block-1" width="50%" height="25%" blockId={18} />
+          {blockIdQueue.map((blockId, index) => (
+            <Block
+              key={`block-${index}`}
+              id={`block-${index}`}
+              width="50%"
+              height="25%"
+              blockId={blockId}
+            />
+          ))}
         </Stack>
       </Box>
 
