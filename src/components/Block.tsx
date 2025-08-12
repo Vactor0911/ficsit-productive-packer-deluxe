@@ -1,6 +1,7 @@
 import { Box, Stack, Typography, type StackProps } from "@mui/material";
 import BlockData from "../assets/blocks.json";
 import CoinImage from "../assets/images/coin.svg";
+import { useIsMobileLandscape } from "../utils";
 
 interface BlockProps extends StackProps {
   id: string;
@@ -10,6 +11,8 @@ interface BlockProps extends StackProps {
 
 const Block = (props: BlockProps) => {
   const { id, blockId, displayScore = true, ...others } = props;
+
+  const isMobileLandscape = useIsMobileLandscape();
 
   const block = BlockData.find((block) => block.id === blockId);
 
@@ -30,9 +33,10 @@ const Block = (props: BlockProps) => {
   return (
     <Stack justifyContent="center" alignItems="center" {...others}>
       {/* 블록 */}
-      <Box position="relative">
+      <Box width="100%" height="100%" position="relative">
         <svg
           width="100%"
+          height="100%"
           viewBox="0 -1 40 44"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -159,11 +163,11 @@ const Block = (props: BlockProps) => {
         {/* 점수 */}
         {displayScore && (
           <Box
-            width="32px"
-            height="32px"
+            width={isMobileLandscape ? "16px" : "32px"}
+            height={isMobileLandscape ? "16px" : "32px"}
             position="absolute"
-            bottom={`${(4 - grid.length) * 10}px`}
-            right={`${(4 - grid[0].length) * 10}px`}
+            bottom={`${(4 - grid.length) * 11.25}%`}
+            right={`${(4 - grid[0].length) * 11.25}%`}
           >
             {/* 코인 이미지 */}
             <Box
@@ -182,6 +186,7 @@ const Block = (props: BlockProps) => {
               textAlign="center"
               color="white"
               fontWeight="bold"
+              fontSize={isMobileLandscape ? "0.5rem" : "inherit"}
               position="relative"
               zIndex={1}
             >
