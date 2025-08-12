@@ -34,7 +34,18 @@ const BlockContainer = () => {
       />
 
       {/* 블록 컨테이너 */}
-      <Box height="calc(100% - 72px)" bgcolor="#666666" position="relative">
+      <Box
+        height={
+          isMobileLandscape
+            ? "calc(100% - 36px)"
+            : {
+                xs: "calc(100% - 36px)",
+                sm: "calc(100% - 72px)",
+              }
+        }
+        bgcolor="#666666"
+        position="relative"
+      >
         {/* 볼트 장식 */}
         <Bolt top={boltOffset} right={boltOffset} />
         <Bolt bottom={boltOffset} right={boltOffset} />
