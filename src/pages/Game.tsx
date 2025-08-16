@@ -1,7 +1,7 @@
 import { Box, Container, Stack, Typography } from "@mui/material";
 import Panel from "../components/Panel";
 import Score from "../components/Score";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import Timer from "../components/Timer";
 import { useIsMobileLandscape } from "../utils";
 import ConveyorSupport from "../components/ConveyorSupport";
@@ -16,6 +16,11 @@ import SendButton from "../components/SendButton";
 import { Navigate } from "react-router-dom";
 
 const Game = () => {
+  const isMobileLandscape = useIsMobileLandscape();
+
+  const [score] = useState(1234567890);
+  const vh = useAtomValue(vhAtom);
+
   // URL 검증
   const level = window.location.pathname.split("/").pop();
   if (
@@ -26,15 +31,6 @@ const Game = () => {
   ) {
     return <Navigate to="/levels" />;
   }
-
-  const isMobileLandscape = useIsMobileLandscape();
-
-  const [score, setScore] = useState(1234567890);
-  const vh = useAtomValue(vhAtom);
-
-  // const handleScoreAdd = useCallback(() => {
-  //   setScore((prevScore) => prevScore + Math.floor(Math.random() * 1000));
-  // }, []);
 
   return (
     <Stack height={`${vh * 100}px`}>
@@ -160,7 +156,7 @@ const Game = () => {
             height="100%"
             top={0}
             right={0}
-            zIndex={20}
+            zIndex={10000}
           >
             <Stack
               width={{
@@ -265,7 +261,6 @@ const Game = () => {
                 md: "none",
               }
         }
-        minHeight="150px"
         flex={0.5}
       >
         <MobileBlockContainer />

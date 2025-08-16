@@ -33,11 +33,11 @@ const Block = (props: BlockProps) => {
   return (
     <Stack justifyContent="center" alignItems="center" {...others}>
       {/* 블록 */}
-      <Box width="100%" height="100%" position="relative">
+      <Box position="relative">
         <svg
           width="100%"
           height="100%"
-          viewBox="0 -1 40 44"
+          viewBox="0 -1 42 44"
           xmlns="http://www.w3.org/2000/svg"
         >
           {grid.map((row, i) =>
@@ -185,10 +185,7 @@ const Block = (props: BlockProps) => {
             bottom={`${(4 - grid.length) * 11.25}%`}
             right={`${(4 - grid[0].length) * 11.25}%`}
             sx={{
-              transform: {
-                xs: "translate(25%, 25%)",
-                sm: "none",
-              },
+              transform: "translate(0, 25%)",
             }}
           >
             {/* 코인 이미지 */}
