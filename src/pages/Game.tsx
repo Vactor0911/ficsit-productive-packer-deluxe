@@ -261,7 +261,6 @@ const Game = () => {
                 md: "none",
               }
         }
-        minHeight="150px"
         flex={0.5}
       >
         <MobileBlockContainer />

@@ -8,7 +8,7 @@ const MobileBlockContainer = () => {
   const [blockIdQueue] = useAtom(blockIdQueueAtom);
 
   return (
-    <Stack width="100%" height="100%" position="relative">
+    <Stack width="100%" height="100%" minHeight="200px" position="relative">
       {/* 상부 장식 */}
       <Box
         height="12px"
@@ -28,8 +28,7 @@ const MobileBlockContainer = () => {
           width="100%"
           height="100%"
           flexWrap="wrap"
-          padding={1}
-          paddingTop={2}
+          padding="16px 8px"
         >
           {blockIdQueue.map((blockId, index) => (
             <Block
