@@ -14,7 +14,7 @@ const Board = () => {
   };
 
   return (
-    <Box width="80%" height="90%" position="relative">
+    <Box width="90%" height="90%" position="relative">
       {/* 보드 */}
       <Box {...commonImageStyles} position="relative" zIndex={2} />
 

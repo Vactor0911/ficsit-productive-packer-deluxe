@@ -1,8 +1,25 @@
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, keyframes, Stack, Typography } from "@mui/material";
 import Board from "./Board";
 import FicsitLogo from "../assets/images/ficsit.svg";
 
-const Package = () => {
+const CoverStyle = keyframes`
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+`;
+
+interface PackageProps {
+  isCovered?: boolean;
+}
+
+const Package = (props: PackageProps) => {
+  const { isCovered } = props;
+
   return (
     <Stack
       width="100%"
@@ -81,6 +98,10 @@ const Package = () => {
         top="-2px"
         left="-2px"
         zIndex={1000}
+        sx={{
+          opacity: isCovered ? 1 : 0,
+          animation: isCovered ? `${CoverStyle} 0.5s ease-in-out` : "none",
+        }}
       >
         <Stack
           flex={1}
@@ -97,8 +118,14 @@ const Package = () => {
             alignItems="flex-end"
             color="#8d5b1d"
             position="absolute"
-            bottom={10}
-            right={10}
+            bottom={{
+              xs: 10,
+              md: 20,
+            }}
+            right={{
+              xs: 10,
+              md: 20,
+            }}
           >
             <Box component="img" src={FicsitLogo} width="3.5rem" />
             <Typography variant="subtitle1" lineHeight="1rem">
