@@ -43,6 +43,9 @@ const Board = () => {
           width={32}
           height={32}
           fill="#666666"
+          vector-effect="non-scaling-stroke"
+          stroke="black"
+          stroke-width="2px"
         />
       );
     }
