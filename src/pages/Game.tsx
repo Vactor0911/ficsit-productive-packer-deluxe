@@ -1,7 +1,7 @@
 import { Box, Container, Stack, Typography } from "@mui/material";
 import Panel from "../components/Panel";
 import Score from "../components/Score";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Timer from "../components/Timer";
 import { useIsMobileLandscape } from "../utils";
 import ConveyorSupport from "../components/ConveyorSupport";
@@ -13,16 +13,31 @@ import { useAtomValue } from "jotai";
 import { vhAtom } from "../states";
 import ScorePanel from "../components/ScorePanel";
 import SendButton from "../components/SendButton";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
+import { useBoard } from "../hooks";
 
 const Game = () => {
   const isMobileLandscape = useIsMobileLandscape();
+  const location = useLocation();
+  const { resetBoard } = useBoard();
 
   const [score] = useState(1234567890);
   const vh = useAtomValue(vhAtom);
 
-  // URL 검증
-  const level = window.location.pathname.split("/").pop();
+  // URL에서 레벨 추출
+  const level = useMemo(
+    () => location.pathname.split("/").pop(),
+    [location.pathname]
+  );
+
+  // 보드 그리드 초기화
+  useEffect(() => {
+    if (level) {
+      resetBoard(Number(level));
+    }
+  }, [level, resetBoard]);
+
+  // 레벨 유효성 검증
   if (
     !level ||
     isNaN(Number(level)) ||
