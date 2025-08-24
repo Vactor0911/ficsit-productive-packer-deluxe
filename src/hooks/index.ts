@@ -42,6 +42,42 @@ export const useBoard = () => {
           });
         });
 
+        // 테스트 데이터
+        newBoardGrid.push({
+          id: 100,
+          x: 3,
+          y: 0,
+          blockId: 4,
+        });
+
+        newBoardGrid.push({
+          id: 100,
+          x: 4,
+          y: 7,
+          blockId: 8,
+        });
+
+        newBoardGrid.push({
+          id: 100,
+          x: 1,
+          y: 6,
+          blockId: 20,
+        });
+
+        newBoardGrid.push({
+          id: 100,
+          x: 6,
+          y: 2,
+          blockId: 22,
+        });
+
+        newBoardGrid.push({
+          id: 100,
+          x: 6,
+          y: 3,
+          blockId: 20,
+        });
+
         // 보드 그리드 적용
         setBoardGrid(newBoardGrid);
 

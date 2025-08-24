@@ -26,6 +26,10 @@ const Block = (props: BlockProps) => {
   const grid = block.grid || [[1]]; // 그리드 배열
   const score = block.score || 0; // 점수
 
+  // 오프셋 계산
+  const offsetX = (4 - block.grid[0].length) * 16;
+  const offsetY = (4 - block.grid.length) * 16;
+
   return (
     <Stack justifyContent="center" alignItems="center" {...others}>
       {/* 블록 */}
@@ -36,7 +40,7 @@ const Block = (props: BlockProps) => {
           height="100%"
           viewBox="-1 1 130 132"
         >
-          <BlockBase id={id} blockId={blockId} />
+          <BlockBase id={id} blockId={blockId} x={offsetX} y={offsetY} />
         </svg>
 
         {/* 점수 */}

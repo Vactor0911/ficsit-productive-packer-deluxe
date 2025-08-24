@@ -5,6 +5,7 @@ import { useCallback, useMemo } from "react";
 import { useAtomValue } from "jotai";
 import { boardGridAtom } from "../states";
 import { useBoard } from "../hooks";
+import BlockBase from "./BlockBase";
 
 const Board = () => {
   const location = useLocation();
@@ -77,15 +78,7 @@ const Board = () => {
     }
 
     // 일반 블록
-    return (
-      <rect
-        x={x}
-        y={y}
-        width={1}
-        height={1}
-        fill={`url(#pattern-${blockId})`}
-      />
-    );
+    return <BlockBase id={`${blockId}-${x}-${y}`} blockId={blockId} x={x * 32} y={y * 32 - 6} />;
   }, []);
 
   return (
@@ -116,7 +109,7 @@ const Board = () => {
         }}
       >
         {boardGrid.map((grid, index) => (
-          <g key={`block-${index}`}>
+          <g key={`block-${index}`} x={grid.x * 32} y={grid.y * 32}>
             {drawBlock(grid.blockId, grid.x, grid.y)}
           </g>
         ))}
