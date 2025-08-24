@@ -47,9 +47,9 @@ const BlockBase = (props: BlockBaseProps) => {
 
                     {/* 아래쪽 테두리 */}
                     <line
-                      x1={j * 32 + offsetX - 1}
+                      x1={j * 32 + offsetX - 0.5}
                       y1={i * 32 + 38 + offsetY}
-                      x2={j * 32 + 32 + offsetX + 1}
+                      x2={j * 32 + 32 + offsetX + 0.5}
                       y2={i * 32 + 38 + offsetY}
                       stroke="black"
                       strokeWidth="2px"
@@ -60,9 +60,9 @@ const BlockBase = (props: BlockBaseProps) => {
                     {(j === 0 || !grid[i][j - 1]) && (
                       <line
                         x1={j * 32 + offsetX}
-                        y1={i * 32 + 32 + offsetY - 1}
+                        y1={i * 32 + 32 + offsetY - 0.5}
                         x2={j * 32 + offsetX}
-                        y2={i * 32 + 38 + offsetY + 1}
+                        y2={i * 32 + 38 + offsetY + 0.5}
                         stroke="black"
                         strokeWidth="2px"
                         vectorEffect="non-scaling-stroke"
@@ -73,9 +73,9 @@ const BlockBase = (props: BlockBaseProps) => {
                     {(j === 4 || !grid[i][j + 1]) && (
                       <line
                         x1={j * 32 + 32 + offsetX}
-                        y1={i * 32 + 32 + offsetY - 1}
+                        y1={i * 32 + 32 + offsetY - 0.5}
                         x2={j * 32 + 32 + offsetX}
-                        y2={i * 32 + 38 + offsetY + 1}
+                        y2={i * 32 + 38 + offsetY + 0.5}
                         stroke="black"
                         strokeWidth="2px"
                         vectorEffect="non-scaling-stroke"
@@ -99,9 +99,9 @@ const BlockBase = (props: BlockBaseProps) => {
                 {/* 위쪽 테두리 */}
                 {(i === 0 || !grid[i - 1][j]) && (
                   <line
-                    x1={j * 32 + offsetX - 1}
+                    x1={j * 32 + offsetX - 0.5}
                     y1={i * 32 + offsetY}
-                    x2={j * 32 + 32 + offsetX + 1}
+                    x2={j * 32 + 32 + offsetX + 0.5}
                     y2={i * 32 + offsetY}
                     stroke="black"
                     strokeWidth="2px"
@@ -112,9 +112,9 @@ const BlockBase = (props: BlockBaseProps) => {
                 {/* 아래쪽 테두리 */}
                 {(i >= grid.length - 1 || !grid[i + 1][j]) && (
                   <line
-                    x1={j * 32 + offsetX - 1}
+                    x1={j * 32 + offsetX - 0.5}
                     y1={i * 32 + 32 + offsetY}
-                    x2={j * 32 + 32 + offsetX + 1}
+                    x2={j * 32 + 32 + offsetX + 0.5}
                     y2={i * 32 + 32 + offsetY}
                     stroke="black"
                     strokeWidth="2px"
@@ -126,9 +126,9 @@ const BlockBase = (props: BlockBaseProps) => {
                 {(j === 0 || !grid[i][j - 1]) && (
                   <line
                     x1={j * 32 + offsetX}
-                    y1={i * 32 + offsetY - 1}
+                    y1={i * 32 + offsetY - 0.5}
                     x2={j * 32 + offsetX}
-                    y2={i * 32 + 32 + offsetY + 1}
+                    y2={i * 32 + 32 + offsetY + 0.5}
                     stroke="black"
                     strokeWidth="2px"
                     vectorEffect="non-scaling-stroke"
@@ -139,9 +139,9 @@ const BlockBase = (props: BlockBaseProps) => {
                 {(j === 4 || !grid[i][j + 1]) && (
                   <line
                     x1={j * 32 + 32 + offsetX}
-                    y1={i * 32 + offsetY - 1}
+                    y1={i * 32 + offsetY - 0.5}
                     x2={j * 32 + 32 + offsetX}
-                    y2={i * 32 + 32 + offsetY + 1}
+                    y2={i * 32 + 32 + offsetY + 0.5}
                     stroke="black"
                     strokeWidth="2px"
                     vectorEffect="non-scaling-stroke"
