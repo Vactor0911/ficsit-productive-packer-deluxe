@@ -36,24 +36,49 @@ const Board = () => {
     // 볼트로 고정된 그리드
     if (blockId === -1) {
       return (
-        <rect
-          key={`${blockId}-${x}-${y}`}
-          x={x * 32}
-          y={y * 32}
-          width={32}
-          height={32}
-          fill="#666666"
-          vector-effect="non-scaling-stroke"
-          stroke="black"
-          stroke-width="2px"
-        />
+        <>
+          {/* 철판 */}
+          <rect
+            x={x * 32}
+            y={y * 32}
+            width={32}
+            height={32}
+            fill="#666666"
+            vectorEffect="non-scaling-stroke"
+            stroke="black"
+            strokeWidth="2px"
+          />
+
+          {/* 볼트 장식 */}
+          {[6, 26].map((offset, index) => (
+            <g key={`${blockId}-${x}-${y}-${index}`}>
+              <circle
+                cx={x * 32 + offset}
+                cy={y * 32 + offset}
+                r={3}
+                fill="#666666"
+                vectorEffect="non-scaling-stroke"
+                stroke="black"
+                strokeWidth="2px"
+              />
+              <line
+                x1={x * 32 + offset - 2}
+                y1={y * 32 + offset - 2}
+                x2={x * 32 + offset + 2}
+                y2={y * 32 + offset + 2}
+                stroke="#444"
+                vectorEffect="non-scaling-stroke"
+                strokeWidth="1px"
+              />
+            </g>
+          ))}
+        </>
       );
     }
 
     // 일반 블록
     return (
       <rect
-        key={`${blockId}-${x}-${y}`}
         x={x}
         y={y}
         width={1}
@@ -64,7 +89,14 @@ const Board = () => {
   }, []);
 
   return (
-    <Box width="90%" height="90%" position="relative">
+    <Box
+      width="98%"
+      height="98%"
+      position="relative"
+      sx={{
+        transform: "translateY(-3%)",
+      }}
+    >
       {/* 보드 */}
       <Box {...boardImageStyles} position="relative" zIndex={2} />
 
@@ -84,7 +116,9 @@ const Board = () => {
         }}
       >
         {boardGrid.map((grid, index) => (
-          <g key={index}>{drawBlock(grid.blockId, grid.x, grid.y)}</g>
+          <g key={`block-${index}`}>
+            {drawBlock(grid.blockId, grid.x, grid.y)}
+          </g>
         ))}
       </svg>
 
