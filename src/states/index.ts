@@ -14,3 +14,6 @@ export interface BoardGridData {
   blockId: number;
 }
 export const boardGridAtom = atom<BoardGridData[]>([]);
+
+// 점수
+export const scoreAtom = atom(0);

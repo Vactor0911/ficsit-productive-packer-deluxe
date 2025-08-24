@@ -1,7 +1,7 @@
 import { Box, Container, Stack, Typography } from "@mui/material";
 import Panel from "../components/Panel";
 import Score from "../components/Score";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import Timer from "../components/Timer";
 import { useIsMobileLandscape } from "../utils";
 import ConveyorSupport from "../components/ConveyorSupport";
@@ -10,7 +10,7 @@ import Package from "../components/Package";
 import BlockContainer from "../components/BlockContainer";
 import MobileBlockContainer from "../components/MobileBlockContainer";
 import { useAtomValue } from "jotai";
-import { vhAtom } from "../states";
+import { scoreAtom, vhAtom } from "../states";
 import ScorePanel from "../components/ScorePanel";
 import SendButton from "../components/SendButton";
 import { Navigate, useLocation } from "react-router-dom";
@@ -21,7 +21,7 @@ const Game = () => {
   const location = useLocation();
   const { resetBoard } = useBoard();
 
-  const [score] = useState(1234567890);
+  const score = useAtomValue(scoreAtom);
   const vh = useAtomValue(vhAtom);
 
   // URL에서 레벨 추출
@@ -153,6 +153,7 @@ const Game = () => {
             marginX={3}
             bgcolor="red"
           >
+            {/* 패키지 */}
             <Package />
           </Box>
 
