@@ -65,6 +65,7 @@ const BlockContainer = () => {
           {blockIdQueue.map((blockId, index) => (
             <Block
               key={`block-${index}`}
+              id={`block-${index}`}
               width="50%"
               height="25%"
               blockId={blockId}

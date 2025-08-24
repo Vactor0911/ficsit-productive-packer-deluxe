@@ -1,13 +1,12 @@
-import type React from "react";
 import BlockData from "../assets/blocks.json";
 
 interface BlockBaseProps {
-  key: React.Key | null | undefined;
+  id: string;
   blockId: number;
 }
 
 const BlockBase = (props: BlockBaseProps) => {
-  const { key, blockId } = props;
+  const { id, blockId } = props;
 
   const block = BlockData.find((block) => block.id === blockId);
 
@@ -21,61 +20,65 @@ const BlockBase = (props: BlockBaseProps) => {
   const grid = block.grid || [[1]]; // 그리드 배열
 
   // 오프셋 계산
-  const offsetX = (4 - block.grid[0].length) * 5;
-  const offsetY = (4 - block.grid.length) * 5;
+  const offsetX = (4 - block.grid[0].length) * 16;
+  const offsetY = (4 - block.grid.length) * 16;
 
   return (
     <>
       {grid.map((row, i) =>
         row.map((cell, j) => (
-          <g key={`${key}-grid-${i}-${j}`}>
+          <g key={`${id}-${i}-${j}`}>
             {cell && (
               <g>
                 {/* 입체 표현 블록 */}
                 {(i >= grid.length - 1 || !grid[i + 1][j]) && (
                   <g>
                     <rect
-                      x={j * 10 + offsetX}
-                      y={i * 10 + 10 + offsetY}
-                      width="10"
-                      height="2"
+                      x={j * 32 + offsetX}
+                      y={i * 32 + 32 + offsetY}
+                      width="32"
+                      height="6"
                       fill={color}
                       filter="brightness(70%)"
                       stroke={color}
-                      strokeWidth={0.1}
+                      strokeWidth="2px"
+                      vectorEffect="non-scaling-stroke"
                     />
 
                     {/* 아래쪽 테두리 */}
                     <line
-                      x1={j * 10 + offsetX}
-                      y1={i * 10 + 12 + offsetY}
-                      x2={j * 10 + 10 + offsetX}
-                      y2={i * 10 + 12 + offsetY}
+                      x1={j * 32 + offsetX - 1}
+                      y1={i * 32 + 38 + offsetY}
+                      x2={j * 32 + 32 + offsetX + 1}
+                      y2={i * 32 + 38 + offsetY}
                       stroke="black"
-                      strokeWidth={0.5}
+                      strokeWidth="2px"
+                      vectorEffect="non-scaling-stroke"
                     />
 
                     {/* 왼쪽 테두리 */}
                     {(j === 0 || !grid[i][j - 1]) && (
                       <line
-                        x1={j * 10 + offsetX}
-                        y1={i * 10 + 10 + offsetY}
-                        x2={j * 10 + offsetX}
-                        y2={i * 10 + 12 + offsetY}
+                        x1={j * 32 + offsetX}
+                        y1={i * 32 + 32 + offsetY - 1}
+                        x2={j * 32 + offsetX}
+                        y2={i * 32 + 38 + offsetY + 1}
                         stroke="black"
-                        strokeWidth={0.5}
+                        strokeWidth="2px"
+                        vectorEffect="non-scaling-stroke"
                       />
                     )}
 
                     {/* 오른쪽 테두리 */}
                     {(j === 4 || !grid[i][j + 1]) && (
                       <line
-                        x1={j * 10 + 10 + offsetX}
-                        y1={i * 10 + 10 + offsetY}
-                        x2={j * 10 + 10 + offsetX}
-                        y2={i * 10 + 12 + offsetY}
+                        x1={j * 32 + 32 + offsetX}
+                        y1={i * 32 + 32 + offsetY - 1}
+                        x2={j * 32 + 32 + offsetX}
+                        y2={i * 32 + 38 + offsetY + 1}
                         stroke="black"
-                        strokeWidth={0.5}
+                        strokeWidth="2px"
+                        vectorEffect="non-scaling-stroke"
                       />
                     )}
                   </g>
@@ -83,60 +86,65 @@ const BlockBase = (props: BlockBaseProps) => {
 
                 {/* 블록 */}
                 <rect
-                  x={j * 10 + offsetX}
-                  y={i * 10 + offsetY}
-                  width="10"
-                  height="10"
+                  x={j * 32 + offsetX}
+                  y={i * 32 + offsetY}
+                  width="32"
+                  height="32"
                   fill={color}
                   stroke={color}
-                  strokeWidth={0.3}
+                  strokeWidth="2px"
+                  vectorEffect="non-scaling-stroke"
                 />
 
                 {/* 위쪽 테두리 */}
                 {(i === 0 || !grid[i - 1][j]) && (
                   <line
-                    x1={j * 10 + offsetX}
-                    y1={i * 10 + offsetY}
-                    x2={j * 10 + 10 + offsetX}
-                    y2={i * 10 + offsetY}
+                    x1={j * 32 + offsetX - 1}
+                    y1={i * 32 + offsetY}
+                    x2={j * 32 + 32 + offsetX + 1}
+                    y2={i * 32 + offsetY}
                     stroke="black"
-                    strokeWidth={0.5}
+                    strokeWidth="2px"
+                    vectorEffect="non-scaling-stroke"
                   />
                 )}
 
                 {/* 아래쪽 테두리 */}
                 {(i >= grid.length - 1 || !grid[i + 1][j]) && (
                   <line
-                    x1={j * 10 + offsetX}
-                    y1={i * 10 + 10 + offsetY}
-                    x2={j * 10 + 10 + offsetX}
-                    y2={i * 10 + 10 + offsetY}
+                    x1={j * 32 + offsetX - 1}
+                    y1={i * 32 + 32 + offsetY}
+                    x2={j * 32 + 32 + offsetX + 1}
+                    y2={i * 32 + 32 + offsetY}
                     stroke="black"
-                    strokeWidth={0.5}
+                    strokeWidth="2px"
+                    vectorEffect="non-scaling-stroke"
                   />
                 )}
 
                 {/* 왼쪽 테두리 */}
                 {(j === 0 || !grid[i][j - 1]) && (
                   <line
-                    x1={j * 10 + offsetX}
-                    y1={i * 10 + offsetY}
-                    x2={j * 10 + offsetX}
-                    y2={i * 10 + 10 + offsetY}
+                    x1={j * 32 + offsetX}
+                    y1={i * 32 + offsetY - 1}
+                    x2={j * 32 + offsetX}
+                    y2={i * 32 + 32 + offsetY + 1}
                     stroke="black"
-                    strokeWidth={0.5}
+                    strokeWidth="2px"
+                    vectorEffect="non-scaling-stroke"
                   />
                 )}
 
                 {/* 오른쪽 테두리 */}
                 {(j === 4 || !grid[i][j + 1]) && (
                   <line
-                    x1={j * 10 + 10 + offsetX}
-                    y1={i * 10 + offsetY}
-                    x2={j * 10 + 10 + offsetX}
-                    y2={i * 10 + 10 + offsetY}
+                    x1={j * 32 + 32 + offsetX}
+                    y1={i * 32 + offsetY - 1}
+                    x2={j * 32 + 32 + offsetX}
+                    y2={i * 32 + 32 + offsetY + 1}
                     stroke="black"
-                    strokeWidth={0.5}
+                    strokeWidth="2px"
+                    vectorEffect="non-scaling-stroke"
                   />
                 )}
               </g>

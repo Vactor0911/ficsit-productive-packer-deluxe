@@ -5,12 +5,13 @@ import { useIsMobileLandscape } from "../utils";
 import BlockBase from "./BlockBase";
 
 interface BlockProps extends StackProps {
+  id: string;
   blockId: number;
   displayScore?: boolean;
 }
 
 const Block = (props: BlockProps) => {
-  const { key, blockId, displayScore = true, ...others } = props;
+  const { id, blockId, displayScore = true, ...others } = props;
 
   const isMobileLandscape = useIsMobileLandscape();
 
@@ -26,16 +27,16 @@ const Block = (props: BlockProps) => {
   const score = block.score || 0; // 점수
 
   return (
-    <Stack key={key} justifyContent="center" alignItems="center" {...others}>
+    <Stack justifyContent="center" alignItems="center" {...others}>
       {/* 블록 */}
       <Box position="relative">
         <svg
+          xmlns="http://www.w3.org/2000/svg"
           width="100%"
           height="100%"
-          viewBox="0 -1 42 44"
-          xmlns="http://www.w3.org/2000/svg"
+          viewBox="-1 1 130 132"
         >
-          <BlockBase key={key} blockId={blockId} />
+          <BlockBase id={id} blockId={blockId} />
         </svg>
 
         {/* 점수 */}
