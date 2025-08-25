@@ -24,11 +24,12 @@ const Block = (props: BlockProps) => {
 
   // 블록 데이터
   const grid = block.grid || [[1]]; // 그리드 배열
+  const color = block.color || "#666666"; // 색상
   const score = block.score || 0; // 점수
 
   // 오프셋 계산
-  const offsetX = (4 - block.grid[0].length) * 16;
-  const offsetY = (4 - block.grid.length) * 16;
+  const offsetX = (4 - block.grid[0].length) * 0.5;
+  const offsetY = (4 - block.grid.length) * 0.5;
 
   return (
     <Stack justifyContent="center" alignItems="center" {...others}>
@@ -38,9 +39,30 @@ const Block = (props: BlockProps) => {
           xmlns="http://www.w3.org/2000/svg"
           width="100%"
           height="100%"
-          viewBox="-1 1 130 132"
+          viewBox="-1 1 130 138"
         >
-          <BlockBase id={id} blockId={blockId} x={offsetX} y={offsetY} />
+          {grid.map((row, i) =>
+            row.map(
+              (cell, j) =>
+                cell && (
+                  <BlockBase
+                    key={`${id}-${i}-${j}`}
+                    x={j + offsetX}
+                    y={i + offsetY}
+                    color={color}
+                    borderTop={i === 0 || grid[i - 1]?.[j] === 0}
+                    borderBottom={
+                      i === grid.length - 1 || grid[i + 1]?.[j] === 0
+                    }
+                    borderLeft={j === 0 || grid[i]?.[j - 1] === 0}
+                    borderRight={
+                      j === grid[i].length - 1 || grid[i]?.[j + 1] === 0
+                    }
+                    thickness={i === grid.length - 1 || grid[i + 1]?.[j] === 0}
+                  />
+                )
+            )
+          )}
         </svg>
 
         {/* 점수 */}

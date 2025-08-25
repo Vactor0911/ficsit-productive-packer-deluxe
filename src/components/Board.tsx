@@ -3,7 +3,7 @@ import * as Levels from "../assets/images/levels";
 import { useLocation } from "react-router-dom";
 import { useCallback, useMemo } from "react";
 import { useAtomValue } from "jotai";
-import { boardGridAtom } from "../states";
+import { boardGridAtom, type BoardGridProps } from "../states";
 import { useBoard } from "../hooks";
 import BlockBase from "./BlockBase";
 
@@ -33,11 +33,24 @@ const Board = () => {
   };
 
   // 블록 렌더링
-  const drawBlock = useCallback((blockId: number, x: number, y: number) => {
+  const drawBlock = useCallback((block: BoardGridProps) => {
+    const {
+      blockId,
+      x,
+      y,
+      color,
+      border,
+      borderTop,
+      borderBottom,
+      borderLeft,
+      borderRight,
+      thickness,
+    } = block;
+
     // 볼트로 고정된 그리드
     if (blockId === -1) {
       return (
-        <>
+        <g key={`board-${x}-${y}`}>
           {/* 철판 */}
           <rect
             x={x * 32}
@@ -73,12 +86,25 @@ const Board = () => {
               />
             </g>
           ))}
-        </>
+        </g>
       );
     }
 
     // 일반 블록
-    return <BlockBase id={`${blockId}-${x}-${y}`} blockId={blockId} x={x * 32} y={y * 32 - 6} />;
+    return (
+      <BlockBase
+        key={`board-${x}-${y}`}
+        x={x}
+        y={y - 0.2}
+        color={color}
+        border={border}
+        borderTop={borderTop}
+        borderBottom={borderBottom}
+        borderLeft={borderLeft}
+        borderRight={borderRight}
+        thickness={thickness}
+      />
+    );
   }, []);
 
   return (
@@ -97,22 +123,19 @@ const Board = () => {
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="100%"
-        height="100%"
+        height="101.25%"
         viewBox={`${(10 - boardSize.width) * -16 - 2} ${
-          (9 - boardSize.height) * -16 - 2
-        } 324 292`}
+          (9 - boardSize.height) * -16 - 7
+        } 324 296`}
         css={{
           position: "absolute",
-          top: 0,
+          top: "-1.7%",
           left: 0,
           zIndex: 2,
         }}
       >
-        {boardGrid.map((grid, index) => (
-          <g key={`block-${index}`} x={grid.x * 32} y={grid.y * 32}>
-            {drawBlock(grid.blockId, grid.x, grid.y)}
-          </g>
-        ))}
+        {/* 블록 렌더링 */}
+        {boardGrid.map((row) => row.map((block) => drawBlock(block)))}
       </svg>
 
       {/* 장식 */}
