@@ -116,7 +116,7 @@ const Board = () => {
         thickness={thickness}
       />
     );
-  }, []);
+  }, [boardGrid]);
 
   return (
     <Box
