@@ -86,6 +86,17 @@ const Board = () => {
               />
             </g>
           ))}
+
+          {/* 그림자 */}
+          {Number(boardGrid[y - 1]?.[x].blockId) >= 0 && (
+            <rect
+              x={x * 32}
+              y={y * 32}
+              width={32}
+              height={6}
+              fill="rgb(0, 0, 0, 0.25)"
+            />
+          )}
         </g>
       );
     }
