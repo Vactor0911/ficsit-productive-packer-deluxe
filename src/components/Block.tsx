@@ -3,7 +3,7 @@ import BlockData from "../assets/blocks.json";
 import CoinImage from "../assets/images/coin.svg";
 import { useIsMobileLandscape } from "../utils";
 import BlockBase from "./BlockBase";
-import { useCallback, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 interface BlockProps extends StackProps {
   id: string;
@@ -24,7 +24,9 @@ const Block = (props: BlockProps) => {
   }, [blockId]);
 
   // 블록 크기
-  const getBlockSize = useCallback(() => {
+  const [blockSize, setBlockSize] = useState(0);
+
+  const calcBlockSize = useCallback(() => {
     // 블록 컨테이너가 없다면 종료
     if (!blockContainerRef.current) {
       return 0;
@@ -34,8 +36,23 @@ const Block = (props: BlockProps) => {
     const height = blockContainerRef.current.clientHeight;
 
     const minSize = Math.min(width, height);
-    return minSize;
+    setBlockSize(minSize);
   }, []);
+
+  // ResizeObserver를 사용하여 크기 변화 감지
+  useEffect(() => {
+    const resizeObserver = new ResizeObserver(() => {
+      calcBlockSize();
+    });
+
+    if (blockContainerRef.current) {
+      resizeObserver.observe(blockContainerRef.current);
+    }
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [calcBlockSize]);
 
   // 블록을 찾지 못하면 null 반환
   if (!block) {
@@ -112,8 +129,8 @@ const Block = (props: BlockProps) => {
             justifyContent="center"
             alignItems="center"
             position="absolute"
-            bottom={`calc(50% - ${getBlockSize() * grid.length * 0.125}px)`}
-            right={`calc(50% - ${getBlockSize() * grid[0].length * 0.125}px)`}
+            bottom={`calc(50% - ${blockSize * grid.length * 0.125}px)`}
+            right={`calc(50% - ${blockSize * grid[0].length * 0.125}px)`}
             sx={{
               transform: "translate(25%, 50%)",
             }}
