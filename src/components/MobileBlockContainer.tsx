@@ -1,11 +1,12 @@
 import { Box, Stack } from "@mui/material";
 import Bolt from "./Bolt";
-import { useAtom } from "jotai";
-import { blockIdQueueAtom } from "../states";
-import Block from "./Block";
+import { useAtom, useAtomValue } from "jotai";
+import { blockIdQueueAtom, boardGridSizeAtom } from "../states";
+import DraggableBlock from "./DraggableBlock";
 
 const MobileBlockContainer = () => {
   const [blockIdQueue] = useAtom(blockIdQueueAtom);
+  const boardGridSize = useAtomValue(boardGridSizeAtom);
 
   return (
     <Stack width="100%" height="100%" minHeight="200px" position="relative">
@@ -31,12 +32,14 @@ const MobileBlockContainer = () => {
           padding="16px 8px"
         >
           {blockIdQueue.map((blockId, index) => (
-            <Block
+            <DraggableBlock
               key={`block-${index}`}
               id={`block-${index}`}
               width="25%"
               height="50%"
               blockId={blockId}
+              shadow={true}
+              ghostSize={boardGridSize * 4}
             />
           ))}
         </Stack>

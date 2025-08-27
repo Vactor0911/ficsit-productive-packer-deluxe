@@ -8,6 +8,7 @@ export interface BlockBaseProps {
   borderLeft?: boolean;
   borderRight?: boolean;
   thickness?: boolean;
+  shadow?: boolean;
 }
 
 const BlockBase = (props: BlockBaseProps) => {
@@ -21,6 +22,7 @@ const BlockBase = (props: BlockBaseProps) => {
     borderLeft,
     borderRight,
     thickness,
+    shadow,
   } = props;
 
   return (
@@ -80,13 +82,15 @@ const BlockBase = (props: BlockBaseProps) => {
           </g>
 
           {/* 그림자 */}
-          <rect
-            x={x * 32}
-            y={y * 32 + 32 + 6}
-            width="32"
-            height="6"
-            fill="rgba(0, 0, 0, 0.25)"
-          />
+          {shadow && (
+            <rect
+              x={x * 32}
+              y={y * 32 + (thickness ? 32 : 0) + 6}
+              width="32"
+              height="6"
+              fill="rgba(0, 0, 0, 0.25)"
+            />
+          )}
         </g>
       )}
 

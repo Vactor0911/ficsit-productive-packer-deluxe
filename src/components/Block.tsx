@@ -5,14 +5,15 @@ import { useIsMobileLandscape } from "../utils";
 import BlockBase from "./BlockBase";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-interface BlockProps extends StackProps {
+export interface BlockProps extends StackProps {
   id: string;
   blockId: number;
   displayScore?: boolean;
+  shadow?: boolean;
 }
 
 const Block = (props: BlockProps) => {
-  const { id, blockId, displayScore = true, ...others } = props;
+  const { id, blockId, displayScore = true, shadow = false, ...others } = props;
 
   const isMobileLandscape = useIsMobileLandscape();
 
@@ -26,6 +27,7 @@ const Block = (props: BlockProps) => {
   // 블록 크기
   const [blockSize, setBlockSize] = useState(0);
 
+  // 블록 크기 계산
   const calcBlockSize = useCallback(() => {
     // 블록 컨테이너가 없다면 종료
     if (!blockContainerRef.current) {
@@ -101,6 +103,7 @@ const Block = (props: BlockProps) => {
                       j === grid[i].length - 1 || grid[i]?.[j + 1] === 0
                     }
                     thickness={i === grid.length - 1 || grid[i + 1]?.[j] === 0}
+                    shadow={shadow}
                   />
                 )
             )
@@ -132,7 +135,7 @@ const Block = (props: BlockProps) => {
             bottom={`calc(50% - ${blockSize * grid.length * 0.125}px)`}
             right={`calc(50% - ${blockSize * grid[0].length * 0.125}px)`}
             sx={{
-              transform: "translate(25%, 50%)",
+              transform: "translate(25%, 25%)",
             }}
           >
             {/* 코인 이미지 */}

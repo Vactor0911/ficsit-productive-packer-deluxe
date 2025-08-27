@@ -11,8 +11,10 @@ export const blockIdQueueAtom = atom<number[]>([0, 5, 8, 12, 11, 20, 23, 18]);
 export interface BoardGridProps extends BlockBaseProps {
   blockId?: number;
 }
-
 export const boardGridAtom = atom<BoardGridProps[][]>([]);
+
+// 보드 그리드 크기
+export const boardGridSizeAtom = atom(0);
 
 // 점수
 export const scoreAtom = atom(0);

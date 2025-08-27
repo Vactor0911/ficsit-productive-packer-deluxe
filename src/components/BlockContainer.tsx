@@ -1,15 +1,16 @@
 import { Box, Stack } from "@mui/material";
 import Bolt from "./Bolt";
 import { useIsMobileLandscape } from "../utils";
-import Block from "./Block";
-import { useAtom } from "jotai";
-import { blockIdQueueAtom } from "../states";
+import { useAtom, useAtomValue } from "jotai";
+import { blockIdQueueAtom, boardGridSizeAtom } from "../states";
+import DraggableBlock from "./DraggableBlock";
 
 const BlockContainer = () => {
   const isMobileLandscape = useIsMobileLandscape();
   const boltOffset = isMobileLandscape ? 4 : 8;
 
   const [blockIdQueue] = useAtom(blockIdQueueAtom);
+  const boardGridSize = useAtomValue(boardGridSizeAtom);
 
   return (
     <Stack
@@ -59,16 +60,20 @@ const BlockContainer = () => {
           width="100%"
           height="100%"
           direction="row"
+          justifyContent="space-between"
           padding={isMobileLandscape ? 1.5 : 3}
           flexWrap="wrap"
         >
           {blockIdQueue.map((blockId, index) => (
-            <Block
+            <DraggableBlock
               key={`block-${index}`}
               id={`block-${index}`}
-              width="50%"
-              height="25%"
+              width="calc(50% - 25px)"
+              height="calc(25% - 25px)"
+              margin="10px"
               blockId={blockId}
+              shadow={true}
+              ghostSize={boardGridSize * 4}
             />
           ))}
         </Stack>
