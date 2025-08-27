@@ -1,7 +1,7 @@
 import { Box, Container, Stack, Typography } from "@mui/material";
 import Panel from "../components/Panel";
 import Score from "../components/Score";
-import { useState } from "react";
+import { useEffect, useMemo } from "react";
 import Timer from "../components/Timer";
 import { useIsMobileLandscape } from "../utils";
 import ConveyorSupport from "../components/ConveyorSupport";
@@ -10,19 +10,43 @@ import Package from "../components/Package";
 import BlockContainer from "../components/BlockContainer";
 import MobileBlockContainer from "../components/MobileBlockContainer";
 import { useAtomValue } from "jotai";
-import { vhAtom } from "../states";
+import { scoreAtom, vhAtom } from "../states";
 import ScorePanel from "../components/ScorePanel";
 import SendButton from "../components/SendButton";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
+import { useBoard } from "../hooks";
 
 const Game = () => {
   const isMobileLandscape = useIsMobileLandscape();
+  const location = useLocation();
+  const { resetBoard, addBlock } = useBoard();
 
-  const [score] = useState(1234567890);
+  const score = useAtomValue(scoreAtom);
   const vh = useAtomValue(vhAtom);
 
-  // URL 검증
-  const level = window.location.pathname.split("/").pop();
+  // URL에서 레벨 추출
+  const level = useMemo(
+    () => location.pathname.split("/").pop(),
+    [location.pathname]
+  );
+
+  // 보드 그리드 초기화
+  useEffect(() => {
+    if (level) {
+      resetBoard(Number(level));
+
+      // 테스트용 블록
+      addBlock(3, 2, 2);
+      addBlock(9, 2, 0);
+      addBlock(12, 7, 1);
+      addBlock(20, 5, 5);
+      addBlock(20, 4, 0);
+      addBlock(22, 6, 5);
+      addBlock(16, 1, 4);
+    }
+  }, [addBlock, level, resetBoard]);
+
+  // 레벨 유효성 검증
   if (
     !level ||
     isNaN(Number(level)) ||
@@ -138,7 +162,8 @@ const Game = () => {
             marginX={3}
             bgcolor="red"
           >
-            <Package />
+            {/* 패키지 */}
+            <Package/>
           </Box>
 
           {/* 우측 패널 */}

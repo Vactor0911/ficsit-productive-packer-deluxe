@@ -1,4 +1,4 @@
-import { Box, Grid, Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import Bolt from "./Bolt";
 import { useIsMobileLandscape } from "../utils";
 import Block from "./Block";
