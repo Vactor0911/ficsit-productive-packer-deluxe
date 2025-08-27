@@ -3,6 +3,7 @@ import BlockData from "../assets/blocks.json";
 import CoinImage from "../assets/images/coin.svg";
 import { useIsMobileLandscape } from "../utils";
 import BlockBase from "./BlockBase";
+import { useCallback, useMemo, useRef } from "react";
 
 interface BlockProps extends StackProps {
   id: string;
@@ -15,7 +16,26 @@ const Block = (props: BlockProps) => {
 
   const isMobileLandscape = useIsMobileLandscape();
 
-  const block = BlockData.find((block) => block.id === blockId);
+  const blockContainerRef = useRef<HTMLDivElement>(null);
+
+  // 블록 ID로 데이터 찾기
+  const block = useMemo(() => {
+    return BlockData.find((block) => block.id === blockId);
+  }, [blockId]);
+
+  // 블록 크기
+  const getBlockSize = useCallback(() => {
+    // 블록 컨테이너가 없다면 종료
+    if (!blockContainerRef.current) {
+      return 0;
+    }
+
+    const width = blockContainerRef.current.clientWidth;
+    const height = blockContainerRef.current.clientHeight;
+
+    const minSize = Math.min(width, height);
+    return minSize;
+  }, []);
 
   // 블록을 찾지 못하면 null 반환
   if (!block) {
@@ -34,12 +54,17 @@ const Block = (props: BlockProps) => {
   return (
     <Stack justifyContent="center" alignItems="center" {...others}>
       {/* 블록 */}
-      <Box position="relative">
+      <Box
+        ref={blockContainerRef}
+        width="100%"
+        height="100%"
+        position="relative"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="100%"
           height="100%"
-          viewBox="-1 1 130 138"
+          viewBox="-1 -1 130 141"
         >
           {grid.map((row, i) =>
             row.map(
@@ -87,10 +112,10 @@ const Block = (props: BlockProps) => {
             justifyContent="center"
             alignItems="center"
             position="absolute"
-            bottom={`${(4 - grid.length) * 11.25}%`}
-            right={`${(4 - grid[0].length) * 11.25}%`}
+            bottom={`calc(50% - ${getBlockSize() * grid.length * 0.125}px)`}
+            right={`calc(50% - ${getBlockSize() * grid[0].length * 0.125}px)`}
             sx={{
-              transform: "translate(0, 25%)",
+              transform: "translate(25%, 50%)",
             }}
           >
             {/* 코인 이미지 */}
