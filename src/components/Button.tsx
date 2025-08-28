@@ -120,7 +120,7 @@ const Button = (props: ButtonProps) => {
           }}
         >
           <Marquee
-            direction="left"
+            direction="right"
             autoFill={true}
             css={{
               height: "100%",
