@@ -145,8 +145,10 @@ const DraggableBlock = (props: DraggableBlockProps) => {
       {/* 드래그 영역 */}
       <Box
         ref={dragRef}
-        width={`calc(${blockSize * 0.25 * grid[0].length}px + 20px)`}
-        height={`calc(${blockSize * 0.25 * grid.length + 10}px + 20px)`}
+        width={`calc(${blockSize * 0.25 * grid[0].length}px + 25%)`}
+        height={`calc(${blockSize * 0.25 * grid.length + 10}px + 25%)`}
+        maxWidth={blockSize}
+        maxHeight={blockSize}
         top="50%"
         left="50%"
         position="absolute"
