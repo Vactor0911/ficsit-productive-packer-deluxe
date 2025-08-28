@@ -61,6 +61,7 @@ const BlockContainer = () => {
           height="100%"
           direction="row"
           justifyContent="space-between"
+          alignContent="space-between"
           padding={isMobileLandscape ? 1.5 : 3}
           flexWrap="wrap"
         >
@@ -68,9 +69,8 @@ const BlockContainer = () => {
             <DraggableBlock
               key={`block-${index}`}
               id={`block-${index}`}
-              width="calc(50% - 25px)"
-              height="calc(25% - 25px)"
-              margin="10px"
+              width="45%"
+              height="20%"
               blockId={blockId}
               shadow={true}
               ghostSize={boardGridSize * 4}

@@ -140,6 +140,8 @@ const DraggableBlock = (props: DraggableBlockProps) => {
         id={id}
         blockId={blockId}
         shadow={shadow}
+        width="100%"
+        height="100%"
       />
 
       {/* 드래그 영역 */}
