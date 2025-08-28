@@ -9,6 +9,7 @@ export interface BlockBaseProps {
   borderRight?: boolean;
   thickness?: boolean;
   shadow?: boolean;
+  animation?: boolean;
 }
 
 const BlockBase = (props: BlockBaseProps) => {
@@ -23,6 +24,7 @@ const BlockBase = (props: BlockBaseProps) => {
     borderRight,
     thickness,
     shadow,
+    animation,
   } = props;
 
   return (
@@ -101,10 +103,66 @@ const BlockBase = (props: BlockBaseProps) => {
         width="32"
         height="32"
         fill={color}
-        stroke={color}
-        strokeWidth="2px"
-        vectorEffect="non-scaling-stroke"
+        stroke={animation ? "none" : color}
       />
+
+      {/* 애니메이션 */}
+      {animation && (
+        <>
+          <defs>
+            <symbol id="animation" viewBox="0 0 64 64">
+              <path d="M 0 0 16 0 L 0 16 Z" fill="inherit" />
+              <path
+                d="M 64 0 L 48 0 L 0 48 L 0 64 L 16 64 L 64 16 Z"
+                fill="inherit"
+              />
+              <path d="M 64 64 L 48 64 L 64 48 Z" fill="inherit" />
+            </symbol>
+            <clipPath id={`animationClipArea${x}-${y}`}>
+              <rect x={x * 32} y={y * 32} width="32" height="32" />
+            </clipPath>
+          </defs>
+
+          <g clipPath={`url(#animationClipArea${x}-${y})`}>
+            <use
+              href="#animation"
+              x={x * 32}
+              y={y * 32}
+              width="32"
+              height="32"
+              fill="rgba(255, 255, 255, 0.6)"
+            >
+              <animate
+                attributeName="x"
+                from={(x - 1) * 32}
+                to={x * 32}
+                dur="2s"
+                repeatCount="indefinite"
+                direction="alternate"
+                fill="freeze"
+              />
+            </use>
+            <use
+              href="#animation"
+              x={(x + 1) * 32}
+              y={y * 32}
+              width="32"
+              height="32"
+              fill="rgba(255, 255, 255, 0.6)"
+            >
+              <animate
+                attributeName="x"
+                from={x * 32}
+                to={(x + 1) * 32}
+                dur="2s"
+                repeatCount="indefinite"
+                direction="alternate"
+                fill="freeze"
+              />
+            </use>
+          </g>
+        </>
+      )}
 
       {/* 위쪽 테두리 */}
       {(border || borderTop) && (

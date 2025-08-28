@@ -174,6 +174,7 @@ const DraggableBlock = (props: DraggableBlockProps) => {
           left={ghost.x}
           top={ghost.y}
           width={ghostSize ? ghostSize : blockSize}
+          animation={true}
           sx={{
             transform: "translate(-50%, -50%)",
             pointerEvents: "none",

@@ -10,10 +10,18 @@ export interface BlockProps extends StackProps {
   blockId: number;
   displayScore?: boolean;
   shadow?: boolean;
+  animation?: boolean;
 }
 
 const Block = (props: BlockProps) => {
-  const { id, blockId, displayScore = true, shadow = false, ...others } = props;
+  const {
+    id,
+    blockId,
+    displayScore = true,
+    shadow = false,
+    animation = false,
+    ...others
+  } = props;
 
   const isMobileLandscape = useIsMobileLandscape();
 
@@ -104,6 +112,7 @@ const Block = (props: BlockProps) => {
                     }
                     thickness={i === grid.length - 1 || grid[i + 1]?.[j] === 0}
                     shadow={shadow}
+                    animation={animation}
                   />
                 )
             )
