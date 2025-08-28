@@ -43,6 +43,9 @@ const DraggableBlock = (props: DraggableBlockProps) => {
   const blockContainerRef = useRef<HTMLDivElement>(null);
   const [blockSize, setBlockSize] = useState(0);
 
+  // 호버 효과
+  const [hover, setHover] = useState(false);
+
   // 블록 크기 계산
   const calcBlockSize = useCallback(() => {
     // 블록 컨테이너가 없다면 종료
@@ -78,7 +81,7 @@ const DraggableBlock = (props: DraggableBlockProps) => {
   }, [isMobileLandscape, isXs, blockSize]);
 
   // 마우스 버튼 누름
-  const onPointerDown = useCallback(
+  const handlePointerDown = useCallback(
     (e: React.PointerEvent<HTMLDivElement>) => {
       // 마우스인 경우 왼쪽 버튼만 허용, 터치/펜은 통과
       if (e.pointerType === "mouse" && e.button !== 0) {
@@ -94,7 +97,7 @@ const DraggableBlock = (props: DraggableBlockProps) => {
   );
 
   // 드래그
-  const onPointerMove = useCallback(
+  const handlePointerMove = useCallback(
     (e: React.PointerEvent<HTMLDivElement>) => {
       if (!draggingRef.current) {
         return;
@@ -110,16 +113,29 @@ const DraggableBlock = (props: DraggableBlockProps) => {
   );
 
   // 드래그 종료
-  const onPointerUp = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
-    if (!draggingRef.current) {
-      return;
-    }
+  const handlePointerUp = useCallback(
+    (e: React.PointerEvent<HTMLDivElement>) => {
+      if (!draggingRef.current) {
+        return;
+      }
 
-    draggingRef.current = false;
-    (e.currentTarget as Element).releasePointerCapture?.(e.pointerId);
+      draggingRef.current = false;
+      (e.currentTarget as Element).releasePointerCapture?.(e.pointerId);
 
-    setGhost((g) => ({ ...g, visible: false }));
-    console.log("[drag:end]", { x: e.clientX, y: e.clientY });
+      setGhost((g) => ({ ...g, visible: false }));
+      console.log("[drag:end]", { x: e.clientX, y: e.clientY });
+    },
+    []
+  );
+
+  // 드래그 영역 마우스 진입
+  const handleMouseEnter = useCallback(() => {
+    setHover(true);
+  }, []);
+
+  // 드래그 영역 마우스 나감
+  const handleMouseLeave = useCallback(() => {
+    setHover(false);
   }, []);
 
   if (!block) {
@@ -142,6 +158,9 @@ const DraggableBlock = (props: DraggableBlockProps) => {
         shadow={shadow}
         width="100%"
         height="100%"
+        sx={{
+          filter: hover ? "brightness(0.6)" : "none",
+        }}
       />
 
       {/* 드래그 영역 */}
@@ -162,10 +181,13 @@ const DraggableBlock = (props: DraggableBlockProps) => {
           WebkitUserDrag: "none",
         }}
         draggable
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={onPointerUp}
-        onPointerCancel={onPointerUp}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp}
+        onLostPointerCapture={handlePointerUp}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       />
 
       {/* 고스트 이미지 */}
