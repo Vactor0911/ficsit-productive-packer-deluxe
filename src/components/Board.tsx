@@ -146,7 +146,6 @@ const Board = () => {
     } else {
       gridSize = height / boardSize.height;
     }
-    console.log(gridSize);
 
     setBoardGridSize(gridSize);
   }, [boardSize.height, boardSize.width, setBoardGridSize]);

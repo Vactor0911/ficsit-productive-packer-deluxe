@@ -51,8 +51,6 @@ export const useBoard = () => {
 
         // 보드 그리드 적용
         setBoardGrid(newBoardGrid);
-
-        console.log("보드 초기화", newBoardGrid);
       }
     },
     [setBoardGrid]
@@ -74,7 +72,6 @@ export const useBoard = () => {
 
         // 블록 추가
         const grid = block.grid;
-        console.log("블록 추가", block, x, y, grid);
 
         grid.forEach((row, i) => {
           row.forEach((cell, j) => {
