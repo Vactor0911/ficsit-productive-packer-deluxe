@@ -27,7 +27,6 @@ const DraggableBlock = (props: DraggableBlockProps) => {
     return BlockData.find((block) => block.id === blockId);
   }, [blockId]);
 
-  const dragRef = useRef<HTMLDivElement | null>(null);
   const [ghost, setGhost] = useState<{
     visible: boolean;
     x: number;
@@ -103,13 +102,15 @@ const DraggableBlock = (props: DraggableBlockProps) => {
         return;
       }
 
-      setGhost((g) =>
-        g.x === e.clientX && g.y === e.clientY
-          ? g
-          : { ...g, x: e.clientX, y: e.clientY + offsetY }
-      );
+      // 좌표가 이전과 같으면 종료
+      if (ghost.x === e.clientX || ghost.y === e.clientY + offsetY) {
+        return;
+      }
+
+      // 바뀐 좌표 업데이트
+      setGhost({ ...ghost, x: e.clientX, y: e.clientY + offsetY });
     },
-    [offsetY]
+    [ghost, offsetY]
   );
 
   // 드래그 종료
@@ -165,7 +166,6 @@ const DraggableBlock = (props: DraggableBlockProps) => {
 
       {/* 드래그 영역 */}
       <Box
-        ref={dragRef}
         width={`calc(${blockSize * 0.25 * grid[0].length}px + 25%)`}
         height={`calc(${blockSize * 0.25 * grid.length + 10}px + 25%)`}
         maxWidth={blockSize}
