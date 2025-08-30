@@ -18,3 +18,14 @@ export const boardGridSizeAtom = atom(0);
 
 // 점수
 export const scoreAtom = atom(0);
+
+// 드래그 블럭 고스트 위치
+export const drraggableBlockGhostAtom = atom<{
+  id: number | null;
+  x: number;
+  y: number;
+}>({
+  id: null,
+  x: 0,
+  y: 0,
+});

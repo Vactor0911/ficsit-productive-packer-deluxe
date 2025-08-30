@@ -9,13 +9,11 @@ import Block, { type BlockProps } from "./Block";
 import { Box, Stack, useMediaQuery, useTheme } from "@mui/material";
 import BlockData from "../assets/blocks.json";
 import { useIsMobileLandscape } from "../utils";
+import { useSetAtom } from "jotai";
+import { drraggableBlockGhostAtom } from "../states";
 
-interface DraggableBlockProps extends BlockProps {
-  ghostSize?: number;
-}
-
-const DraggableBlock = (props: DraggableBlockProps) => {
-  const { id, blockId, shadow, ghostSize, ...others } = props;
+const DraggableBlock = (props: BlockProps) => {
+  const { id, blockId, shadow, ...others } = props;
 
   const theme = useTheme();
 
@@ -27,16 +25,9 @@ const DraggableBlock = (props: DraggableBlockProps) => {
     return BlockData.find((block) => block.id === blockId);
   }, [blockId]);
 
-  const [ghost, setGhost] = useState<{
-    visible: boolean;
-    x: number;
-    y: number;
-  }>({
-    visible: false,
-    x: 0,
-    y: 0,
-  });
-  const draggingRef = useRef(false);
+  const setGhost = useSetAtom(drraggableBlockGhostAtom);
+  const [dragging, setDragging] = useState(false);
+  const rafRef = useRef<number | null>(null);
 
   // 블록 크기
   const blockContainerRef = useRef<HTMLDivElement>(null);
@@ -87,46 +78,64 @@ const DraggableBlock = (props: DraggableBlockProps) => {
         return;
       }
 
-      draggingRef.current = true;
+      setDragging(true);
       (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
 
-      setGhost({ visible: true, x: e.clientX, y: e.clientY + offsetY });
+      const index = Number(id.replace("block-", ""));
+
+      setGhost({ id: index, x: e.clientX, y: e.clientY + offsetY });
     },
-    [offsetY]
+    [id, offsetY, setGhost]
   );
 
   // 드래그
   const handlePointerMove = useCallback(
     (e: React.PointerEvent<HTMLDivElement>) => {
-      if (!draggingRef.current) {
+      if (!dragging) {
         return;
       }
 
-      // 좌표가 이전과 같으면 종료
-      if (ghost.x === e.clientX || ghost.y === e.clientY + offsetY) {
-        return;
-      }
+      // raf 적용
+      rafRef.current = requestAnimationFrame(() => {
+        // 바뀐 좌표 업데이트
+        setGhost((g) => {
+          if (g.x === e.clientX && g.y === e.clientY + offsetY) {
+            return { ...g };
+          }
 
-      // 바뀐 좌표 업데이트
-      setGhost({ ...ghost, x: e.clientX, y: e.clientY + offsetY });
+          return { ...g, x: e.clientX, y: e.clientY + offsetY };
+        });
+
+        rafRef.current = null;
+      });
     },
-    [ghost, offsetY]
+    [dragging, offsetY, setGhost]
+  );
+
+  // raf 리소스 정리
+  useEffect(
+    () => () => {
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+      }
+    },
+    []
   );
 
   // 드래그 종료
   const handlePointerUp = useCallback(
     (e: React.PointerEvent<HTMLDivElement>) => {
-      if (!draggingRef.current) {
+      if (!dragging) {
         return;
       }
 
-      draggingRef.current = false;
+      setDragging(false);
       (e.currentTarget as Element).releasePointerCapture?.(e.pointerId);
 
-      setGhost((g) => ({ ...g, visible: false }));
+      setGhost((g) => ({ ...g, id: null }));
       console.log("[drag:end]", { x: e.clientX, y: e.clientY });
     },
-    []
+    [dragging, setGhost]
   );
 
   // 드래그 영역 마우스 진입
@@ -174,7 +183,7 @@ const DraggableBlock = (props: DraggableBlockProps) => {
         left="50%"
         position="absolute"
         sx={{
-          cursor: ghost.visible ? "grabbing" : "grab",
+          cursor: dragging ? "grabbing" : "grab",
           transform: "translate(-50%, -50%)",
           touchAction: "none",
           userSelect: "none",
@@ -189,26 +198,6 @@ const DraggableBlock = (props: DraggableBlockProps) => {
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       />
-
-      {/* 고스트 이미지 */}
-      {ghost.visible && (
-        <Block
-          id={id}
-          blockId={blockId}
-          displayScore={false}
-          position="fixed"
-          left={ghost.x}
-          top={ghost.y}
-          width={ghostSize ? ghostSize : blockSize}
-          animation={true}
-          sx={{
-            transform: "translate(-50%, -50%)",
-            pointerEvents: "none",
-            userSelect: "none",
-            zIndex: 13000,
-          }}
-        />
-      )}
     </Stack>
   );
 };
