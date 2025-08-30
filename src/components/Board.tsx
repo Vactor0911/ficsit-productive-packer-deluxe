@@ -1,9 +1,13 @@
 import { Box } from "@mui/material";
 import * as Levels from "../assets/images/levels";
 import { useLocation } from "react-router-dom";
-import { useCallback, useMemo } from "react";
-import { useAtomValue } from "jotai";
-import { boardGridAtom, type BoardGridProps } from "../states";
+import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useAtomValue, useSetAtom } from "jotai";
+import {
+  boardGridAtom,
+  boardGridSizeAtom,
+  type BoardGridProps,
+} from "../states";
 import { useBoard } from "../hooks";
 import BlockBase from "./BlockBase";
 
@@ -11,7 +15,9 @@ const Board = () => {
   const location = useLocation();
   const { getBoardSize } = useBoard();
 
+  const boardRef = useRef<HTMLDivElement>(null);
   const boardGrid = useAtomValue(boardGridAtom);
+  const setBoardGridSize = useSetAtom(boardGridSizeAtom);
 
   // 레벨
   const level = useMemo(
@@ -33,90 +39,131 @@ const Board = () => {
   };
 
   // 블록 렌더링
-  const drawBlock = useCallback((block: BoardGridProps) => {
-    const {
-      blockId,
-      x,
-      y,
-      color,
-      border,
-      borderTop,
-      borderBottom,
-      borderLeft,
-      borderRight,
-      thickness,
-    } = block;
+  const drawBlock = useCallback(
+    (block: BoardGridProps) => {
+      const {
+        blockId,
+        x,
+        y,
+        color,
+        border,
+        borderTop,
+        borderBottom,
+        borderLeft,
+        borderRight,
+        thickness,
+      } = block;
 
-    // 볼트로 고정된 그리드
-    if (blockId === -1) {
-      return (
-        <g key={`board-${x}-${y}`}>
-          {/* 철판 */}
-          <rect
-            x={x * 32}
-            y={y * 32}
-            width={32}
-            height={32}
-            fill="#666666"
-            vectorEffect="non-scaling-stroke"
-            stroke="black"
-            strokeWidth="2px"
-          />
-
-          {/* 볼트 장식 */}
-          {[6, 26].map((offset, index) => (
-            <g key={`${blockId}-${x}-${y}-${index}`}>
-              <circle
-                cx={x * 32 + offset}
-                cy={y * 32 + offset}
-                r={3}
-                fill="#666666"
-                vectorEffect="non-scaling-stroke"
-                stroke="black"
-                strokeWidth="2px"
-              />
-              <line
-                x1={x * 32 + offset - 2}
-                y1={y * 32 + offset - 2}
-                x2={x * 32 + offset + 2}
-                y2={y * 32 + offset + 2}
-                stroke="#444"
-                vectorEffect="non-scaling-stroke"
-                strokeWidth="1px"
-              />
-            </g>
-          ))}
-
-          {/* 그림자 */}
-          {Number(boardGrid[y - 1]?.[x].blockId) >= 0 && (
+      // 볼트로 고정된 그리드
+      if (blockId === -1) {
+        return (
+          <g key={`board-${x}-${y}`}>
+            {/* 철판 */}
             <rect
               x={x * 32}
               y={y * 32}
               width={32}
-              height={6}
-              fill="rgb(0, 0, 0, 0.25)"
+              height={32}
+              fill="#666666"
+              vectorEffect="non-scaling-stroke"
+              stroke="black"
+              strokeWidth="2px"
             />
-          )}
-        </g>
+
+            {/* 볼트 장식 */}
+            {[6, 26].map((offset, index) => (
+              <g key={`${blockId}-${x}-${y}-${index}`}>
+                <circle
+                  cx={x * 32 + offset}
+                  cy={y * 32 + offset}
+                  r={3}
+                  fill="#666666"
+                  vectorEffect="non-scaling-stroke"
+                  stroke="black"
+                  strokeWidth="2px"
+                />
+                <line
+                  x1={x * 32 + offset - 2}
+                  y1={y * 32 + offset - 2}
+                  x2={x * 32 + offset + 2}
+                  y2={y * 32 + offset + 2}
+                  stroke="#444"
+                  vectorEffect="non-scaling-stroke"
+                  strokeWidth="1px"
+                />
+              </g>
+            ))}
+
+            {/* 그림자 */}
+            {Number(boardGrid[y - 1]?.[x].blockId) >= 0 && (
+              <rect
+                x={x * 32}
+                y={y * 32}
+                width={32}
+                height={6}
+                fill="rgb(0, 0, 0, 0.25)"
+              />
+            )}
+          </g>
+        );
+      }
+
+      // 일반 블록
+      return (
+        <BlockBase
+          key={`board-${x}-${y}`}
+          x={x}
+          y={y - 0.2}
+          color={color}
+          border={border}
+          borderTop={borderTop}
+          borderBottom={borderBottom}
+          borderLeft={borderLeft}
+          borderRight={borderRight}
+          thickness={thickness}
+          shadow
+        />
       );
+    },
+    [boardGrid]
+  );
+
+  // 보드 그리드 크기 계산
+  const calcBoardGridSize = useCallback(() => {
+    // 보드 그리드 객체가 없다면 종료
+    if (!boardRef.current) {
+      return 0;
     }
 
-    // 일반 블록
-    return (
-      <BlockBase
-        key={`board-${x}-${y}`}
-        x={x}
-        y={y - 0.2}
-        color={color}
-        border={border}
-        borderTop={borderTop}
-        borderBottom={borderBottom}
-        borderLeft={borderLeft}
-        borderRight={borderRight}
-        thickness={thickness}
-      />
-    );
-  }, [boardGrid]);
+    // 보드 가로 길이 기반 그리드 크기 계산
+    const width = boardRef.current.clientWidth;
+    const height = boardRef.current.clientHeight;
+
+    let gridSize;
+
+    if (width < height) {
+      gridSize = width / boardSize.width;
+    } else {
+      gridSize = height / boardSize.height;
+    }
+
+    setBoardGridSize(gridSize);
+  }, [boardSize.height, boardSize.width, setBoardGridSize]);
+
+  // ResizeObserver를 사용하여 크기 변화 감지
+  useEffect(() => {
+    const resizeObserver = new ResizeObserver(() => {
+      calcBoardGridSize();
+    });
+
+    if (boardRef.current) {
+      resizeObserver.observe(boardRef.current);
+    }
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [calcBoardGridSize]);
 
   return (
     <Box
@@ -128,7 +175,12 @@ const Board = () => {
       }}
     >
       {/* 보드 */}
-      <Box {...boardImageStyles} position="relative" zIndex={2} />
+      <Box
+        ref={boardRef}
+        position="relative"
+        zIndex={2}
+        {...boardImageStyles}
+      />
 
       {/* 보드 그리드 */}
       <svg
@@ -151,7 +203,6 @@ const Board = () => {
 
       {/* 장식 */}
       <Box
-        {...boardImageStyles}
         bottom="-2%"
         left="50%"
         position="absolute"
@@ -160,11 +211,11 @@ const Board = () => {
           transform: "translateX(-50%)",
           filter: "brightness(50%)",
         }}
+        {...boardImageStyles}
       />
 
       {/* 그림자 */}
       <Box
-        {...boardImageStyles}
         bottom="-4%"
         left="50%"
         position="absolute"
@@ -173,6 +224,7 @@ const Board = () => {
           filter: "brightness(0%)",
           opacity: 0.25,
         }}
+        {...boardImageStyles}
       />
     </Box>
   );

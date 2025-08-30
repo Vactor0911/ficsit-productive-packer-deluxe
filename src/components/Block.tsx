@@ -3,19 +3,66 @@ import BlockData from "../assets/blocks.json";
 import CoinImage from "../assets/images/coin.svg";
 import { useIsMobileLandscape } from "../utils";
 import BlockBase from "./BlockBase";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-interface BlockProps extends StackProps {
+export interface BlockProps extends StackProps {
   id: string;
   blockId: number;
   displayScore?: boolean;
+  shadow?: boolean;
+  animation?: boolean;
 }
 
 const Block = (props: BlockProps) => {
-  const { id, blockId, displayScore = true, ...others } = props;
+  const {
+    id,
+    blockId,
+    displayScore = true,
+    shadow = false,
+    animation = false,
+    ...others
+  } = props;
 
   const isMobileLandscape = useIsMobileLandscape();
 
-  const block = BlockData.find((block) => block.id === blockId);
+  const blockContainerRef = useRef<HTMLDivElement>(null);
+
+  // 블록 ID로 데이터 찾기
+  const block = useMemo(() => {
+    return BlockData.find((block) => block.id === blockId);
+  }, [blockId]);
+
+  // 블록 크기
+  const [blockSize, setBlockSize] = useState(0);
+
+  // 블록 크기 계산
+  const calcBlockSize = useCallback(() => {
+    // 블록 컨테이너가 없다면 종료
+    if (!blockContainerRef.current) {
+      return 0;
+    }
+
+    const width = blockContainerRef.current.clientWidth;
+    const height = blockContainerRef.current.clientHeight;
+
+    const minSize = Math.min(width, height);
+    setBlockSize(minSize);
+  }, []);
+
+  // ResizeObserver를 사용하여 크기 변화 감지
+  useEffect(() => {
+    const resizeObserver = new ResizeObserver(() => {
+      calcBlockSize();
+    });
+
+    if (blockContainerRef.current) {
+      resizeObserver.observe(blockContainerRef.current);
+    }
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [calcBlockSize]);
 
   // 블록을 찾지 못하면 null 반환
   if (!block) {
@@ -34,12 +81,17 @@ const Block = (props: BlockProps) => {
   return (
     <Stack justifyContent="center" alignItems="center" {...others}>
       {/* 블록 */}
-      <Box position="relative">
+      <Box
+        ref={blockContainerRef}
+        width="100%"
+        height="100%"
+        position="relative"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="100%"
           height="100%"
-          viewBox="-1 1 130 138"
+          viewBox="-1 -1 130 141"
         >
           {grid.map((row, i) =>
             row.map(
@@ -59,6 +111,8 @@ const Block = (props: BlockProps) => {
                       j === grid[i].length - 1 || grid[i]?.[j + 1] === 0
                     }
                     thickness={i === grid.length - 1 || grid[i + 1]?.[j] === 0}
+                    shadow={shadow}
+                    animation={animation}
                   />
                 )
             )
@@ -87,10 +141,10 @@ const Block = (props: BlockProps) => {
             justifyContent="center"
             alignItems="center"
             position="absolute"
-            bottom={`${(4 - grid.length) * 11.25}%`}
-            right={`${(4 - grid[0].length) * 11.25}%`}
+            bottom={`calc(50% - ${blockSize * grid.length * 0.125}px)`}
+            right={`calc(50% - ${blockSize * grid[0].length * 0.125}px)`}
             sx={{
-              transform: "translate(0, 25%)",
+              transform: "translate(25%, 25%)",
             }}
           >
             {/* 코인 이미지 */}

@@ -163,7 +163,7 @@ const Game = () => {
             bgcolor="red"
           >
             {/* 패키지 */}
-            <Package/>
+            <Package />
           </Box>
 
           {/* 우측 패널 */}
@@ -270,7 +270,7 @@ const Game = () => {
           height="100%"
           top={0}
           left={0}
-          zIndex={11}
+          zIndex={11000}
         >
           <BlockContainer />
         </Box>
@@ -286,7 +286,9 @@ const Game = () => {
                 md: "none",
               }
         }
+        position="relative"
         flex={0.5}
+        zIndex={11000}
       >
         <MobileBlockContainer />
       </Box>
