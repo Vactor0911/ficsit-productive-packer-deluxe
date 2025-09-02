@@ -8,9 +8,10 @@ import React, {
 import Block, { type BlockProps } from "./Block";
 import { Box, Stack, useMediaQuery, useTheme } from "@mui/material";
 import BlockData from "../assets/blocks.json";
-import { useIsMobileLandscape } from "../utils";
+import { playEffect, useIsMobileLandscape } from "../utils";
 import { useSetAtom } from "jotai";
 import { drraggableBlockGhostAtom } from "../states";
+import BlockPickUpAudio from "../assets/audio/block_pickup.mp3";
 
 const DraggableBlock = (props: BlockProps) => {
   const { id, blockId, shadow, ...others } = props;
@@ -84,6 +85,7 @@ const DraggableBlock = (props: BlockProps) => {
       const index = Number(id.replace("block-", ""));
 
       setGhost({ id: index, x: e.clientX, y: e.clientY + offsetY });
+      playEffect(BlockPickUpAudio);
     },
     [id, offsetY, setGhost]
   );
