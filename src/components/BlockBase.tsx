@@ -1,3 +1,5 @@
+import { useId } from "react";
+
 export interface BlockBaseProps {
   x: number;
   y: number;
@@ -26,6 +28,10 @@ const BlockBase = (props: BlockBaseProps) => {
     shadow,
     animation,
   } = props;
+
+  const uuid = useId();
+  const clipId = `animationClipArea-${uuid}`;
+  const glyphId = `animationGlyph-${uuid}`;
 
   return (
     <g>
@@ -110,7 +116,7 @@ const BlockBase = (props: BlockBaseProps) => {
       {animation && (
         <>
           <defs>
-            <symbol id="animation" viewBox="0 0 64 64">
+            <symbol id={glyphId} viewBox="0 0 64 64">
               <path d="M 0 0 16 0 L 0 16 Z" fill="inherit" />
               <path
                 d="M 64 0 L 48 0 L 0 48 L 0 64 L 16 64 L 64 16 Z"
@@ -118,14 +124,14 @@ const BlockBase = (props: BlockBaseProps) => {
               />
               <path d="M 64 64 L 48 64 L 64 48 Z" fill="inherit" />
             </symbol>
-            <clipPath id={`animationClipArea${x}-${y}`}>
+            <clipPath id={clipId}>
               <rect x={x * 32} y={y * 32} width="32" height="32" />
             </clipPath>
           </defs>
 
-          <g clipPath={`url(#animationClipArea${x}-${y})`}>
+          <g clipPath={`url(#${clipId})`} clipPathUnits="userSpaceOnUse">
             <use
-              href="#animation"
+              href={`#${glyphId}`}
               x={x * 32}
               y={y * 32}
               width="32"
@@ -143,7 +149,7 @@ const BlockBase = (props: BlockBaseProps) => {
               />
             </use>
             <use
-              href="#animation"
+              href={`#${glyphId}`}
               x={(x + 1) * 32}
               y={y * 32}
               width="32"

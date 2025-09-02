@@ -139,16 +139,12 @@ const Board = () => {
     const width = boardRef.current.clientWidth;
     const height = boardRef.current.clientHeight;
 
-    let gridSize;
+    const calculatedWidth = width / 10;
+    const calculatedHeight = height / 9;
 
-    if (width < height) {
-      gridSize = width / boardSize.width;
-    } else {
-      gridSize = height / boardSize.height;
-    }
-
+    const gridSize = Math.min(calculatedWidth, calculatedHeight);
     setBoardGridSize(gridSize);
-  }, [boardSize.height, boardSize.width, setBoardGridSize]);
+  }, [setBoardGridSize]);
 
   // ResizeObserver를 사용하여 크기 변화 감지
   useEffect(() => {
