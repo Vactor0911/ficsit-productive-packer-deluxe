@@ -4,6 +4,7 @@ import {
   boardGridAtom,
   draggableBlockGhostAtom,
   dragSnapPointAtom,
+  fillingBonusAtom,
   packageRefAtom,
   packageScoreAtom,
   scoreEffectsAtom,
@@ -44,6 +45,7 @@ export const useBoard = () => {
   const { shakePackage } = usePackage();
   const setScoreEffects = useSetAtom(scoreEffectsAtom);
   const setPackageScore = useSetAtom(packageScoreAtom);
+  const setFillingBonusAtom = useSetAtom(fillingBonusAtom);
 
   // 보드 크기
   const getBoardSize = useCallback((level: number) => {
@@ -183,12 +185,17 @@ export const useBoard = () => {
 
     // 점수 계산
     setPackageScore((prev) => prev + block.score);
+
+    const fillingBonus =
+      block.grid.flat().filter((cell) => cell === 1).length * 132;
+    setFillingBonusAtom((prev) => prev + fillingBonus);
   }, [
     addBlock,
     blockIdQueue,
     dragSnapPoint,
     draggableBlockGhost.id,
     setBlockIdQueue,
+    setFillingBonusAtom,
     setPackageScore,
     setScoreEffects,
     shakePackage,

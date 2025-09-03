@@ -4,12 +4,13 @@ import { useIsMobileLandscape } from "../utils";
 import Score from "./Score";
 import Bolt from "./Bolt";
 import { useAtomValue } from "jotai";
-import { packageScoreAtom } from "../states";
+import { fillingBonusAtom, packageScoreAtom } from "../states";
 
 const ScorePanel = () => {
   const isMobileLandscape = useIsMobileLandscape();
   const boltOffset = isMobileLandscape ? 4 : 8;
   const packageScore = useAtomValue(packageScoreAtom);
+  const fillingBonus = useAtomValue(fillingBonusAtom);
 
   return (
     <Panel
@@ -63,7 +64,7 @@ const ScorePanel = () => {
           borderRadius="50px"
           bgcolor="#49859d"
         >
-          <Score variant="bonus" score={0} />
+          <Score variant="bonus" score={fillingBonus} />
         </Stack>
 
         {/* 최종 배달 점수 */}

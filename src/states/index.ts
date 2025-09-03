@@ -25,6 +25,9 @@ export const scoreAtom = atom(0);
 // 포장 점수
 export const packageScoreAtom = atom(0);
 
+// 채우기 보너스
+export const fillingBonusAtom = atom(1000); // 소숫점 계산을 위해 1000배로 저장
+
 // 드래그 블럭 고스트 위치
 export const draggableBlockGhostAtom = atom<{
   id: number | null;
