@@ -9,6 +9,7 @@ import {
 import BoardData from "../assets/boards.json";
 import BlockData from "../assets/blocks.json";
 import { useCallback } from "react";
+import { getRandBlockId } from "../utils";
 
 export const useBoard = () => {
   const setBoardGrid = useSetAtom(boardGridAtom);
@@ -132,7 +133,7 @@ export const useBoard = () => {
     // 블록 큐 업데이트
     setBlockIdQueue((prevQueue) => {
       const newQueue = [...prevQueue];
-      newQueue[draggableBlockGhost.id!] = block.id;
+      newQueue[draggableBlockGhost.id!] = getRandBlockId();
       return newQueue;
     });
   }, [
