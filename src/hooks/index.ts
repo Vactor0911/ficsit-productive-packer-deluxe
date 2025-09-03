@@ -1,11 +1,20 @@
-import { useSetAtom } from "jotai";
-import { boardGridAtom, type BoardGridProps } from "../states";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import {
+  blockIdQueueAtom,
+  boardGridAtom,
+  draggableBlockGhostAtom,
+  dragSnapPointAtom,
+  type BoardGridProps,
+} from "../states";
 import BoardData from "../assets/boards.json";
 import BlockData from "../assets/blocks.json";
 import { useCallback } from "react";
 
 export const useBoard = () => {
   const setBoardGrid = useSetAtom(boardGridAtom);
+  const draggableBlockGhost = useAtomValue(draggableBlockGhostAtom);
+  const dragSnapPoint = useAtomValue(dragSnapPointAtom);
+  const [blockIdQueue, setBlockIdQueue] = useAtom(blockIdQueueAtom);
 
   // 보드 크기
   const getBoardSize = useCallback((level: number) => {
@@ -96,9 +105,48 @@ export const useBoard = () => {
     [setBoardGrid]
   );
 
+  // 보드에 블럭 놓기
+  const placeBlock = useCallback(() => {
+    // 블록을 놓을 수 없는 경우 종료
+    if (!dragSnapPoint || !dragSnapPoint.isValid) {
+      return;
+    }
+
+    // 드래그 중인 블록이 없는 경우 종료
+    if (draggableBlockGhost.id === null) {
+      return;
+    }
+
+    const block = BlockData.find(
+      (block) => block.id === blockIdQueue[draggableBlockGhost.id!]
+    );
+
+    // 블록을 찾을 수 없는 경우 종료
+    if (!block) {
+      return;
+    }
+
+    // 블록 추가
+    addBlock(block.id, dragSnapPoint.x, dragSnapPoint.y);
+
+    // 블록 큐 업데이트
+    setBlockIdQueue((prevQueue) => {
+      const newQueue = [...prevQueue];
+      newQueue[draggableBlockGhost.id!] = block.id;
+      return newQueue;
+    });
+  }, [
+    addBlock,
+    blockIdQueue,
+    dragSnapPoint,
+    draggableBlockGhost.id,
+    setBlockIdQueue,
+  ]);
+
   return {
     getBoardSize,
     resetBoard,
     addBlock,
+    placeBlock,
   };
 };
