@@ -162,6 +162,8 @@ const Score = (props: ScoreProps) => {
 
           if (progress < 1) {
             requestAnimationFrame(frame);
+          } else {
+            localScoreRef.current = score;
           }
         };
 
