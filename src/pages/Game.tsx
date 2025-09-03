@@ -15,6 +15,7 @@ import ScorePanel from "../components/ScorePanel";
 import SendButton from "../components/SendButton";
 import { Navigate, useLocation } from "react-router-dom";
 import { useBoard } from "../hooks";
+import ScoreEffectsRenderer from "../components/ScoreEffectsRenderer";
 
 const Game = () => {
   const isMobileLandscape = useIsMobileLandscape();
@@ -291,6 +292,9 @@ const Game = () => {
       >
         <MobileBlockContainer />
       </Box>
+
+      {/* 점수 이펙트 렌더러 */}
+      <ScoreEffectsRenderer />
     </Stack>
   );
 };

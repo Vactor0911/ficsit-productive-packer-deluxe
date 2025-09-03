@@ -5,6 +5,7 @@ import {
   draggableBlockGhostAtom,
   dragSnapPointAtom,
   packageRefAtom,
+  scoreEffectsAtom,
   type BoardGridProps,
 } from "../states";
 import BoardData from "../assets/boards.json";
@@ -13,6 +14,7 @@ import { useCallback } from "react";
 import { getRandBlockId, playEffect } from "../utils";
 import BlockPlacedAudio from "../assets/audio/block_placed.mp3";
 
+// 패키지
 export const usePackage = () => {
   const packageRef = useAtomValue(packageRefAtom);
 
@@ -32,12 +34,14 @@ export const usePackage = () => {
   return { shakePackage };
 };
 
+// 보드
 export const useBoard = () => {
   const setBoardGrid = useSetAtom(boardGridAtom);
   const draggableBlockGhost = useAtomValue(draggableBlockGhostAtom);
   const dragSnapPoint = useAtomValue(dragSnapPointAtom);
   const [blockIdQueue, setBlockIdQueue] = useAtom(blockIdQueueAtom);
   const { shakePackage } = usePackage();
+  const setScoreEffects = useSetAtom(scoreEffectsAtom);
 
   // 보드 크기
   const getBoardSize = useCallback((level: number) => {
@@ -162,12 +166,25 @@ export const useBoard = () => {
     // 효과 재생
     playEffect(BlockPlacedAudio);
     shakePackage();
+
+    // 점수 효과 객체 생성
+    const effectX = dragSnapPoint.x + block.grid[0].length / 2;
+    const effectY = dragSnapPoint.y + block.grid.length / 2;
+
+    const newEffect = {
+      score: block.score,
+      x: effectX,
+      y: effectY,
+    };
+
+    setScoreEffects((prevEffects) => [...prevEffects, newEffect]);
   }, [
     addBlock,
     blockIdQueue,
     dragSnapPoint,
     draggableBlockGhost.id,
     setBlockIdQueue,
+    setScoreEffects,
     shakePackage,
   ]);
 

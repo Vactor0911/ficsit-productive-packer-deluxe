@@ -7,7 +7,7 @@ export const vhAtom = atom(window.innerHeight * 0.01);
 // 블록 큐
 export const blockIdQueueAtom = atom<number[]>([0, 5, 8, 12, 11, 20, 23, 18]);
 
-// 보드 원본 객체
+// 보드 위치
 export const boardPositionRefAtom = atom<SVGRectElement | null>(null);
 
 // 보드 그리드
@@ -42,3 +42,12 @@ export const dragSnapPointAtom = atom<{
 
 // 패키지 객체
 export const packageRefAtom = atom<HTMLDivElement | null>(null);
+
+// 점수 이펙트 객체 배열
+export const scoreEffectsAtom = atom<
+  {
+    score: number;
+    x: number;
+    y: number;
+  }[]
+>([]);
