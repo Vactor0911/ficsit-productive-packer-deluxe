@@ -32,3 +32,10 @@ export const draggableBlockGhostAtom = atom<{
   x: 0,
   y: 0,
 });
+
+// 드래그 스냅 포인트 위치
+export const dragSnapPointAtom = atom<{
+  x: number;
+  y: number;
+  isValid: boolean;
+} | null>(null);

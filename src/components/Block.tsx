@@ -11,6 +11,7 @@ export interface BlockProps extends StackProps {
   displayScore?: boolean;
   shadow?: boolean;
   animation?: boolean;
+  error?: boolean;
 }
 
 const Block = (props: BlockProps) => {
@@ -18,8 +19,9 @@ const Block = (props: BlockProps) => {
     id,
     blockId,
     displayScore = true,
-    shadow = false,
-    animation = false,
+    shadow,
+    animation,
+    error,
     ...others
   } = props;
 
@@ -101,7 +103,7 @@ const Block = (props: BlockProps) => {
                     key={`${id}-${i}-${j}`}
                     x={j + offsetX}
                     y={i + offsetY}
-                    color={color}
+                    color={error ? "red" : color}
                     borderTop={i === 0 || grid[i - 1]?.[j] === 0}
                     borderBottom={
                       i === grid.length - 1 || grid[i + 1]?.[j] === 0

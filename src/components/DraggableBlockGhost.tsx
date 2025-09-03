@@ -1,6 +1,10 @@
 import { useAtomValue } from "jotai";
 import Block from "./Block";
-import { blockIdQueueAtom, draggableBlockGhostAtom } from "../states";
+import {
+  blockIdQueueAtom,
+  draggableBlockGhostAtom,
+  dragSnapPointAtom,
+} from "../states";
 import { useMemo } from "react";
 
 interface DraggableBlockGhostProps {
@@ -10,6 +14,7 @@ interface DraggableBlockGhostProps {
 const DraggableBlockGhost = ({ ghostSize }: DraggableBlockGhostProps) => {
   const ghost = useAtomValue(draggableBlockGhostAtom);
   const blockIdQueue = useAtomValue(blockIdQueueAtom);
+  const dragSnapPoint = useAtomValue(dragSnapPointAtom);
 
   const blockId = useMemo(() => {
     if (ghost.id === null || ghost.id < 0) {
@@ -33,6 +38,7 @@ const DraggableBlockGhost = ({ ghostSize }: DraggableBlockGhostProps) => {
       top={ghost.y}
       width={ghostSize}
       animation={true}
+      error={dragSnapPoint ? !dragSnapPoint.isValid : false}
       sx={{
         transform: "translate(-50%, -50%)",
         pointerEvents: "none",
