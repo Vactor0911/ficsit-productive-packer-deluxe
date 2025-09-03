@@ -3,10 +3,14 @@ import Panel from "./Panel";
 import { useIsMobileLandscape } from "../utils";
 import Score from "./Score";
 import Bolt from "./Bolt";
+import { useAtomValue } from "jotai";
+import { fillingBonusAtom, packageScoreAtom } from "../states";
 
 const ScorePanel = () => {
   const isMobileLandscape = useIsMobileLandscape();
   const boltOffset = isMobileLandscape ? 4 : 8;
+  const packageScore = useAtomValue(packageScoreAtom);
+  const fillingBonus = useAtomValue(fillingBonusAtom);
 
   return (
     <Panel
@@ -24,6 +28,7 @@ const ScorePanel = () => {
         justifyContent="center"
         alignItems="stretch"
         gap={isMobileLandscape ? 0 : 0.5}
+        flex={1}
       >
         {/* 포장 점수 */}
         <Typography
@@ -41,7 +46,7 @@ const ScorePanel = () => {
           borderRadius="50px"
           bgcolor="#49859d"
         >
-          <Score variant="default" score={0} />
+          <Score variant="default" score={packageScore} />
         </Stack>
 
         {/* 채우기 보너스 */}
@@ -60,7 +65,7 @@ const ScorePanel = () => {
           borderRadius="50px"
           bgcolor="#49859d"
         >
-          <Score variant="bonus" score={0} />
+          <Score variant="bonus" score={fillingBonus} />
         </Stack>
 
         {/* 최종 배달 점수 */}
@@ -79,7 +84,10 @@ const ScorePanel = () => {
           borderRadius="50px"
           bgcolor="#49859d"
         >
-          <Score variant="default" score={0} />
+          <Score
+            variant="default"
+            score={Math.round(packageScore * fillingBonus * 0.001)}
+          />
         </Stack>
       </Stack>
 

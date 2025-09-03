@@ -48,11 +48,13 @@ const ScoreEffect = (props: BlockScoreEffectProps) => {
     return () => clearTimeout(timer);
   }, [setScoreEffects, props.x, props.y]);
 
+  // 보드 기준점 객체
   const boardRect = useMemo(() => {
     return boardPositionRef?.getBoundingClientRect();
   }, [boardPositionRef]);
 
-  if (!boardGridSize) {
+  // 보드 기준점이 없다면 렌더링 중단
+  if (!boardRect) {
     return null;
   }
 

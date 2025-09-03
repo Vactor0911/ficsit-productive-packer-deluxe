@@ -147,7 +147,7 @@ const Score = (props: ScoreProps) => {
       // 점수 최신화
       if (variant === "total") {
         const startTime = performance.now();
-        const duration = 500; // 0.5초 TODO: 지속 시간 조정
+        const duration = 500; // 0.5초
         const start = localScoreRef.current;
         const end = score;
 
@@ -165,12 +165,24 @@ const Score = (props: ScoreProps) => {
         requestAnimationFrame(frame);
       } else {
         setLocalScore(score);
+        localScoreRef.current = score;
       }
 
       // 애니메이션 실행
       executeAnimation();
     }
   }, [executeAnimation, score, variant]);
+
+  // 점수 포매팅
+  const getFormattedScore = useCallback(
+    (score: number) => {
+      if (variant === "bonus") {
+        return Number((score * 0.001).toString().slice(0, 5));
+      }
+      return score;
+    },
+    [variant]
+  );
 
   return (
     <Stack
@@ -234,7 +246,7 @@ const Score = (props: ScoreProps) => {
         )}
 
         {/* 점수 표기 */}
-        {localScore}
+        {getFormattedScore(localScore)}
 
         {/* 점수 상승 애니메이션 */}
         <span
@@ -256,7 +268,7 @@ const Score = (props: ScoreProps) => {
           }}
         >
           {scoreDelta > 0 && "+"}
-          {scoreDelta}
+          {getFormattedScore(scoreDelta)}
         </span>
       </Typography>
     </Stack>

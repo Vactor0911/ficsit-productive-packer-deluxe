@@ -149,7 +149,6 @@ const DraggableBlock = (props: BlockProps) => {
 
       // 블록 추가
       placeBlock();
-      console.log("[drag:end]", { x: e.clientX, y: e.clientY });
     },
     [dragging, placeBlock, setGhost]
   );

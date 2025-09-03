@@ -35,15 +35,6 @@ const Game = () => {
   useEffect(() => {
     if (level) {
       resetBoard(Number(level));
-
-      // 테스트용 블록
-      addBlock(3, 2, 2);
-      addBlock(9, 2, 0);
-      addBlock(12, 7, 1);
-      addBlock(20, 5, 5);
-      addBlock(20, 4, 0);
-      addBlock(22, 6, 5);
-      addBlock(16, 1, 4);
     }
   }, [addBlock, level, resetBoard]);
 
