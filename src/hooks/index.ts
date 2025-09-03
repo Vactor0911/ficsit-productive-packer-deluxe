@@ -1,11 +1,47 @@
-import { useSetAtom } from "jotai";
-import { boardGridAtom, type BoardGridProps } from "../states";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import {
+  blockIdQueueAtom,
+  boardGridAtom,
+  draggableBlockGhostAtom,
+  dragSnapPointAtom,
+  packageRefAtom,
+  scoreEffectsAtom,
+  type BoardGridProps,
+} from "../states";
 import BoardData from "../assets/boards.json";
 import BlockData from "../assets/blocks.json";
 import { useCallback } from "react";
+import { getRandBlockId, playEffect } from "../utils";
+import BlockPlacedAudio from "../assets/audio/block_placed.mp3";
 
+// 패키지
+export const usePackage = () => {
+  const packageRef = useAtomValue(packageRefAtom);
+
+  const shakePackage = useCallback(() => {
+    // 패키지 객체가 없다면 종료
+    if (!packageRef) {
+      return;
+    }
+
+    // 패키지 객체 흔들기
+    packageRef.classList.add("shake");
+    setTimeout(() => {
+      packageRef.classList.remove("shake");
+    }, 250);
+  }, [packageRef]);
+
+  return { shakePackage };
+};
+
+// 보드
 export const useBoard = () => {
   const setBoardGrid = useSetAtom(boardGridAtom);
+  const draggableBlockGhost = useAtomValue(draggableBlockGhostAtom);
+  const dragSnapPoint = useAtomValue(dragSnapPointAtom);
+  const [blockIdQueue, setBlockIdQueue] = useAtom(blockIdQueueAtom);
+  const { shakePackage } = usePackage();
+  const setScoreEffects = useSetAtom(scoreEffectsAtom);
 
   // 보드 크기
   const getBoardSize = useCallback((level: number) => {
@@ -96,9 +132,66 @@ export const useBoard = () => {
     [setBoardGrid]
   );
 
+  // 보드에 블럭 놓기
+  const placeBlock = useCallback(() => {
+    // 블록을 놓을 수 없는 경우 종료
+    if (!dragSnapPoint || !dragSnapPoint.isValid) {
+      return;
+    }
+
+    // 드래그 중인 블록이 없는 경우 종료
+    if (draggableBlockGhost.id === null) {
+      return;
+    }
+
+    const block = BlockData.find(
+      (block) => block.id === blockIdQueue[draggableBlockGhost.id!]
+    );
+
+    // 블록을 찾을 수 없는 경우 종료
+    if (!block) {
+      return;
+    }
+
+    // 블록 추가
+    addBlock(block.id, dragSnapPoint.x, dragSnapPoint.y);
+
+    // 블록 큐 업데이트
+    setBlockIdQueue((prevQueue) => {
+      const newQueue = [...prevQueue];
+      newQueue[draggableBlockGhost.id!] = getRandBlockId();
+      return newQueue;
+    });
+
+    // 효과 재생
+    playEffect(BlockPlacedAudio);
+    shakePackage();
+
+    // 점수 효과 객체 생성
+    const effectX = dragSnapPoint.x + block.grid[0].length / 2;
+    const effectY = dragSnapPoint.y + block.grid.length / 2;
+
+    const newEffect = {
+      score: block.score,
+      x: effectX,
+      y: effectY,
+    };
+
+    setScoreEffects((prevEffects) => [...prevEffects, newEffect]);
+  }, [
+    addBlock,
+    blockIdQueue,
+    dragSnapPoint,
+    draggableBlockGhost.id,
+    setBlockIdQueue,
+    setScoreEffects,
+    shakePackage,
+  ]);
+
   return {
     getBoardSize,
     resetBoard,
     addBlock,
+    placeBlock,
   };
 };

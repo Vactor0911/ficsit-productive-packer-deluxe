@@ -8,7 +8,7 @@ import {
   dragSnapPointAtom,
 } from "../states";
 import BlockData from "../assets/blocks.json";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import BlockBase from "./BlockBase";
 
 const BlockPlacePreview = () => {
@@ -18,6 +18,9 @@ const BlockPlacePreview = () => {
   const [dragSnapPoint, setDragSnapPoint] = useAtom(dragSnapPointAtom);
   const boardGridSize = useAtomValue(boardGridSizeAtom);
   const boardGrid = useAtomValue(boardGridAtom);
+  
+  // 마지막으로 계산된 스냅 포인트를 저장
+  const lastSnapPoint = useRef<{x: number, y: number} | null>(null);
 
   // 블럭 데이터 찾기
   const block = useMemo(() => {
@@ -29,19 +32,18 @@ const BlockPlacePreview = () => {
     return BlockData.find((block) => block.id === blockIdQueue[id]);
   }, [blockIdQueue, draggableBlockGhost.id]);
 
-  // 스냅 포인트 위치 계산
-  useEffect(() => {
-    if (!block) {
+  // 스냅 포인트 계산 함수
+  const calculateSnapPoint = useCallback(() => {
+    if (!block || !boardPositionRef) {
+      if (lastSnapPoint.current !== null) {
+        lastSnapPoint.current = null;
+        setDragSnapPoint(null);
+      }
       return;
     }
 
     // 보드 위치 계산
-    const boardRect = boardPositionRef?.getBoundingClientRect();
-
-    if (!boardRect) {
-      return;
-    }
-
+    const boardRect = boardPositionRef.getBoundingClientRect();
     const x = boardRect.left + window.scrollX;
     const y = boardRect.top + window.scrollY;
 
@@ -65,54 +67,59 @@ const BlockPlacePreview = () => {
       snapX > boardGrid[0].length - grid[0].length ||
       snapY > boardGrid.length - grid.length
     ) {
-      setDragSnapPoint(null);
+      if (lastSnapPoint.current !== null) {
+        lastSnapPoint.current = null;
+        setDragSnapPoint(null);
+      }
       return;
     }
 
-    // 스냅 포인트 위치 적용
-    if (dragSnapPoint?.x !== snapX || dragSnapPoint?.y !== snapY) {
-      setDragSnapPoint((prev) => ({
+    // 스냅 포인트 위치가 실제로 변경된 경우에만 업데이트
+    const hasPositionChanged = 
+      !lastSnapPoint.current || 
+      lastSnapPoint.current.x !== snapX || 
+      lastSnapPoint.current.y !== snapY;
+      
+    if (hasPositionChanged) {
+      // 겹침 검사를 미리 수행
+      const hasOverlap = grid.some((row, i) =>
+        row.some((cell, j) => {
+          if (cell) {
+            const targetY = snapY + i;
+            const targetX = snapX + j;
+            return (
+              boardGrid[targetY] &&
+              boardGrid[targetY][targetX] &&
+              boardGrid[targetY][targetX].blockId !== undefined
+            );
+          }
+          return false;
+        })
+      );
+
+      // 마지막 스냅 포인트 업데이트
+      lastSnapPoint.current = { x: snapX, y: snapY };
+
+      setDragSnapPoint({
         x: snapX,
         y: snapY,
-        isValid: prev?.isValid ?? false,
-      }));
+        isValid: !hasOverlap,
+      });
     }
   }, [
     block,
     boardGrid,
     boardGridSize,
     boardPositionRef,
-    dragSnapPoint?.x,
-    dragSnapPoint?.y,
     draggableBlockGhost.x,
     draggableBlockGhost.y,
     setDragSnapPoint,
   ]);
 
-  // 스냅 포인트 유효성 검증
+  // 스냅 포인트 위치 계산
   useEffect(() => {
-    // 블럭 데이터 또는 스냅 포인트가 없다면 중지
-    if (!block || !dragSnapPoint) {
-      return;
-    }
-
-    // 그리드 유효성 검사
-    const hasOverlap = block.grid.some((row, i) =>
-      row.some((cell, j) => {
-        if (cell) {
-          return (
-            boardGrid[dragSnapPoint.y + i][dragSnapPoint.x + j].blockId !==
-            undefined
-          );
-        }
-        return false;
-      })
-    );
-
-    setDragSnapPoint((prev) =>
-      prev ? { ...prev, isValid: !hasOverlap } : null
-    );
-  }, [block, boardGrid, dragSnapPoint, setDragSnapPoint]);
+    calculateSnapPoint();
+  }, [calculateSnapPoint]);
 
   // 스냅 미리보기 블록 색상
   const getBlockColor = useCallback(() => {
@@ -152,7 +159,6 @@ const BlockPlacePreview = () => {
               key={`snap-preview-${i}-${j}`}
               x={j + dragSnapPoint.x}
               y={i + dragSnapPoint.y}
-              // dragSnapPoint ? !dragSnapPoint.isValid : false
               color={getBlockColor()}
               borderTop={i === 0 || grid[i - 1]?.[j] === 0}
               borderBottom={i === grid.length - 1 || grid[i + 1]?.[j] === 0}

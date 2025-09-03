@@ -10,8 +10,9 @@ import { Box, Stack, useMediaQuery, useTheme } from "@mui/material";
 import BlockData from "../assets/blocks.json";
 import { playEffect, useIsMobileLandscape } from "../utils";
 import { useSetAtom } from "jotai";
-import { draggableBlockGhostAtom } from "../states";
+import { draggableBlockGhostAtom, dragSnapPointAtom } from "../states";
 import BlockPickUpAudio from "../assets/audio/block_pickup.mp3";
+import { useBoard } from "../hooks";
 
 const DraggableBlock = (props: BlockProps) => {
   const { id, blockId, shadow, ...others } = props;
@@ -36,6 +37,10 @@ const DraggableBlock = (props: BlockProps) => {
 
   // 호버 효과
   const [hover, setHover] = useState(false);
+
+  // 스냅 포인트
+  const setDragSnapPoint = useSetAtom(dragSnapPointAtom);
+  const { placeBlock } = useBoard();
 
   // 블록 크기 계산
   const calcBlockSize = useCallback(() => {
@@ -80,6 +85,7 @@ const DraggableBlock = (props: BlockProps) => {
       }
 
       setDragging(true);
+      setDragSnapPoint(null);
       playEffect(BlockPickUpAudio);
       (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
 
@@ -87,7 +93,7 @@ const DraggableBlock = (props: BlockProps) => {
 
       setGhost({ id: index, x: e.clientX, y: e.clientY + offsetY });
     },
-    [id, offsetY, setGhost]
+    [id, offsetY, setDragSnapPoint, setGhost]
   );
 
   // 드래그
@@ -97,18 +103,23 @@ const DraggableBlock = (props: BlockProps) => {
         return;
       }
 
-      // raf 적용
+      // RAF가 이미 스케줄되어 있다면 무시 (중복 방지)
+      if (rafRef.current) {
+        return;
+      }
+
+      // RAF 스케줄링
       rafRef.current = requestAnimationFrame(() => {
-        // 바뀐 좌표 업데이트
-        setGhost((g) => {
-          if (g.x === e.clientX && g.y === e.clientY + offsetY) {
-            return { ...g };
+        setGhost((prev) => {
+          // 이전 값과 동일하면 업데이트 하지 않음
+          if (prev.x === e.clientX && prev.y === e.clientY + offsetY) {
+            rafRef.current = null;
+            return prev;
           }
-
-          return { ...g, x: e.clientX, y: e.clientY + offsetY };
+          
+          rafRef.current = null;
+          return { ...prev, x: e.clientX, y: e.clientY + offsetY };
         });
-
-        rafRef.current = null;
       });
     },
     [dragging, offsetY, setGhost]
@@ -135,9 +146,12 @@ const DraggableBlock = (props: BlockProps) => {
       (e.currentTarget as Element).releasePointerCapture?.(e.pointerId);
 
       setGhost((g) => ({ ...g, id: null }));
+
+      // 블록 추가
+      placeBlock();
       console.log("[drag:end]", { x: e.clientX, y: e.clientY });
     },
-    [dragging, setGhost]
+    [dragging, placeBlock, setGhost]
   );
 
   // 드래그 영역 마우스 진입

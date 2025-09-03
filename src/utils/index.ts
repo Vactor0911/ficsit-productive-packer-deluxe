@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { effectAudios, musicAudio } from "./audio";
+import BlockData from "../assets/blocks.json";
 
 /**
  * 숫자 혹은 문자열 형태의 값을 px 단위로 변환하는 함수
@@ -63,4 +64,15 @@ export const useIsMobileLandscape = () => {
   }, []);
 
   return isMobileLandscape;
+};
+
+/**
+ * 랜덤 블록 ID를 반환하는 함수
+ * @returns 랜덤 블록 ID
+ */
+export const getRandBlockId = () => {
+  const blockIds = BlockData.map((block) => block.id);
+  const randomIndex = Math.floor(Math.random() * blockIds.length);
+
+  return blockIds[randomIndex];
 };
