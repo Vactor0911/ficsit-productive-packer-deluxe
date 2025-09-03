@@ -12,6 +12,7 @@ export interface BlockBaseProps {
   thickness?: boolean;
   shadow?: boolean;
   animation?: boolean;
+  opacity?: number;
 }
 
 const BlockBase = (props: BlockBaseProps) => {
@@ -27,6 +28,7 @@ const BlockBase = (props: BlockBaseProps) => {
     thickness,
     shadow,
     animation,
+    opacity,
   } = props;
 
   const uuid = useId();
@@ -49,6 +51,7 @@ const BlockBase = (props: BlockBaseProps) => {
               stroke={color}
               strokeWidth="2px"
               vectorEffect="non-scaling-stroke"
+              opacity={opacity}
             />
 
             {/* 아래쪽 테두리 */}
@@ -110,6 +113,7 @@ const BlockBase = (props: BlockBaseProps) => {
         height="32"
         fill={color}
         stroke={animation ? "none" : color}
+        opacity={opacity}
       />
 
       {/* 애니메이션 */}
@@ -137,6 +141,7 @@ const BlockBase = (props: BlockBaseProps) => {
               width="32"
               height="32"
               fill="rgba(255, 255, 255, 0.6)"
+              opacity={opacity}
             >
               <animate
                 attributeName="x"
@@ -155,6 +160,7 @@ const BlockBase = (props: BlockBaseProps) => {
               width="32"
               height="32"
               fill="rgba(255, 255, 255, 0.6)"
+              opacity={opacity}
             >
               <animate
                 attributeName="x"
