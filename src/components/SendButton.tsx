@@ -27,6 +27,7 @@ const SendButton = (props: SendButtonProps) => {
       fullWidth
       disabled={disabled}
       onClick={onClick}
+      playSound={false}
       slots={{
         buttonProps: {
           sx: {

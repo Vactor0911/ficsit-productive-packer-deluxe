@@ -100,41 +100,44 @@ const Score = (props: ScoreProps) => {
   }, [isMobileLandscape, variant]);
 
   // 애니메이션 실행
-  const executeAnimation = useCallback(() => {
-    // 코인 이미지 애니메이션
-    if (variant !== "bonus") {
-      const coinImageElement = CoinImageRef.current;
+  const executeAnimation = useCallback(
+    (scoreDelta: number) => {
+      // 코인 이미지 애니메이션
+      if (variant !== "bonus") {
+        const coinImageElement = CoinImageRef.current;
 
-      if (coinImageElement) {
-        coinImageElement.classList.remove("animate-coin");
-        requestAnimationFrame(() => {
-          coinImageElement.classList.add("animate-coin");
-        });
+        if (coinImageElement) {
+          coinImageElement.classList.remove("animate-coin");
+          requestAnimationFrame(() => {
+            coinImageElement.classList.add("animate-coin");
+          });
+        }
       }
-    }
-
-    // 점수 텍스트 애니메이션
-    if (variant !== "total") {
-      const scoreTextElement = scoreTextRef.current;
-      const scoreDeltaElement = scoreDeltaRef.current;
 
       // 점수 텍스트 애니메이션
-      if (scoreTextElement) {
-        scoreTextElement.classList.remove("animate-score");
-        requestAnimationFrame(() => {
-          scoreTextElement.classList.add("animate-score");
-        });
-      }
+      if (variant !== "total") {
+        const scoreTextElement = scoreTextRef.current;
+        const scoreDeltaElement = scoreDeltaRef.current;
 
-      // 점수 델타 애니메이션
-      if (scoreDeltaElement) {
-        scoreDeltaElement.classList.remove("animate-score-delta");
-        requestAnimationFrame(() => {
-          scoreDeltaElement.classList.add("animate-score-delta");
-        });
+        // 점수 텍스트 애니메이션
+        if (scoreTextElement) {
+          scoreTextElement.classList.remove("animate-score");
+          requestAnimationFrame(() => {
+            scoreTextElement.classList.add("animate-score");
+          });
+        }
+
+        // 점수 델타 애니메이션
+        if (scoreDeltaElement && scoreDelta > 0) {
+          scoreDeltaElement.classList.remove("animate-score-delta");
+          requestAnimationFrame(() => {
+            scoreDeltaElement.classList.add("animate-score-delta");
+          });
+        }
       }
-    }
-  }, [variant]);
+    },
+    [variant]
+  );
 
   // 점수 변경 감지
   useEffect(() => {
@@ -159,6 +162,8 @@ const Score = (props: ScoreProps) => {
 
           if (progress < 1) {
             requestAnimationFrame(frame);
+          } else {
+            localScoreRef.current = score;
           }
         };
 
@@ -169,7 +174,7 @@ const Score = (props: ScoreProps) => {
       }
 
       // 애니메이션 실행
-      executeAnimation();
+      executeAnimation(delta);
     }
   }, [executeAnimation, score, variant]);
 

@@ -10,6 +10,7 @@ import ButtonClickAudio from "../assets/audio/button_click.mp3";
 interface ButtonProps extends ButtonBaseProps {
   children: React.ReactNode;
   fullWidth?: boolean;
+  playSound?: boolean;
   slots?: {
     buttonProps?: ButtonBaseProps;
     panelProps?: PanelProps;
@@ -17,7 +18,14 @@ interface ButtonProps extends ButtonBaseProps {
 }
 
 const Button = (props: ButtonProps) => {
-  const { children, fullWidth, slots, onClick, disabled } = props;
+  const {
+    children,
+    fullWidth,
+    playSound = true,
+    slots,
+    onClick,
+    disabled,
+  } = props;
 
   const theme = useTheme();
   const [pushedSize, setPushedSize] = useState(0);
@@ -40,12 +48,17 @@ const Button = (props: ButtonProps) => {
   // 마우스 클릭
   const handleClick = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
-      playEffect(ButtonClickAudio);
+      // 효과음 재생
+      if (playSound) {
+        playEffect(ButtonClickAudio);
+      }
+
+      // 콜백 함수 실행
       if (onClick) {
         onClick(event);
       }
     },
-    [onClick]
+    [onClick, playSound]
   );
 
   return (

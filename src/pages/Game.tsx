@@ -1,29 +1,40 @@
 import { Box, Container, Stack, Typography } from "@mui/material";
 import Panel from "../components/Panel";
 import Score from "../components/Score";
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import Timer from "../components/Timer";
-import { useIsMobileLandscape } from "../utils";
+import { getRandBlockId, playEffect, useIsMobileLandscape } from "../utils";
 import ConveyorSupport from "../components/ConveyorSupport";
 import Marquee from "react-fast-marquee";
 import Package from "../components/Package";
 import BlockContainer from "../components/BlockContainer";
 import MobileBlockContainer from "../components/MobileBlockContainer";
-import { useAtomValue } from "jotai";
-import { scoreAtom, vhAtom } from "../states";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import {
+  blockIdQueueAtom,
+  fillingBonusAtom,
+  packageScoreAtom,
+  scoreAtom,
+  vhAtom,
+} from "../states";
 import ScorePanel from "../components/ScorePanel";
 import SendButton from "../components/SendButton";
 import { Navigate, useLocation } from "react-router-dom";
 import { useBoard } from "../hooks";
 import ScoreEffectsRenderer from "../components/ScoreEffectsRenderer";
+import SendPackageAudio from "../assets/audio/send_package.mp3";
 
 const Game = () => {
   const isMobileLandscape = useIsMobileLandscape();
   const location = useLocation();
-  const { resetBoard, addBlock } = useBoard();
+  const { resetBoard, isBoardEmpty } = useBoard();
+  const setBlockIdQueue = useSetAtom(blockIdQueueAtom);
 
   const score = useAtomValue(scoreAtom);
   const vh = useAtomValue(vhAtom);
+  const setScore = useSetAtom(scoreAtom);
+  const [packageScore, setPackageScore] = useAtom(packageScoreAtom);
+  const [fillingBonus, setFillingBonus] = useAtom(fillingBonusAtom);
 
   // URL에서 레벨 추출
   const level = useMemo(
@@ -31,12 +42,53 @@ const Game = () => {
     [location.pathname]
   );
 
-  // 보드 그리드 초기화
+  // 게임 데이터 초기화
   useEffect(() => {
     if (level) {
+      // 보드 초기화
       resetBoard(Number(level));
+
+      // 포장 점수 초기화
+      setPackageScore(0);
+
+      // 채우기 보너스 초기화
+      setFillingBonus(1000);
+
+      // 블록 큐 초기화
+      const newBlockIdQueue = Array.from({ length: 8 }, () => {
+        return getRandBlockId();
+      });
+      setBlockIdQueue(newBlockIdQueue);
     }
-  }, [addBlock, level, resetBoard]);
+  }, [level, resetBoard, setBlockIdQueue, setFillingBonus, setPackageScore]);
+
+  // 보내기 버튼 클릭
+  const handleSendButtonClick = useCallback(() => {
+    // 점수 증가
+    const totalScore = score + Math.round(packageScore * fillingBonus * 0.001);
+    setScore(totalScore);
+
+    // 보드 초기화
+    resetBoard(Number(level));
+
+    // 포장 점수 초기화
+    setPackageScore(0);
+
+    // 채우기 보너스 초기화
+    setFillingBonus(1000);
+
+    // 효과음 재생
+    playEffect(SendPackageAudio);
+  }, [
+    fillingBonus,
+    level,
+    packageScore,
+    resetBoard,
+    score,
+    setFillingBonus,
+    setPackageScore,
+    setScore,
+  ]);
 
   // 레벨 유효성 검증
   if (
@@ -188,7 +240,10 @@ const Game = () => {
               </Box>
 
               {/* 보내기 버튼 */}
-              <SendButton />
+              <SendButton
+                onClick={handleSendButtonClick}
+                disabled={isBoardEmpty}
+              />
             </Stack>
           </Box>
 
