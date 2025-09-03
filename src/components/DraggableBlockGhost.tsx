@@ -37,7 +37,7 @@ const DraggableBlockGhost = ({ ghostSize }: DraggableBlockGhostProps) => {
       left={ghost.x}
       top={ghost.y}
       width={ghostSize}
-      animation={true}
+      animation={dragSnapPoint ? dragSnapPoint.isValid : true}
       error={dragSnapPoint ? !dragSnapPoint.isValid : false}
       sx={{
         transform: "translate(-50%, -50%)",
