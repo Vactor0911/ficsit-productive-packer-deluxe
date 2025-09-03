@@ -39,3 +39,6 @@ export const dragSnapPointAtom = atom<{
   y: number;
   isValid: boolean;
 } | null>(null);
+
+// 패키지 객체
+export const packageRefAtom = atom<HTMLDivElement | null>(null);

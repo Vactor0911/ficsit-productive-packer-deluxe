@@ -160,7 +160,6 @@ const Game = () => {
             height="90%"
             minHeight="200px"
             marginX={3}
-            bgcolor="red"
           >
             {/* 패키지 */}
             <Package />

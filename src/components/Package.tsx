@@ -1,6 +1,9 @@
 import { Box, keyframes, Stack, Typography } from "@mui/material";
 import Board from "./Board";
 import FicsitLogo from "../assets/images/ficsit.svg";
+import { useEffect, useRef } from "react";
+import { useSetAtom } from "jotai";
+import { packageRefAtom } from "../states";
 
 const CoverStyle = keyframes`
   0% {
@@ -13,6 +16,24 @@ const CoverStyle = keyframes`
   }
 `;
 
+const ShakeStyle = keyframes`
+  0% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(2px, -2px);
+  }
+  50% {
+    transform: translate(2px, 2px);
+  }
+  75% {
+    transform: translate(-2px, -2px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+`;
+
 interface PackageProps {
   isCovered?: boolean;
 }
@@ -20,14 +41,28 @@ interface PackageProps {
 const Package = (props: PackageProps) => {
   const { isCovered } = props;
 
+  const packageRef = useRef<HTMLDivElement>(null);
+  const setPackageRef = useSetAtom(packageRefAtom);
+
+  // 패키지 객체
+  useEffect(() => {
+    setPackageRef(packageRef.current);
+  }, [setPackageRef]);
+
   return (
     <Stack
+      ref={packageRef}
       width="100%"
       height="100%"
       bgcolor="#e5b065"
       border="2px solid black"
       boxShadow="0 24px 0 rgba(0, 0, 0, 0.2)"
       position="relative"
+      sx={{
+        "&.shake": {
+          animation: `${ShakeStyle} 0.2s ease-in-out`,
+        },
+      }}
     >
       <Stack flex={1} margin={0.5} border="2px solid black">
         {/* 패키지 내벽 */}

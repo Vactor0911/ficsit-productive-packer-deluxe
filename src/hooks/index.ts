@@ -4,18 +4,40 @@ import {
   boardGridAtom,
   draggableBlockGhostAtom,
   dragSnapPointAtom,
+  packageRefAtom,
   type BoardGridProps,
 } from "../states";
 import BoardData from "../assets/boards.json";
 import BlockData from "../assets/blocks.json";
 import { useCallback } from "react";
-import { getRandBlockId } from "../utils";
+import { getRandBlockId, playEffect } from "../utils";
+import BlockPlacedAudio from "../assets/audio/block_placed.mp3";
+
+export const usePackage = () => {
+  const packageRef = useAtomValue(packageRefAtom);
+
+  const shakePackage = useCallback(() => {
+    // 패키지 객체가 없다면 종료
+    if (!packageRef) {
+      return;
+    }
+
+    // 패키지 객체 흔들기
+    packageRef.classList.add("shake");
+    setTimeout(() => {
+      packageRef.classList.remove("shake");
+    }, 250);
+  }, [packageRef]);
+
+  return { shakePackage };
+};
 
 export const useBoard = () => {
   const setBoardGrid = useSetAtom(boardGridAtom);
   const draggableBlockGhost = useAtomValue(draggableBlockGhostAtom);
   const dragSnapPoint = useAtomValue(dragSnapPointAtom);
   const [blockIdQueue, setBlockIdQueue] = useAtom(blockIdQueueAtom);
+  const { shakePackage } = usePackage();
 
   // 보드 크기
   const getBoardSize = useCallback((level: number) => {
@@ -136,12 +158,17 @@ export const useBoard = () => {
       newQueue[draggableBlockGhost.id!] = getRandBlockId();
       return newQueue;
     });
+
+    // 효과 재생
+    playEffect(BlockPlacedAudio);
+    shakePackage();
   }, [
     addBlock,
     blockIdQueue,
     dragSnapPoint,
     draggableBlockGhost.id,
     setBlockIdQueue,
+    shakePackage,
   ]);
 
   return {
