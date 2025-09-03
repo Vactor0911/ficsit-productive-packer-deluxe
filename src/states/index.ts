@@ -22,6 +22,9 @@ export const boardGridSizeAtom = atom(0);
 // 점수
 export const scoreAtom = atom(0);
 
+// 포장 점수
+export const packageScoreAtom = atom(0);
+
 // 드래그 블럭 고스트 위치
 export const draggableBlockGhostAtom = atom<{
   id: number | null;

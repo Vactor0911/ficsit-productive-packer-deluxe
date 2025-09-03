@@ -147,7 +147,7 @@ const Score = (props: ScoreProps) => {
       // 점수 최신화
       if (variant === "total") {
         const startTime = performance.now();
-        const duration = 500; // 0.5초 TODO: 지속 시간 조정
+        const duration = 500; // 0.5초
         const start = localScoreRef.current;
         const end = score;
 
@@ -165,6 +165,7 @@ const Score = (props: ScoreProps) => {
         requestAnimationFrame(frame);
       } else {
         setLocalScore(score);
+        localScoreRef.current = score;
       }
 
       // 애니메이션 실행
