@@ -12,6 +12,7 @@ export interface BlockBaseProps {
   thickness?: boolean;
   shadow?: boolean;
   animation?: boolean;
+  opacity?: number;
 }
 
 const BlockBase = (props: BlockBaseProps) => {
@@ -27,6 +28,7 @@ const BlockBase = (props: BlockBaseProps) => {
     thickness,
     shadow,
     animation,
+    opacity,
   } = props;
 
   const uuid = useId();
@@ -49,6 +51,7 @@ const BlockBase = (props: BlockBaseProps) => {
               stroke={color}
               strokeWidth="2px"
               vectorEffect="non-scaling-stroke"
+              opacity={opacity}
             />
 
             {/* 아래쪽 테두리 */}
@@ -110,65 +113,64 @@ const BlockBase = (props: BlockBaseProps) => {
         height="32"
         fill={color}
         stroke={animation ? "none" : color}
+        opacity={opacity}
       />
 
       {/* 애니메이션 */}
-      {animation && (
-        <>
-          <defs>
-            <symbol id={glyphId} viewBox="0 0 64 64">
-              <path d="M 0 0 16 0 L 0 16 Z" fill="inherit" />
-              <path
-                d="M 64 0 L 48 0 L 0 48 L 0 64 L 16 64 L 64 16 Z"
-                fill="inherit"
-              />
-              <path d="M 64 64 L 48 64 L 64 48 Z" fill="inherit" />
-            </symbol>
-            <clipPath id={clipId}>
-              <rect x={x * 32} y={y * 32} width="32" height="32" />
-            </clipPath>
-          </defs>
+      <defs>
+        <symbol id={glyphId} viewBox="0 0 64 64">
+          <path d="M 0 0 16 0 L 0 16 Z" fill="inherit" />
+          <path
+            d="M 64 0 L 48 0 L 0 48 L 0 64 L 16 64 L 64 16 Z"
+            fill="inherit"
+          />
+          <path d="M 64 64 L 48 64 L 64 48 Z" fill="inherit" />
+        </symbol>
+        <clipPath id={clipId}>
+          <rect x={x * 32} y={y * 32} width="32" height="32" />
+        </clipPath>
+      </defs>
 
-          <g clipPath={`url(#${clipId})`} clipPathUnits="userSpaceOnUse">
-            <use
-              href={`#${glyphId}`}
-              x={x * 32}
-              y={y * 32}
-              width="32"
-              height="32"
-              fill="rgba(255, 255, 255, 0.6)"
-            >
-              <animate
-                attributeName="x"
-                from={(x - 1) * 32}
-                to={x * 32}
-                dur="2s"
-                repeatCount="indefinite"
-                direction="alternate"
-                fill="freeze"
-              />
-            </use>
-            <use
-              href={`#${glyphId}`}
-              x={(x + 1) * 32}
-              y={y * 32}
-              width="32"
-              height="32"
-              fill="rgba(255, 255, 255, 0.6)"
-            >
-              <animate
-                attributeName="x"
-                from={x * 32}
-                to={(x + 1) * 32}
-                dur="2s"
-                repeatCount="indefinite"
-                direction="alternate"
-                fill="freeze"
-              />
-            </use>
-          </g>
-        </>
-      )}
+      <g clipPath={`url(#${clipId})`} clipPathUnits="userSpaceOnUse">
+        <use
+          href={`#${glyphId}`}
+          x={x * 32}
+          y={y * 32}
+          width="32"
+          height="32"
+          fill="rgba(255, 255, 255, 0.6)"
+          opacity={animation ? opacity : 0}
+        >
+          <animate
+            attributeName="x"
+            from={(x - 1) * 32}
+            to={x * 32}
+            dur="2s"
+            repeatCount="indefinite"
+            direction="alternate"
+            fill="freeze"
+          />
+        </use>
+        <use
+          href={`#${glyphId}`}
+          x={(x + 1) * 32}
+          y={y * 32}
+          width="32"
+          height="32"
+          fill="rgba(255, 255, 255, 0.6)"
+          opacity={animation ? opacity : 0}
+        >
+          <animate
+            attributeName="x"
+            from={x * 32}
+            to={(x + 1) * 32}
+            dur="2s"
+            repeatCount="indefinite"
+            direction="alternate"
+            fill="freeze"
+          />
+        </use>
+      </g>
 
       {/* 위쪽 테두리 */}
       {(border || borderTop) && (

@@ -6,16 +6,20 @@ import { useAtomValue, useSetAtom } from "jotai";
 import {
   boardGridAtom,
   boardGridSizeAtom,
+  boardPositionRefAtom,
   type BoardGridProps,
 } from "../states";
 import { useBoard } from "../hooks";
 import BlockBase from "./BlockBase";
+import BlockPlacePreview from "./BlockPlacePreview";
 
 const Board = () => {
   const location = useLocation();
   const { getBoardSize } = useBoard();
 
   const boardRef = useRef<HTMLDivElement>(null);
+  const boardPositionRef = useRef<SVGRectElement>(null);
+  const setBoardPositionRef = useSetAtom(boardPositionRefAtom);
   const boardGrid = useAtomValue(boardGridAtom);
   const setBoardGridSize = useSetAtom(boardGridSizeAtom);
 
@@ -24,6 +28,11 @@ const Board = () => {
     () => location.pathname.split("/").pop(),
     [location.pathname]
   );
+
+  // 보드 객체
+  useEffect(() => {
+    setBoardPositionRef(boardPositionRef.current);
+  }, [setBoardPositionRef]);
 
   // 보드 크기
   const boardSize = useMemo(() => {
@@ -193,8 +202,14 @@ const Board = () => {
           zIndex: 2,
         }}
       >
+        {/* 좌측 상단 기준점 */}
+        <rect x={0} y={0} ref={boardPositionRef} />
+
         {/* 블록 렌더링 */}
         {boardGrid.map((row) => row.map((block) => drawBlock(block)))}
+
+        {/* 고스트 블록 스냅 포인트 렌더링 */}
+        <BlockPlacePreview />
       </svg>
 
       {/* 장식 */}
