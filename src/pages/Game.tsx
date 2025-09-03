@@ -3,7 +3,7 @@ import Panel from "../components/Panel";
 import Score from "../components/Score";
 import { useCallback, useEffect, useMemo } from "react";
 import Timer from "../components/Timer";
-import { getRandBlockId, useIsMobileLandscape } from "../utils";
+import { getRandBlockId, playEffect, useIsMobileLandscape } from "../utils";
 import ConveyorSupport from "../components/ConveyorSupport";
 import Marquee from "react-fast-marquee";
 import Package from "../components/Package";
@@ -22,11 +22,12 @@ import SendButton from "../components/SendButton";
 import { Navigate, useLocation } from "react-router-dom";
 import { useBoard } from "../hooks";
 import ScoreEffectsRenderer from "../components/ScoreEffectsRenderer";
+import SendPackageAudio from "../assets/audio/send_package.mp3";
 
 const Game = () => {
   const isMobileLandscape = useIsMobileLandscape();
   const location = useLocation();
-  const { resetBoard, addBlock } = useBoard();
+  const { resetBoard, isBoardEmpty } = useBoard();
   const setBlockIdQueue = useSetAtom(blockIdQueueAtom);
 
   const score = useAtomValue(scoreAtom);
@@ -59,7 +60,7 @@ const Game = () => {
       });
       setBlockIdQueue(newBlockIdQueue);
     }
-  }, [addBlock, level, resetBoard, setBlockIdQueue]);
+  }, [level, resetBoard, setBlockIdQueue, setFillingBonus, setPackageScore]);
 
   // 보내기 버튼 클릭
   const handleSendButtonClick = useCallback(() => {
@@ -75,6 +76,9 @@ const Game = () => {
 
     // 채우기 보너스 초기화
     setFillingBonus(1000);
+
+    // 효과음 재생
+    playEffect(SendPackageAudio);
   }, [
     fillingBonus,
     level,
@@ -236,7 +240,10 @@ const Game = () => {
               </Box>
 
               {/* 보내기 버튼 */}
-              <SendButton onClick={handleSendButtonClick} />
+              <SendButton
+                onClick={handleSendButtonClick}
+                disabled={isBoardEmpty}
+              />
             </Stack>
           </Box>
 

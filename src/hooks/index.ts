@@ -12,7 +12,7 @@ import {
 } from "../states";
 import BoardData from "../assets/boards.json";
 import BlockData from "../assets/blocks.json";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { getRandBlockId, playEffect } from "../utils";
 import BlockPlacedAudio from "../assets/audio/block_placed.mp3";
 
@@ -38,7 +38,7 @@ export const usePackage = () => {
 
 // 보드
 export const useBoard = () => {
-  const setBoardGrid = useSetAtom(boardGridAtom);
+  const [boardGrid, setBoardGrid] = useAtom(boardGridAtom);
   const draggableBlockGhost = useAtomValue(draggableBlockGhostAtom);
   const dragSnapPoint = useAtomValue(dragSnapPointAtom);
   const [blockIdQueue, setBlockIdQueue] = useAtom(blockIdQueueAtom);
@@ -201,10 +201,16 @@ export const useBoard = () => {
     shakePackage,
   ]);
 
+  // 보드 비어있음 여부 확인
+  const isBoardEmpty = useMemo(() => {
+    return boardGrid.every((row) => row.every((cell) => !cell.blockId));
+  }, [boardGrid]);
+
   return {
     getBoardSize,
     resetBoard,
     addBlock,
     placeBlock,
+    isBoardEmpty,
   };
 };
