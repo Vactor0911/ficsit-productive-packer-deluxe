@@ -5,7 +5,7 @@ import type { BlockBaseProps } from "../components/BlockBase";
 export const vhAtom = atom(window.innerHeight * 0.01);
 
 // 블록 큐
-export const blockIdQueueAtom = atom<number[]>([0, 5, 8, 12, 11, 20, 23, 18]);
+export const blockIdQueueAtom = atom<number[]>([]);
 
 // 보드 위치
 export const boardPositionRefAtom = atom<SVGRectElement | null>(null);

@@ -3,14 +3,14 @@ import Panel from "../components/Panel";
 import Score from "../components/Score";
 import { useEffect, useMemo } from "react";
 import Timer from "../components/Timer";
-import { useIsMobileLandscape } from "../utils";
+import { getRandBlockId, useIsMobileLandscape } from "../utils";
 import ConveyorSupport from "../components/ConveyorSupport";
 import Marquee from "react-fast-marquee";
 import Package from "../components/Package";
 import BlockContainer from "../components/BlockContainer";
 import MobileBlockContainer from "../components/MobileBlockContainer";
-import { useAtomValue } from "jotai";
-import { scoreAtom, vhAtom } from "../states";
+import { useAtomValue, useSetAtom } from "jotai";
+import { blockIdQueueAtom, scoreAtom, vhAtom } from "../states";
 import ScorePanel from "../components/ScorePanel";
 import SendButton from "../components/SendButton";
 import { Navigate, useLocation } from "react-router-dom";
@@ -21,6 +21,7 @@ const Game = () => {
   const isMobileLandscape = useIsMobileLandscape();
   const location = useLocation();
   const { resetBoard, addBlock } = useBoard();
+  const setBlockIdQueue = useSetAtom(blockIdQueueAtom);
 
   const score = useAtomValue(scoreAtom);
   const vh = useAtomValue(vhAtom);
@@ -31,12 +32,19 @@ const Game = () => {
     [location.pathname]
   );
 
-  // 보드 그리드 초기화
+  // 게임 데이터 초기화
   useEffect(() => {
     if (level) {
+      // 보드 초기화
       resetBoard(Number(level));
+
+      // 블록 큐 초기화
+      const newBlockIdQueue = Array.from({ length: 8 }, () => {
+        return getRandBlockId();
+      });
+      setBlockIdQueue(newBlockIdQueue);
     }
-  }, [addBlock, level, resetBoard]);
+  }, [addBlock, level, resetBoard, setBlockIdQueue]);
 
   // 레벨 유효성 검증
   if (
