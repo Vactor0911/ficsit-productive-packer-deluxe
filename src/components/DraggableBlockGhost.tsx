@@ -1,6 +1,6 @@
 import { useAtomValue } from "jotai";
 import Block from "./Block";
-import { blockIdQueueAtom, drraggableBlockGhostAtom } from "../states";
+import { blockIdQueueAtom, draggableBlockGhostAtom } from "../states";
 import { useMemo } from "react";
 
 interface DraggableBlockGhostProps {
@@ -8,7 +8,7 @@ interface DraggableBlockGhostProps {
 }
 
 const DraggableBlockGhost = ({ ghostSize }: DraggableBlockGhostProps) => {
-  const ghost = useAtomValue(drraggableBlockGhostAtom);
+  const ghost = useAtomValue(draggableBlockGhostAtom);
   const blockIdQueue = useAtomValue(blockIdQueueAtom);
 
   const blockId = useMemo(() => {
