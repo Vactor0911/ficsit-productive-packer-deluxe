@@ -28,6 +28,7 @@ const ScorePanel = () => {
         justifyContent="center"
         alignItems="stretch"
         gap={isMobileLandscape ? 0 : 0.5}
+        flex={1}
       >
         {/* 포장 점수 */}
         <Typography
@@ -83,7 +84,10 @@ const ScorePanel = () => {
           borderRadius="50px"
           bgcolor="#49859d"
         >
-          <Score variant="default" score={0} />
+          <Score
+            variant="default"
+            score={Math.round(packageScore * fillingBonus * 0.001)}
+          />
         </Stack>
       </Stack>
 
