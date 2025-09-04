@@ -1,8 +1,5 @@
-import { Box, Container, Stack, Typography } from "@mui/material";
-import Panel from "../components/Panel";
-import Score from "../components/Score";
+import { Box, Stack } from "@mui/material";
 import { useCallback, useEffect, useMemo } from "react";
-import Timer from "../components/Timer";
 import { getRandBlockId, playEffect, useIsMobileLandscape } from "../utils";
 import ConveyorSupport from "../components/ConveyorSupport";
 import Package, {
@@ -17,8 +14,10 @@ import {
   blockIdQueueAtom,
   fillingBonusAtom,
   isPackageSendingAtom,
+  MAX_TIME,
   packageScoreAtom,
   scoreAtom,
+  timerAtom,
   vhAtom,
 } from "../states";
 import ScorePanel from "../components/ScorePanel";
@@ -27,6 +26,7 @@ import { Navigate, useLocation } from "react-router-dom";
 import { useBoard } from "../hooks";
 import ScoreEffectsRenderer from "../components/ScoreEffectsRenderer";
 import SendPackageAudio from "../assets/audio/send_package.mp3";
+import TimeScorePanel from "../components/TimeScorePanel";
 
 const Game = () => {
   const isMobileLandscape = useIsMobileLandscape();
@@ -40,6 +40,7 @@ const Game = () => {
   const [packageScore, setPackageScore] = useAtom(packageScoreAtom);
   const [fillingBonus, setFillingBonus] = useAtom(fillingBonusAtom);
   const [isPackageSending, setIsPackageSending] = useAtom(isPackageSendingAtom);
+  const setTimerAtom = useSetAtom(timerAtom);
 
   // URL에서 레벨 추출
   const level = useMemo(
@@ -59,13 +60,23 @@ const Game = () => {
       // 채우기 보너스 초기화
       setFillingBonus(1000);
 
+      // 타이머 초기화
+      setTimerAtom(MAX_TIME);
+
       // 블록 큐 초기화
       const newBlockIdQueue = Array.from({ length: 8 }, () => {
         return getRandBlockId();
       });
       setBlockIdQueue(newBlockIdQueue);
     }
-  }, [level, resetBoard, setBlockIdQueue, setFillingBonus, setPackageScore]);
+  }, [
+    level,
+    resetBoard,
+    setBlockIdQueue,
+    setFillingBonus,
+    setPackageScore,
+    setTimerAtom,
+  ]);
 
   // 보내기 버튼 클릭
   const handleSendButtonClick = useCallback(() => {
@@ -118,78 +129,7 @@ const Game = () => {
   return (
     <Stack height={`${vh * 100}px`}>
       {/* 점수 판 */}
-      <Container
-        maxWidth={isMobileLandscape ? "xs" : "md"}
-        sx={{
-          maxWidth: isMobileLandscape ? "auto" : "700px !important",
-          height: isMobileLandscape ? "80px" : "auto",
-          marginTop: isMobileLandscape
-            ? 1
-            : {
-                xs: 1,
-                md: 2,
-              },
-          position: "relative",
-          zIndex: 100,
-        }}
-      >
-        <Panel backgroundColor="#fffff7">
-          <Stack
-            direction="row"
-            height="100%"
-            padding={
-              isMobileLandscape
-                ? 0.5
-                : {
-                    xs: 0.5,
-                    md: 1,
-                  }
-            }
-            paddingY={
-              isMobileLandscape
-                ? 0.5
-                : {
-                    xs: 0.5,
-                    md: 1.5,
-                  }
-            }
-            gap={1}
-          >
-            {/* 타이머 */}
-            <Box
-              fontSize={
-                isMobileLandscape
-                  ? "0.65rem"
-                  : {
-                      xs: "0.8rem",
-                      sm: "inherit",
-                    }
-              }
-            >
-              <Timer />
-            </Box>
-
-            <Stack
-              gap={
-                isMobileLandscape
-                  ? 0
-                  : {
-                      xs: 0,
-                      md: 1,
-                    }
-              }
-              flex={1}
-              overflow="hidden"
-            >
-              {/* 헤더 */}
-              <Typography variant="subtitle1">최종 점수 :</Typography>
-
-              {/* 최종 점수 */}
-              <Score variant="total" score={score} />
-            </Stack>
-          </Stack>
-        </Panel>
-      </Container>
+      <TimeScorePanel />
 
       <Stack position="relative" flex={1} marginTop={1.5}>
         {/* 상부 지지대 */}
