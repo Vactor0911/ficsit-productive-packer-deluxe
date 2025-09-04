@@ -9,8 +9,12 @@ import Block, { type BlockProps } from "./Block";
 import { Box, Stack, useMediaQuery, useTheme } from "@mui/material";
 import BlockData from "../assets/blocks.json";
 import { playEffect, useIsMobileLandscape } from "../utils";
-import { useSetAtom } from "jotai";
-import { draggableBlockGhostAtom, dragSnapPointAtom } from "../states";
+import { useAtomValue, useSetAtom } from "jotai";
+import {
+  draggableBlockGhostAtom,
+  dragSnapPointAtom,
+  isPackageSendingAtom,
+} from "../states";
 import BlockPickUpAudio from "../assets/audio/block_pickup.mp3";
 import { useBoard } from "../hooks";
 
@@ -21,6 +25,7 @@ const DraggableBlock = (props: BlockProps) => {
 
   const isMobileLandscape = useIsMobileLandscape();
   const isXs = useMediaQuery(theme.breakpoints.down("sm"));
+  const isPackageSending = useAtomValue(isPackageSendingAtom);
 
   // 블록 ID로 데이터 찾기
   const block = useMemo(() => {
@@ -79,6 +84,11 @@ const DraggableBlock = (props: BlockProps) => {
   // 마우스 버튼 누름
   const handlePointerDown = useCallback(
     (e: React.PointerEvent<HTMLDivElement>) => {
+      // 패키지 전송 중에는 드래그 중지
+      if (isPackageSending) {
+        return;
+      }
+
       // 마우스인 경우 왼쪽 버튼만 허용, 터치/펜은 통과
       if (e.pointerType === "mouse" && e.button !== 0) {
         return;
@@ -93,7 +103,7 @@ const DraggableBlock = (props: BlockProps) => {
 
       setGhost({ id: index, x: e.clientX, y: e.clientY + offsetY });
     },
-    [id, offsetY, setDragSnapPoint, setGhost]
+    [id, isPackageSending, offsetY, setDragSnapPoint, setGhost]
   );
 
   // 드래그
@@ -116,7 +126,7 @@ const DraggableBlock = (props: BlockProps) => {
             rafRef.current = null;
             return prev;
           }
-          
+
           rafRef.current = null;
           return { ...prev, x: e.clientX, y: e.clientY + offsetY };
         });
