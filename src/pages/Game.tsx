@@ -1,7 +1,7 @@
 import { Box, Container, Stack, Typography } from "@mui/material";
 import Panel from "../components/Panel";
 import Score from "../components/Score";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Timer from "../components/Timer";
 import { getRandBlockId, playEffect, useIsMobileLandscape } from "../utils";
 import ConveyorSupport from "../components/ConveyorSupport";
@@ -35,6 +35,7 @@ const Game = () => {
   const setScore = useSetAtom(scoreAtom);
   const [packageScore, setPackageScore] = useAtom(packageScoreAtom);
   const [fillingBonus, setFillingBonus] = useAtom(fillingBonusAtom);
+  const [isPackageSending, setIsPackageSending] = useState(false);
 
   // URL에서 레벨 추출
   const level = useMemo(
@@ -68,8 +69,15 @@ const Game = () => {
     const totalScore = score + Math.round(packageScore * fillingBonus * 0.001);
     setScore(totalScore);
 
-    // 보드 초기화
-    resetBoard(Number(level));
+    // 패키지 보내기 효과 재생
+    setIsPackageSending(true);
+    setTimeout(() => {
+      // 보드 초기화
+      resetBoard(Number(level));
+
+      // 패키지 보내기 효과 초기화
+      setIsPackageSending(false);
+    }, 3000);
 
     // 포장 점수 초기화
     setPackageScore(0);
@@ -206,7 +214,7 @@ const Game = () => {
             marginX={3}
           >
             {/* 패키지 */}
-            <Package />
+            <Package isSending={isPackageSending} />
           </Box>
 
           {/* 우측 패널 */}

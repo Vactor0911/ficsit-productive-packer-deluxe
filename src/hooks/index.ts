@@ -203,7 +203,9 @@ export const useBoard = () => {
 
   // 보드 비어있음 여부 확인
   const isBoardEmpty = useMemo(() => {
-    return boardGrid.every((row) => row.every((cell) => !cell.blockId));
+    return boardGrid.every((row) =>
+      row.every((cell) => (cell.blockId ?? -1) < 0)
+    );
   }, [boardGrid]);
 
   return {

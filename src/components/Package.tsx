@@ -35,11 +35,11 @@ const ShakeStyle = keyframes`
 `;
 
 interface PackageProps {
-  isCovered?: boolean;
+  isSending?: boolean;
 }
 
 const Package = (props: PackageProps) => {
-  const { isCovered } = props;
+  const { isSending } = props;
 
   const packageRef = useRef<HTMLDivElement>(null);
   const setPackageRef = useSetAtom(packageRefAtom);
@@ -134,8 +134,8 @@ const Package = (props: PackageProps) => {
         left="-2px"
         zIndex={1000}
         sx={{
-          opacity: isCovered ? 1 : 0,
-          animation: isCovered ? `${CoverStyle} 0.5s ease-in-out` : "none",
+          opacity: isSending ? 1 : 0,
+          animation: isSending ? `${CoverStyle} 0.5s ease-in-out` : "none",
         }}
       >
         <Stack
