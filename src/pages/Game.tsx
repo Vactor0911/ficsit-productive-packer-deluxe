@@ -5,7 +5,11 @@ import { useCallback, useEffect, useMemo } from "react";
 import Timer from "../components/Timer";
 import { getRandBlockId, playEffect, useIsMobileLandscape } from "../utils";
 import ConveyorSupport from "../components/ConveyorSupport";
-import Package, { SendAnimation } from "../components/Package";
+import Package, {
+  COVER_ANIMATION_DURATION,
+  SEND_ANIMATION_DURATION,
+  SendAnimation,
+} from "../components/Package";
 import BlockContainer from "../components/BlockContainer";
 import MobileBlockContainer from "../components/MobileBlockContainer";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
@@ -253,7 +257,7 @@ const Game = () => {
               {/* 보내기 버튼 */}
               <SendButton
                 onClick={handleSendButtonClick}
-                disabled={isBoardEmpty}
+                disabled={isBoardEmpty || isPackageSending}
               />
             </Stack>
           </Box>
@@ -269,9 +273,9 @@ const Game = () => {
             zIndex={-1}
             sx={{
               animation: isPackageSending
-                ? `${SendAnimation} 1s ease-in-out forwards`
+                ? `${SendAnimation} ${SEND_ANIMATION_DURATION}ms ease-in-out forwards`
                 : "none",
-              animationDelay: "0.5s",
+              animationDelay: `${COVER_ANIMATION_DURATION}ms`,
             }}
           >
             {Array.from({ length: 16 }).map((_, index) => (

@@ -44,6 +44,9 @@ export const SendAnimation = keyframes`
   }
 `;
 
+export const COVER_ANIMATION_DURATION = 300;
+export const SEND_ANIMATION_DURATION = 700;
+
 interface PackageProps {
   isSending?: boolean;
 }
@@ -85,8 +88,8 @@ const Package = (props: PackageProps) => {
           animation: `${ShakeAnimation} 0.2s ease-in-out`,
         },
         "&.send": {
-          animation: `${SendAnimation} 1s ease-in-out forwards`,
-          animationDelay: "0.5s",
+          animation: `${SendAnimation} ${SEND_ANIMATION_DURATION}ms ease-in-out forwards`,
+          animationDelay: `${COVER_ANIMATION_DURATION}ms`,
         },
       }}
     >
@@ -162,7 +165,9 @@ const Package = (props: PackageProps) => {
         zIndex={1000}
         sx={{
           opacity: 0,
-          animation: isSending ? `${CoverAnimation} 0.5s ease-in-out` : "none",
+          animation: isSending
+            ? `${CoverAnimation} ${COVER_ANIMATION_DURATION}ms ease-in-out`
+            : "none",
         }}
       >
         <Stack
