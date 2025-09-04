@@ -58,4 +58,9 @@ export const scoreEffectsAtom = atom<
   }[]
 >([]);
 
+// 패키지 전송 여부
 export const isPackageSendingAtom = atom(false);
+
+// 게임 타이머
+export const MAX_TIME = 900; // ms 단위
+export const timerAtom = atom(MAX_TIME);
