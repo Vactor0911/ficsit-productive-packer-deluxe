@@ -4,8 +4,9 @@ import FicsitLogo from "../assets/images/ficsit.svg";
 import { useEffect, useRef } from "react";
 import { useSetAtom } from "jotai";
 import { packageRefAtom } from "../states";
+import CoveredPackage from "./CoveredPackage";
 
-const CoverStyle = keyframes`
+const CoverAnimation = keyframes`
   0% {
     transform: translateY(-100%);
     opacity: 0;
@@ -16,7 +17,7 @@ const CoverStyle = keyframes`
   }
 `;
 
-const ShakeStyle = keyframes`
+const ShakeAnimation = keyframes`
   0% {
     transform: translate(0, 0);
   }
@@ -34,12 +35,21 @@ const ShakeStyle = keyframes`
   }
 `;
 
+export const SendAnimation = keyframes`
+  0% {
+    transform: translateX(-75vw);
+  }
+  100% {
+    transform: translateX(0);
+  }
+`;
+
 interface PackageProps {
-  isCovered?: boolean;
+  isSending?: boolean;
 }
 
 const Package = (props: PackageProps) => {
-  const { isCovered } = props;
+  const { isSending } = props;
 
   const packageRef = useRef<HTMLDivElement>(null);
   const setPackageRef = useSetAtom(packageRefAtom);
@@ -48,6 +58,18 @@ const Package = (props: PackageProps) => {
   useEffect(() => {
     setPackageRef(packageRef.current);
   }, [setPackageRef]);
+
+  // 패키지 전송 애니메이션 실행
+  useEffect(() => {
+    if (packageRef.current && isSending) {
+      packageRef.current.classList.remove("send");
+      requestAnimationFrame(() => {
+        if (packageRef.current) {
+          packageRef.current.classList.add("send");
+        }
+      });
+    }
+  }, [isSending]);
 
   return (
     <Stack
@@ -60,12 +82,16 @@ const Package = (props: PackageProps) => {
       position="relative"
       sx={{
         "&.shake": {
-          animation: `${ShakeStyle} 0.2s ease-in-out`,
+          animation: `${ShakeAnimation} 0.2s ease-in-out`,
+        },
+        "&.send": {
+          animation: `${SendAnimation} 1s ease-in-out forwards`,
+          animationDelay: "0.5s",
         },
       }}
     >
+      {/* 패키지 내벽 */}
       <Stack flex={1} margin={0.5} border="2px solid black">
-        {/* 패키지 내벽 */}
         <Box
           height="20px"
           bgcolor="#8d5b1d"
@@ -127,6 +153,7 @@ const Package = (props: PackageProps) => {
 
       {/* 덮개 */}
       <Stack
+        className="package cover"
         width="calc(100% + 4px)"
         height="calc(100% - 12px)"
         position="absolute"
@@ -134,8 +161,8 @@ const Package = (props: PackageProps) => {
         left="-2px"
         zIndex={1000}
         sx={{
-          opacity: isCovered ? 1 : 0,
-          animation: isCovered ? `${CoverStyle} 0.5s ease-in-out` : "none",
+          opacity: 0,
+          animation: isSending ? `${CoverAnimation} 0.5s ease-in-out` : "none",
         }}
       >
         <Stack
@@ -180,6 +207,9 @@ const Package = (props: PackageProps) => {
           borderTop="none"
         />
       </Stack>
+
+      {/* 커버 씌워진 패키지 */}
+      <CoveredPackage />
     </Stack>
   );
 };
