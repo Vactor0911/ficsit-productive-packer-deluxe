@@ -5,8 +5,7 @@ import { useCallback, useEffect, useMemo } from "react";
 import Timer from "../components/Timer";
 import { getRandBlockId, playEffect, useIsMobileLandscape } from "../utils";
 import ConveyorSupport from "../components/ConveyorSupport";
-import Marquee from "react-fast-marquee";
-import Package from "../components/Package";
+import Package, { SendAnimation } from "../components/Package";
 import BlockContainer from "../components/BlockContainer";
 import MobileBlockContainer from "../components/MobileBlockContainer";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
@@ -260,49 +259,35 @@ const Game = () => {
           </Box>
 
           {/* 컨베이어 벨트 */}
-          <Box position="absolute" width="100%" height="100%" zIndex={-1}>
-            <Marquee
-              autoFill
-              direction="right"
-              speed={500}
-              play={false}
-              css={{
-                width: "100%",
-                height: "100%",
-                position: "relative",
-                overflow: "hidden",
-                background: "#4d4d4d",
-                "& .rfm-child": {
-                  height: "100%",
-                },
-              }}
-            >
+          <Stack
+            direction="row"
+            position="absolute"
+            width="200vw"
+            height="100%"
+            top={0}
+            left={0}
+            zIndex={-1}
+            sx={{
+              animation: isPackageSending
+                ? `${SendAnimation} 1s ease-in-out forwards`
+                : "none",
+              animationDelay: "0.5s",
+            }}
+          >
+            {Array.from({ length: 16 }).map((_, index) => (
               <Box
-                width={
-                  isMobileLandscape
-                    ? "120px"
-                    : {
-                        xs: "120px",
-                        sm: "180px",
-                        md: "240px",
-                      }
-                }
+                key={`conveyor-belt-${index}`}
+                width="12.5vw"
                 height="100%"
                 sx={{
                   background: `
                   conic-gradient(from -15deg at calc(100% - 2px), #0000 210deg, #4d4d4d 0),
                   conic-gradient(from -15deg at 100%, #4d4d4d 210deg, #000 0)`,
-                  backgroundSize: isMobileLandscape
-                    ? "120px 100%"
-                    : {
-                        xs: "120px 100%",
-                        sm: "180px 100%",
-                        md: "240px 100%",
-                      },
+                  backgroundSize: "12.5vw 100%",
                 }}
               />
-            </Marquee>
-          </Box>
+            ))}
+          </Stack>
         </Stack>
 
         {/* 하부 지지대 */}

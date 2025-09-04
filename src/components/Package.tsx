@@ -35,7 +35,7 @@ const ShakeAnimation = keyframes`
   }
 `;
 
-const SendAnimation = keyframes`
+export const SendAnimation = keyframes`
   0% {
     transform: translateX(-75vw);
   }
