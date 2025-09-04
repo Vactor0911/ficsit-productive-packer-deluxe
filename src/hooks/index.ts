@@ -5,6 +5,7 @@ import {
   draggableBlockGhostAtom,
   dragSnapPointAtom,
   fillingBonusAtom,
+  isPackageSendingAtom,
   packageRefAtom,
   packageScoreAtom,
   scoreEffectsAtom,
@@ -46,6 +47,7 @@ export const useBoard = () => {
   const setScoreEffects = useSetAtom(scoreEffectsAtom);
   const setPackageScore = useSetAtom(packageScoreAtom);
   const setFillingBonusAtom = useSetAtom(fillingBonusAtom);
+  const isPackageSending = useAtomValue(isPackageSendingAtom);
 
   // 보드 크기
   const getBoardSize = useCallback((level: number) => {
@@ -148,6 +150,11 @@ export const useBoard = () => {
       return;
     }
 
+    // 패키지가 전송중인 경우 종료
+    if (isPackageSending) {
+      return;
+    }
+
     const block = BlockData.find(
       (block) => block.id === blockIdQueue[draggableBlockGhost.id!]
     );
@@ -194,6 +201,7 @@ export const useBoard = () => {
     blockIdQueue,
     dragSnapPoint,
     draggableBlockGhost.id,
+    isPackageSending,
     setBlockIdQueue,
     setFillingBonusAtom,
     setPackageScore,

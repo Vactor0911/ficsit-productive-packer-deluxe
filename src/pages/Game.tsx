@@ -1,7 +1,7 @@
 import { Box, Container, Stack, Typography } from "@mui/material";
 import Panel from "../components/Panel";
 import Score from "../components/Score";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import Timer from "../components/Timer";
 import { getRandBlockId, playEffect, useIsMobileLandscape } from "../utils";
 import ConveyorSupport from "../components/ConveyorSupport";
@@ -13,6 +13,7 @@ import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import {
   blockIdQueueAtom,
   fillingBonusAtom,
+  isPackageSendingAtom,
   packageScoreAtom,
   scoreAtom,
   vhAtom,
@@ -35,7 +36,7 @@ const Game = () => {
   const setScore = useSetAtom(scoreAtom);
   const [packageScore, setPackageScore] = useAtom(packageScoreAtom);
   const [fillingBonus, setFillingBonus] = useAtom(fillingBonusAtom);
-  const [isPackageSending, setIsPackageSending] = useState(false);
+  const [isPackageSending, setIsPackageSending] = useAtom(isPackageSendingAtom);
 
   // URL에서 레벨 추출
   const level = useMemo(
@@ -75,9 +76,11 @@ const Game = () => {
       // 보드 초기화
       resetBoard(Number(level));
 
-      // 패키지 보내기 효과 초기화
-      setIsPackageSending(false);
-    }, 3000);
+      setTimeout(() => {
+        // 패키지 보내기 효과 초기화
+        setIsPackageSending(false);
+      }, 1000);
+    }, 500);
 
     // 포장 점수 초기화
     setPackageScore(0);
@@ -94,6 +97,7 @@ const Game = () => {
     resetBoard,
     score,
     setFillingBonus,
+    setIsPackageSending,
     setPackageScore,
     setScore,
   ]);

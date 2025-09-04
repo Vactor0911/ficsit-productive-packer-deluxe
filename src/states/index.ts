@@ -57,3 +57,5 @@ export const scoreEffectsAtom = atom<
     y: number;
   }[]
 >([]);
+
+export const isPackageSendingAtom = atom(false);
