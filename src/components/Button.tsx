@@ -80,6 +80,7 @@ const Button = (props: ButtonProps) => {
           "&:hover .pattern-container": {
             display: "block",
           },
+          "&.Mui-disabled .pattern-container": { display: "none" },
           ...slots?.buttonProps?.sx,
         },
       }}
@@ -127,10 +128,8 @@ const Button = (props: ButtonProps) => {
           overflow="hidden"
           width="100%"
           height="calc(100% - 1px)"
-          sx={{
-            top: 0,
-            left: 0,
-          }}
+          top={0}
+          left={0}
         >
           <Marquee
             direction="right"

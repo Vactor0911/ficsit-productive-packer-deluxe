@@ -15,10 +15,11 @@ const activeAnimation = keyframes`
 interface SendButtonProps {
   onClick?: () => void;
   disabled?: boolean;
+  showText?: boolean;
 }
 
 const SendButton = (props: SendButtonProps) => {
-  const { onClick, disabled } = props;
+  const { onClick, disabled, showText = true } = props;
 
   const isMobileLandscape = useIsMobileLandscape();
 
@@ -31,6 +32,7 @@ const SendButton = (props: SendButtonProps) => {
       slots={{
         buttonProps: {
           sx: {
+            width: "100%",
             "&:enabled .arrow-button-container > .MuiBox-root": {
               animation: `${activeAnimation} 1s ease-in-out infinite`,
             },
@@ -58,15 +60,18 @@ const SendButton = (props: SendButtonProps) => {
       <Stack
         className="arrow-button-container"
         width="100%"
+        minWidth="25px"
         direction="row"
-        justifyContent="space-between"
+        justifyContent={showText ? "space-between" : "center"}
         alignItems="stretch"
         gap={1}
       >
         {/* 텍스트 */}
-        <Typography variant={isMobileLandscape ? "h6" : "h4"}>
-          보내기
-        </Typography>
+        {showText && (
+          <Typography variant={isMobileLandscape ? "h6" : "h4"}>
+            보내기
+          </Typography>
+        )}
 
         {/* 화살표 아이콘 */}
         <Box
@@ -75,7 +80,9 @@ const SendButton = (props: SendButtonProps) => {
             "& .MuiSvgIcon-root": {
               width: "auto",
               height: "100%",
-              transform: "translateX(-100%) scale(1.25)",
+              transform: showText
+                ? "translateX(-100%) scale(1.25)"
+                : "translateX(-25%) scale(1.25)",
             },
           }}
         >

@@ -1,7 +1,38 @@
 import { Box, Stack, Typography, useTheme } from "@mui/material";
+import { useAtom } from "jotai";
+import { MAX_TIME, timerAtom } from "../states";
+import { useEffect, useMemo } from "react";
 
 const Timer = () => {
   const theme = useTheme();
+
+  const [timer, setTimer] = useAtom(timerAtom);
+
+  // 타이머
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimer((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 100);
+
+    return () => clearInterval(interval);
+  }, [setTimer]);
+
+  // 시간 종료
+  useEffect(() => {
+    if (timer <= 0) {
+      console.log("시간 종료!");
+    }
+  }, [timer]);
+
+  // 제한 시간 진행률
+  const progress = useMemo(() => {
+    return Math.max(0, Math.min(1, timer / MAX_TIME));
+  }, [timer]);
+
+  // conic-gradient 각도
+  const angle = useMemo(() => {
+    return progress * 360;
+  }, [progress]);
 
   return (
     <Stack
@@ -24,6 +55,15 @@ const Timer = () => {
         justifyContent="center"
         alignItems="center"
         bgcolor={theme.palette.primary.main}
+        sx={{
+          background: `conic-gradient(
+                from 0deg,
+                ${theme.palette.primary.main} 0deg,
+                ${theme.palette.primary.main} ${angle}deg,
+                transparent ${angle}deg,
+                transparent 360deg
+              )`,
+        }}
       >
         <Stack
           width="70%"
@@ -57,7 +97,7 @@ const Timer = () => {
               lineHeight="100%"
               fontWeight="bold"
             >
-              12.3초
+              {(timer / 10).toFixed(1)}초
             </Typography>
 
             {/* 여백 */}

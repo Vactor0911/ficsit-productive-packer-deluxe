@@ -1,11 +1,13 @@
-import { Box, Container, Stack, Typography } from "@mui/material";
-import Panel from "../components/Panel";
-import Score from "../components/Score";
+import { Box, Stack } from "@mui/material";
 import { useCallback, useEffect, useMemo } from "react";
-import Timer from "../components/Timer";
 import { getRandBlockId, playEffect, useIsMobileLandscape } from "../utils";
 import ConveyorSupport from "../components/ConveyorSupport";
-import Package, { SendAnimation } from "../components/Package";
+import Package, {
+  COVER_ANIMATION_DURATION,
+  SEND_ANIMATION_DURATION,
+  SendAnimation,
+  SendAnimationMobile,
+} from "../components/Package";
 import BlockContainer from "../components/BlockContainer";
 import MobileBlockContainer from "../components/MobileBlockContainer";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
@@ -13,8 +15,10 @@ import {
   blockIdQueueAtom,
   fillingBonusAtom,
   isPackageSendingAtom,
+  MAX_TIME,
   packageScoreAtom,
   scoreAtom,
+  timerAtom,
   vhAtom,
 } from "../states";
 import ScorePanel from "../components/ScorePanel";
@@ -23,6 +27,7 @@ import { Navigate, useLocation } from "react-router-dom";
 import { useBoard } from "../hooks";
 import ScoreEffectsRenderer from "../components/ScoreEffectsRenderer";
 import SendPackageAudio from "../assets/audio/send_package.mp3";
+import TimeScorePanel from "../components/TimeScorePanel";
 
 const Game = () => {
   const isMobileLandscape = useIsMobileLandscape();
@@ -36,6 +41,7 @@ const Game = () => {
   const [packageScore, setPackageScore] = useAtom(packageScoreAtom);
   const [fillingBonus, setFillingBonus] = useAtom(fillingBonusAtom);
   const [isPackageSending, setIsPackageSending] = useAtom(isPackageSendingAtom);
+  const [timer, setTimer] = useAtom(timerAtom);
 
   // URL에서 레벨 추출
   const level = useMemo(
@@ -55,16 +61,33 @@ const Game = () => {
       // 채우기 보너스 초기화
       setFillingBonus(1000);
 
+      // 타이머 초기화
+      setTimer(MAX_TIME);
+
       // 블록 큐 초기화
       const newBlockIdQueue = Array.from({ length: 8 }, () => {
         return getRandBlockId();
       });
       setBlockIdQueue(newBlockIdQueue);
     }
-  }, [level, resetBoard, setBlockIdQueue, setFillingBonus, setPackageScore]);
+  }, [
+    level,
+    resetBoard,
+    setBlockIdQueue,
+    setFillingBonus,
+    setPackageScore,
+    setTimer,
+  ]);
 
   // 보내기 버튼 클릭
   const handleSendButtonClick = useCallback(() => {
+    // 보드가 비어있다면 종료
+    if (isBoardEmpty) return;
+    // 패키지를 이미 보내고 있다면 종료
+    if (isPackageSending) return;
+    // 시간이 종료되었다면 종료
+    if (timer <= 0) return;
+
     // 점수 증가
     const totalScore = score + Math.round(packageScore * fillingBonus * 0.001);
     setScore(totalScore);
@@ -91,6 +114,8 @@ const Game = () => {
     playEffect(SendPackageAudio);
   }, [
     fillingBonus,
+    isBoardEmpty,
+    isPackageSending,
     level,
     packageScore,
     resetBoard,
@@ -99,7 +124,14 @@ const Game = () => {
     setIsPackageSending,
     setPackageScore,
     setScore,
+    timer,
   ]);
+
+  // 시간 종료 애니메이션 실행
+  useEffect(() => {
+    // 시간이 종료되지 않았다면 종료
+    if (timer > 0) return;
+  }, [timer]);
 
   // 레벨 유효성 검증
   if (
@@ -112,80 +144,9 @@ const Game = () => {
   }
 
   return (
-    <Stack height={`${vh * 100}px`}>
+    <Stack height={`${vh * 100}px`} overflow="hidden">
       {/* 점수 판 */}
-      <Container
-        maxWidth={isMobileLandscape ? "xs" : "md"}
-        sx={{
-          maxWidth: isMobileLandscape ? "auto" : "700px !important",
-          height: isMobileLandscape ? "80px" : "auto",
-          marginTop: isMobileLandscape
-            ? 1
-            : {
-                xs: 1,
-                md: 2,
-              },
-          position: "relative",
-          zIndex: 100,
-        }}
-      >
-        <Panel backgroundColor="#fffff7">
-          <Stack
-            direction="row"
-            height="100%"
-            padding={
-              isMobileLandscape
-                ? 0.5
-                : {
-                    xs: 0.5,
-                    md: 1,
-                  }
-            }
-            paddingY={
-              isMobileLandscape
-                ? 0.5
-                : {
-                    xs: 0.5,
-                    md: 1.5,
-                  }
-            }
-            gap={1}
-          >
-            {/* 타이머 */}
-            <Box
-              fontSize={
-                isMobileLandscape
-                  ? "0.65rem"
-                  : {
-                      xs: "0.8rem",
-                      sm: "inherit",
-                    }
-              }
-            >
-              <Timer />
-            </Box>
-
-            <Stack
-              gap={
-                isMobileLandscape
-                  ? 0
-                  : {
-                      xs: 0,
-                      md: 1,
-                    }
-              }
-              flex={1}
-              overflow="hidden"
-            >
-              {/* 헤더 */}
-              <Typography variant="subtitle1">최종 점수 :</Typography>
-
-              {/* 최종 점수 */}
-              <Score variant="total" score={score} />
-            </Stack>
-          </Stack>
-        </Panel>
-      </Container>
+      <TimeScorePanel />
 
       <Stack position="relative" flex={1} marginTop={1.5}>
         {/* 상부 지지대 */}
@@ -253,7 +214,7 @@ const Game = () => {
               {/* 보내기 버튼 */}
               <SendButton
                 onClick={handleSendButtonClick}
-                disabled={isBoardEmpty}
+                disabled={isBoardEmpty || isPackageSending || timer <= 0}
               />
             </Stack>
           </Box>
@@ -267,11 +228,17 @@ const Game = () => {
             top={0}
             left={0}
             zIndex={-1}
+            bgcolor="#4d4d4d"
             sx={{
-              animation: isPackageSending
-                ? `${SendAnimation} 1s ease-in-out forwards`
-                : "none",
-              animationDelay: "0.5s",
+              animation: {
+                xs: isPackageSending
+                  ? `${SendAnimationMobile} ${SEND_ANIMATION_DURATION}ms ease-in-out forwards`
+                  : "none",
+                md: isPackageSending
+                  ? `${SendAnimation} ${SEND_ANIMATION_DURATION}ms ease-in-out forwards`
+                  : "none",
+              },
+              animationDelay: `${COVER_ANIMATION_DURATION}ms`,
             }}
           >
             {Array.from({ length: 16 }).map((_, index) => (
@@ -290,13 +257,41 @@ const Game = () => {
           </Stack>
         </Stack>
 
-        {/* 하부 지지대 */}
-        <ConveyorSupport
+        <Box
           marginBottom={{
-            xs: 2.5,
+            xs: 2,
             md: 5,
           }}
-        />
+          position="relative"
+        >
+          {/* 하부 지지대 */}
+          <ConveyorSupport />
+
+          {/* 모바일용 보내기 버튼 */}
+          <Box
+            width="50vw"
+            maxWidth="200px"
+            display={{
+              xs: isMobileLandscape ? "none" : "flex",
+              md: "none",
+            }}
+            position="absolute"
+            bottom={0}
+            right={{
+              xs: 0,
+              sm: 10,
+            }}
+            zIndex={12000}
+            sx={{
+              transform: "translateY(50%)",
+            }}
+          >
+            <SendButton
+              onClick={handleSendButtonClick}
+              disabled={isBoardEmpty || isPackageSending || timer <= 0}
+            />
+          </Box>
+        </Box>
 
         {/* 좌측 패널 */}
         <Box
@@ -320,21 +315,21 @@ const Game = () => {
       </Stack>
 
       {/* 모바일, 태블릿용 블록 컨테이너 */}
-      <Box
+      <Stack
         display={
           isMobileLandscape
             ? "none"
             : {
-                xs: "block",
+                xs: "flex",
                 md: "none",
               }
         }
+        justifyContent="flex-end"
         position="relative"
-        flex={0.5}
         zIndex={11000}
       >
         <MobileBlockContainer />
-      </Box>
+      </Stack>
 
       {/* 점수 이펙트 렌더러 */}
       <ScoreEffectsRenderer />

@@ -2,10 +2,11 @@ import { Box, keyframes, Stack, Typography } from "@mui/material";
 import Board from "./Board";
 import FicsitLogo from "../assets/images/ficsit.svg";
 import { useEffect, useRef } from "react";
-import { useSetAtom } from "jotai";
-import { packageRefAtom } from "../states";
+import { useAtomValue, useSetAtom } from "jotai";
+import { packageRefAtom, timerAtom } from "../states";
 import CoveredPackage from "./CoveredPackage";
 
+// 덮개 애니메이션
 const CoverAnimation = keyframes`
   0% {
     transform: translateY(-100%);
@@ -17,6 +18,7 @@ const CoverAnimation = keyframes`
   }
 `;
 
+// 흔들림 애니메이션
 const ShakeAnimation = keyframes`
   0% {
     transform: translate(0, 0);
@@ -35,14 +37,32 @@ const ShakeAnimation = keyframes`
   }
 `;
 
+// 보내기 애니메이션
 export const SendAnimation = keyframes`
-  0% {
-    transform: translateX(-75vw);
-  }
-  100% {
-    transform: translateX(0);
-  }
+  0% { transform: translateX(-75vw); }
+  100% { transform: translateX(0); }
 `;
+
+// 보내기 애니메이션 (모바일)
+export const SendAnimationMobile = keyframes`
+  0% { transform: translateX(-100vw); }
+  100% { transform: translateX(0); }
+`;
+
+// 보내기 애니메이션 (게임 종료)
+export const SendAnimationGameEnd = keyframes`
+  0% { transform: translateX(0); }
+  100% { transform: translateX(75vw); }
+`;
+
+// 보내기 애니메이션 (게임 종료, 모바일)
+export const SendAnimationGameEndMobile = keyframes`
+  0% { transform: translateX(0); }
+  100% { transform: translateX(100vw); }
+`;
+
+export const COVER_ANIMATION_DURATION = 300;
+export const SEND_ANIMATION_DURATION = 700;
 
 interface PackageProps {
   isSending?: boolean;
@@ -53,6 +73,7 @@ const Package = (props: PackageProps) => {
 
   const packageRef = useRef<HTMLDivElement>(null);
   const setPackageRef = useSetAtom(packageRefAtom);
+  const timer = useAtomValue(timerAtom);
 
   // 패키지 객체
   useEffect(() => {
@@ -85,8 +106,11 @@ const Package = (props: PackageProps) => {
           animation: `${ShakeAnimation} 0.2s ease-in-out`,
         },
         "&.send": {
-          animation: `${SendAnimation} 1s ease-in-out forwards`,
-          animationDelay: "0.5s",
+          animation:
+            timer <= 0
+              ? `${SendAnimationGameEnd} ${SEND_ANIMATION_DURATION}ms ease-in-out forwards`
+              : `${SendAnimation} ${SEND_ANIMATION_DURATION}ms ease-in-out forwards`,
+          animationDelay: `${COVER_ANIMATION_DURATION}ms`,
         },
       }}
     >
@@ -162,7 +186,9 @@ const Package = (props: PackageProps) => {
         zIndex={1000}
         sx={{
           opacity: 0,
-          animation: isSending ? `${CoverAnimation} 0.5s ease-in-out` : "none",
+          animation: isSending
+            ? `${CoverAnimation} ${COVER_ANIMATION_DURATION}ms ease-in-out`
+            : "none",
         }}
       >
         <Stack

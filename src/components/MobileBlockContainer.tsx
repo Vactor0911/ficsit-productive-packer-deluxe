@@ -11,7 +11,7 @@ const MobileBlockContainer = () => {
 
   return (
     <>
-      <Stack width="100%" height="100%" minHeight="200px" position="relative">
+      <Stack width="100%" height="30vh" minHeight="150px" position="relative">
         {/* 상부 장식 */}
         <Box
           height="12px"

@@ -14,6 +14,7 @@ import {
   draggableBlockGhostAtom,
   dragSnapPointAtom,
   isPackageSendingAtom,
+  timerAtom,
 } from "../states";
 import BlockPickUpAudio from "../assets/audio/block_pickup.mp3";
 import { useBoard } from "../hooks";
@@ -46,6 +47,9 @@ const DraggableBlock = (props: BlockProps) => {
   // 스냅 포인트
   const setDragSnapPoint = useSetAtom(dragSnapPointAtom);
   const { placeBlock } = useBoard();
+
+  // 시간
+  const timer = useAtomValue(timerAtom);
 
   // 블록 크기 계산
   const calcBlockSize = useCallback(() => {
@@ -89,6 +93,11 @@ const DraggableBlock = (props: BlockProps) => {
         return;
       }
 
+      // 시간이 종료된 경우 중지
+      if (timer <= 0) {
+        return;
+      }
+
       // 마우스인 경우 왼쪽 버튼만 허용, 터치/펜은 통과
       if (e.pointerType === "mouse" && e.button !== 0) {
         return;
@@ -103,7 +112,7 @@ const DraggableBlock = (props: BlockProps) => {
 
       setGhost({ id: index, x: e.clientX, y: e.clientY + offsetY });
     },
-    [id, isPackageSending, offsetY, setDragSnapPoint, setGhost]
+    [id, isPackageSending, offsetY, setDragSnapPoint, setGhost, timer]
   );
 
   // 드래그
@@ -172,6 +181,14 @@ const DraggableBlock = (props: BlockProps) => {
   const handleMouseLeave = useCallback(() => {
     setHover(false);
   }, []);
+
+  // 시간 종료
+  useEffect(() => {
+    if (timer <= 0) {
+      setDragging(false);
+      setGhost((g) => ({ ...g, id: null }));
+    }
+  }, [setGhost, timer]);
 
   if (!block) {
     return null;
