@@ -64,3 +64,12 @@ export const isPackageSendingAtom = atom(false);
 // 게임 타이머
 export const MAX_TIME = 900; // ms 단위
 export const timerAtom = atom(MAX_TIME);
+
+// 배치한 블록 수
+export const placedBlockCountAtom = atom(0);
+// 보낸 패키지 수
+export const sentPackageCountAtom = atom(0);
+// 포장 최고 점수
+export const bestPackageScoreAtom = atom(0);
+// 최고 포장 패키지
+export const bestFillingBonusAtom = atom(0);

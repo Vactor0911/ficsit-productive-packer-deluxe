@@ -1,5 +1,5 @@
 import { Box, Stack } from "@mui/material";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { getRandBlockId, playEffect, useIsMobileLandscape } from "../utils";
 import ConveyorSupport from "../components/ConveyorSupport";
 import Package, {
@@ -12,6 +12,8 @@ import BlockContainer from "../components/BlockContainer";
 import MobileBlockContainer from "../components/MobileBlockContainer";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import {
+  bestFillingBonusAtom,
+  bestPackageScoreAtom,
   blockIdQueueAtom,
   boardGridSizeAtom,
   fillingBonusAtom,
@@ -19,6 +21,7 @@ import {
   MAX_TIME,
   packageScoreAtom,
   scoreAtom,
+  sentPackageCountAtom,
   timerAtom,
   vhAtom,
 } from "../states";
@@ -30,6 +33,7 @@ import ScoreEffectsRenderer from "../components/ScoreEffectsRenderer";
 import SendPackageAudio from "../assets/audio/send_package.mp3";
 import TimeScorePanel from "../components/TimeScorePanel";
 import DraggableBlockGhost from "../components/DraggableBlockGhost";
+import TotalScorePanel from "../components/TotalScorePanel";
 
 const Game = () => {
   const isMobileLandscape = useIsMobileLandscape();
@@ -45,6 +49,14 @@ const Game = () => {
   const [isPackageSending, setIsPackageSending] = useAtom(isPackageSendingAtom);
   const [timer, setTimer] = useAtom(timerAtom);
   const boardGridSize = useAtomValue(boardGridSizeAtom);
+  const setSentPackageCount = useSetAtom(sentPackageCountAtom);
+  const setBestPackageScore = useSetAtom(bestPackageScoreAtom);
+  const setBestFillingBonus = useSetAtom(bestFillingBonusAtom);
+
+  // 컨테이너 Ref
+  const leftPanel = useRef<HTMLDivElement>(null);
+  const rightPanel = useRef<HTMLDivElement>(null);
+  const mobileBlockContainerRef = useRef<HTMLDivElement>(null);
 
   // URL에서 레벨 추출
   const level = useMemo(
@@ -95,6 +107,15 @@ const Game = () => {
     const totalScore = score + Math.round(packageScore * fillingBonus * 0.001);
     setScore(totalScore);
 
+    // 보낸 패키지 수 증가
+    setSentPackageCount((count) => count + 1);
+
+    // 포장 최고 점수 갱신
+    setBestPackageScore((score) => Math.max(score, packageScore));
+
+    // 최고 포장 패키지 점수 갱신
+    setBestFillingBonus((bonus) => Math.max(bonus, fillingBonus));
+
     // 패키지 보내기 효과 재생
     setIsPackageSending(true);
     setTimeout(() => {
@@ -119,18 +140,21 @@ const Game = () => {
     // 효과음 재생
     playEffect(SendPackageAudio);
   }, [
-    fillingBonus,
     isBoardEmpty,
     isPackageSending,
-    level,
-    packageScore,
-    clearBoard,
+    timer,
     score,
-    setFillingBonus,
+    packageScore,
+    fillingBonus,
+    setScore,
+    setSentPackageCount,
+    setBestPackageScore,
+    setBestFillingBonus,
     setIsPackageSending,
     setPackageScore,
-    setScore,
-    timer,
+    setFillingBonus,
+    clearBoard,
+    level,
   ]);
 
   // 시간 종료 애니메이션 실행
@@ -190,6 +214,7 @@ const Game = () => {
 
           {/* 우측 패널 */}
           <Box
+            ref={rightPanel}
             display={
               isMobileLandscape
                 ? "inline-flex"
@@ -302,6 +327,7 @@ const Game = () => {
 
         {/* 좌측 패널 */}
         <Box
+          ref={leftPanel}
           display={
             isMobileLandscape
               ? "block"
@@ -323,6 +349,7 @@ const Game = () => {
 
       {/* 모바일, 태블릿용 블록 컨테이너 */}
       <Stack
+        ref={mobileBlockContainerRef}
         display={
           isMobileLandscape
             ? "none"
@@ -345,7 +372,7 @@ const Game = () => {
       <DraggableBlockGhost ghostSize={boardGridSize * 4} />
 
       {/* 게임 오버 화면 */}
-      {/* TODO: 최종 점수 패널 및 메뉴로 돌아가기 버튼 구현 */}
+      <TotalScorePanel />
     </Stack>
   );
 };

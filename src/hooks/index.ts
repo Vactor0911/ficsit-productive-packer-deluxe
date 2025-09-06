@@ -8,6 +8,7 @@ import {
   isPackageSendingAtom,
   packageRefAtom,
   packageScoreAtom,
+  placedBlockCountAtom,
   scoreEffectsAtom,
   timerAtom,
   type BoardGridProps,
@@ -50,6 +51,7 @@ export const useBoard = () => {
   const setFillingBonusAtom = useSetAtom(fillingBonusAtom);
   const isPackageSending = useAtomValue(isPackageSendingAtom);
   const timer = useAtomValue(timerAtom);
+  const setPlacedBlockCount = useSetAtom(placedBlockCountAtom);
 
   // 보드 크기
   const getBoardSize = useCallback((level: number) => {
@@ -167,25 +169,18 @@ export const useBoard = () => {
   // 보드에 블럭 놓기
   const placeBlock = useCallback(() => {
     // 블록을 놓을 수 없는 경우 종료
-    if (!dragSnapPoint || !dragSnapPoint.isValid) {
-      return;
-    }
+    if (!dragSnapPoint || !dragSnapPoint.isValid) return;
 
     // 드래그 중인 블록이 없는 경우 종료
-    if (draggableBlockGhost.id === null) {
-      return;
-    }
+    if (draggableBlockGhost.id === null) return;
 
     // 패키지가 전송중인 경우 종료
-    if (isPackageSending) {
-      return;
-    }
+    if (isPackageSending) return;
 
     // 시간이 초과된 경우 종료
-    if (timer <= 0) {
-      return;
-    }
+    if (timer <= 0) return;
 
+    // 블록 데이터 추출
     const block = BlockData.find(
       (block) => block.id === blockIdQueue[draggableBlockGhost.id!]
     );
@@ -197,6 +192,9 @@ export const useBoard = () => {
 
     // 블록 추가
     addBlock(block.id, dragSnapPoint.x, dragSnapPoint.y);
+
+    // 배치한 블록 수 증가
+    setPlacedBlockCount((prev) => prev + 1);
 
     // 블록 큐 업데이트
     setBlockIdQueue((prevQueue) => {
@@ -236,6 +234,7 @@ export const useBoard = () => {
     setBlockIdQueue,
     setFillingBonusAtom,
     setPackageScore,
+    setPlacedBlockCount,
     setScoreEffects,
     shakePackage,
     timer,
