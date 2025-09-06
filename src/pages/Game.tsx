@@ -13,6 +13,7 @@ import MobileBlockContainer from "../components/MobileBlockContainer";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import {
   blockIdQueueAtom,
+  boardGridSizeAtom,
   fillingBonusAtom,
   isPackageSendingAtom,
   MAX_TIME,
@@ -28,6 +29,7 @@ import { useBoard } from "../hooks";
 import ScoreEffectsRenderer from "../components/ScoreEffectsRenderer";
 import SendPackageAudio from "../assets/audio/send_package.mp3";
 import TimeScorePanel from "../components/TimeScorePanel";
+import DraggableBlockGhost from "../components/DraggableBlockGhost";
 
 const Game = () => {
   const isMobileLandscape = useIsMobileLandscape();
@@ -42,6 +44,7 @@ const Game = () => {
   const [fillingBonus, setFillingBonus] = useAtom(fillingBonusAtom);
   const [isPackageSending, setIsPackageSending] = useAtom(isPackageSendingAtom);
   const [timer, setTimer] = useAtom(timerAtom);
+  const boardGridSize = useAtomValue(boardGridSizeAtom);
 
   // URL에서 레벨 추출
   const level = useMemo(
@@ -333,6 +336,9 @@ const Game = () => {
 
       {/* 점수 이펙트 렌더러 */}
       <ScoreEffectsRenderer />
+
+      {/* 고스트 블록 */}
+      <DraggableBlockGhost ghostSize={boardGridSize * 4} />
     </Stack>
   );
 };
