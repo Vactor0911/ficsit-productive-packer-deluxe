@@ -98,8 +98,11 @@ const Game = () => {
     // 패키지 보내기 효과 재생
     setIsPackageSending(true);
     setTimeout(() => {
+      // 비활성화 그리드 수 선택
+      const disabledGridCount = Math.min(Math.floor(fillingBonus / 1000), 5);
+
       // 보드 초기화
-      clearBoard(Number(level));
+      clearBoard(Number(level), disabledGridCount);
 
       setTimeout(() => {
         // 패키지 보내기 효과 초기화

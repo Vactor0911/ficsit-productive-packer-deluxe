@@ -71,7 +71,7 @@ export const useBoard = () => {
 
   // 보드 초기화
   const clearBoard = useCallback(
-    (level: number) => {
+    (level: number, disabledGridCount = 0) => {
       const board = BoardData.find((board) => board.level === Number(level));
       if (board) {
         // 새 보드 그리드 생성
@@ -92,6 +92,30 @@ export const useBoard = () => {
             blockId: -1,
           };
         });
+
+        // 비활성화된 그리드 추가
+        if (disabledGridCount > 0) {
+          for (let i = 0; i < disabledGridCount; i++) {
+            // 비어있는 그리드 필터링
+            const emptyGrids = newBoardGrid
+              .flat()
+              .filter((cell) => cell.blockId === undefined);
+            console.log("New Board Grid >> ", newBoardGrid);
+            console.log("Empty Grids >> ", emptyGrids);
+
+            // 랜덤 인덱스 선택
+            const randIndex = Math.floor(Math.random() * emptyGrids.length);
+
+            // 그리드 비활성화
+            const targetGrid = emptyGrids[randIndex];
+            console.log("Target Grid >> ", targetGrid);
+
+            newBoardGrid[targetGrid.y][targetGrid.x] = {
+              ...newBoardGrid[targetGrid.y][targetGrid.x],
+              blockId: -2,
+            };
+          }
+        }
 
         // 보드 그리드 적용
         setBoardGrid(newBoardGrid);

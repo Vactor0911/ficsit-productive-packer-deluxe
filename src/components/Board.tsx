@@ -115,6 +115,43 @@ const Board = () => {
             )}
           </g>
         );
+      } else if (blockId === -2) {
+        // 비활성화된 그리드
+        return (
+          <g key={`board-${x}-${y}`}>
+            {/* 배경 */}
+            <rect
+              x={x * 32}
+              y={y * 32}
+              width={32}
+              height={32}
+              fill="#303030"
+              vectorEffect="non-scaling-stroke"
+              stroke="black"
+              strokeWidth="2px"
+            />
+
+            {/* 대각선 */}
+            <line
+              x1={x * 32 + 8}
+              y1={y * 32 + 8}
+              x2={x * 32 + 24}
+              y2={y * 32 + 24}
+              stroke="#505050"
+              strokeWidth="12px"
+              vectorEffect="non-scaling-stroke"
+            />
+            <line
+              x1={x * 32 + 24}
+              y1={y * 32 + 8}
+              x2={x * 32 + 8}
+              y2={y * 32 + 24}
+              stroke="#505050"
+              strokeWidth="12px"
+              vectorEffect="non-scaling-stroke"
+            />
+          </g>
+        );
       }
 
       // 일반 블록
