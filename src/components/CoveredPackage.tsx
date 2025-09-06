@@ -11,7 +11,10 @@ const CoveredPackage = () => {
       boxShadow="0 24px 0 rgba(0, 0, 0, 0.2)"
       position="absolute"
       top="-2px"
-      left="calc(-2px + 75vw)"
+      left={{
+        xs: "calc(-2px + 100vw)",
+        md: "calc(-2px + 75vw)",
+      }}
       zIndex={10000}
     >
       {/* 덮개 */}

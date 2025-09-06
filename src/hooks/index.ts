@@ -9,6 +9,7 @@ import {
   packageRefAtom,
   packageScoreAtom,
   scoreEffectsAtom,
+  timerAtom,
   type BoardGridProps,
 } from "../states";
 import BoardData from "../assets/boards.json";
@@ -48,6 +49,7 @@ export const useBoard = () => {
   const setPackageScore = useSetAtom(packageScoreAtom);
   const setFillingBonusAtom = useSetAtom(fillingBonusAtom);
   const isPackageSending = useAtomValue(isPackageSendingAtom);
+  const timer = useAtomValue(timerAtom);
 
   // 보드 크기
   const getBoardSize = useCallback((level: number) => {
@@ -155,6 +157,11 @@ export const useBoard = () => {
       return;
     }
 
+    // 시간이 초과된 경우 종료
+    if (timer <= 0) {
+      return;
+    }
+
     const block = BlockData.find(
       (block) => block.id === blockIdQueue[draggableBlockGhost.id!]
     );
@@ -207,6 +214,7 @@ export const useBoard = () => {
     setPackageScore,
     setScoreEffects,
     shakePackage,
+    timer,
   ]);
 
   // 보드 비어있음 여부 확인
