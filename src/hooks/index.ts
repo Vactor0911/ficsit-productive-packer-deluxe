@@ -70,7 +70,7 @@ export const useBoard = () => {
   }, []);
 
   // 보드 초기화
-  const resetBoard = useCallback(
+  const clearBoard = useCallback(
     (level: number) => {
       const board = BoardData.find((board) => board.level === Number(level));
       if (board) {
@@ -226,7 +226,7 @@ export const useBoard = () => {
 
   return {
     getBoardSize,
-    resetBoard,
+    clearBoard,
     addBlock,
     placeBlock,
     isBoardEmpty,

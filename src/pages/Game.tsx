@@ -34,7 +34,7 @@ import DraggableBlockGhost from "../components/DraggableBlockGhost";
 const Game = () => {
   const isMobileLandscape = useIsMobileLandscape();
   const location = useLocation();
-  const { resetBoard, isBoardEmpty } = useBoard();
+  const { clearBoard, isBoardEmpty } = useBoard();
   const setBlockIdQueue = useSetAtom(blockIdQueueAtom);
 
   const score = useAtomValue(scoreAtom);
@@ -56,7 +56,7 @@ const Game = () => {
   useEffect(() => {
     if (level) {
       // 보드 초기화
-      resetBoard(Number(level));
+      clearBoard(Number(level));
 
       // 포장 점수 초기화
       setPackageScore(0);
@@ -75,7 +75,7 @@ const Game = () => {
     }
   }, [
     level,
-    resetBoard,
+    clearBoard,
     setBlockIdQueue,
     setFillingBonus,
     setPackageScore,
@@ -99,7 +99,7 @@ const Game = () => {
     setIsPackageSending(true);
     setTimeout(() => {
       // 보드 초기화
-      resetBoard(Number(level));
+      clearBoard(Number(level));
 
       setTimeout(() => {
         // 패키지 보내기 효과 초기화
@@ -121,7 +121,7 @@ const Game = () => {
     isPackageSending,
     level,
     packageScore,
-    resetBoard,
+    clearBoard,
     score,
     setFillingBonus,
     setIsPackageSending,
@@ -151,6 +151,7 @@ const Game = () => {
       {/* 점수 판 */}
       <TimeScorePanel />
 
+      {/* 게임 화면 */}
       <Stack position="relative" flex={1} marginTop={1.5}>
         {/* 상부 지지대 */}
         <ConveyorSupport />
@@ -339,6 +340,9 @@ const Game = () => {
 
       {/* 고스트 블록 */}
       <DraggableBlockGhost ghostSize={boardGridSize * 4} />
+
+      {/* 게임 오버 화면 */}
+      {/* TODO: 최종 점수 패널 및 메뉴로 돌아가기 버튼 구현 */}
     </Stack>
   );
 };
