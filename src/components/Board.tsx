@@ -126,7 +126,6 @@ const Board = () => {
               width={32}
               height={32}
               fill="#303030"
-              vectorEffect="non-scaling-stroke"
               stroke="black"
               strokeWidth="2px"
             />
@@ -138,8 +137,7 @@ const Board = () => {
               x2={x * 32 + 24}
               y2={y * 32 + 24}
               stroke="#505050"
-              strokeWidth="12px"
-              vectorEffect="non-scaling-stroke"
+              strokeWidth="8px"
             />
             <line
               x1={x * 32 + 24}
@@ -147,8 +145,7 @@ const Board = () => {
               x2={x * 32 + 8}
               y2={y * 32 + 24}
               stroke="#505050"
-              strokeWidth="12px"
-              vectorEffect="non-scaling-stroke"
+              strokeWidth="8px"
             />
           </g>
         );
