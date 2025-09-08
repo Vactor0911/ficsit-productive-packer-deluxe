@@ -1,11 +1,15 @@
-import { Box, Stack, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  Stack,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import { useAtom } from "jotai";
 import { MAX_TIME, timerAtom } from "../states";
 import { useEffect, useMemo } from "react";
 
 const Timer = () => {
   const theme = useTheme();
-
   const [timer, setTimer] = useAtom(timerAtom);
 
   // 타이머

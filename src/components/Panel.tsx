@@ -24,7 +24,7 @@ const Panel = (props: PanelProps) => {
     <Box
       border="2px solid black"
       height="100%"
-      marginBottom={calculatedThickness}
+      marginBottom={thickness === 1 ? 0 : calculatedThickness}
       position="relative"
       sx={{
         backgroundColor: backgroundColor,
