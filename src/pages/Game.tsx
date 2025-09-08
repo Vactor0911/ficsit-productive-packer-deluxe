@@ -31,7 +31,7 @@ import ScoreEffectsRenderer from "../components/ScoreEffectsRenderer";
 import SendPackageAudio from "../assets/audio/send_package.mp3";
 import TimeScorePanel from "../components/TimeScorePanel";
 import DraggableBlockGhost from "../components/DraggableBlockGhost";
-import GameOverView from "./GameOverView";
+import GameOverView from "../components/GameOverView";
 
 const Game = () => {
   const isMobileLandscape = useIsMobileLandscape();
