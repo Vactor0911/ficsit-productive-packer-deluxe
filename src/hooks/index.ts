@@ -1,15 +1,20 @@
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import {
+  bestFillingBonusAtom,
+  bestPackageScoreAtom,
   blockIdQueueAtom,
   boardGridAtom,
   draggableBlockGhostAtom,
   dragSnapPointAtom,
   fillingBonusAtom,
   isPackageSendingAtom,
+  MAX_TIME,
   packageRefAtom,
   packageScoreAtom,
   placedBlockCountAtom,
+  scoreAtom,
   scoreEffectsAtom,
+  sentPackageCountAtom,
   timerAtom,
   type BoardGridProps,
 } from "../states";
@@ -18,6 +23,55 @@ import BlockData from "../assets/blocks.json";
 import { useCallback, useMemo } from "react";
 import { getRandBlockId, playEffect } from "../utils";
 import BlockPlacedAudio from "../assets/audio/block_placed.mp3";
+
+export const useGame = () => {
+  const setIsPackageSending = useSetAtom(isPackageSendingAtom);
+  const setTimer = useSetAtom(timerAtom);
+  const setPackageScore = useSetAtom(packageScoreAtom);
+  const setFillingBonus = useSetAtom(fillingBonusAtom);
+  const setBlockIdQueue = useSetAtom(blockIdQueueAtom);
+  const setScore = useSetAtom(scoreAtom);
+  const placedBlockCount = useSetAtom(placedBlockCountAtom);
+  const sentPackageCount = useSetAtom(sentPackageCountAtom);
+  const bestPackageScore = useSetAtom(bestPackageScoreAtom);
+  const bestFillingBonus = useSetAtom(bestFillingBonusAtom);
+
+  const resetGame = useCallback(() => {
+    setIsPackageSending(false);
+    setTimer(MAX_TIME);
+    setScore(0);
+
+    // 포장 점수 초기화
+    setPackageScore(0);
+
+    // 채우기 보너스 초기화
+    setFillingBonus(1000);
+
+    placedBlockCount(0);
+    sentPackageCount(0);
+    bestPackageScore(0);
+    bestFillingBonus(0);
+
+    // 블록 큐 초기화
+    const newBlockIdQueue = Array.from({ length: 8 }, () => {
+      return getRandBlockId();
+    });
+    setBlockIdQueue(newBlockIdQueue);
+  }, [
+    bestFillingBonus,
+    bestPackageScore,
+    placedBlockCount,
+    sentPackageCount,
+    setBlockIdQueue,
+    setFillingBonus,
+    setIsPackageSending,
+    setPackageScore,
+    setScore,
+    setTimer,
+  ]);
+
+  return { resetGame };
+};
 
 // 패키지
 export const usePackage = () => {
