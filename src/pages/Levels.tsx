@@ -16,11 +16,21 @@ import {
 } from "../assets/images/levels";
 import Button from "../components/Button";
 import StarTwoToneIcon from "@mui/icons-material/StarTwoTone";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { playEffect } from "../utils";
+import { getRandBlockId, playEffect } from "../utils";
 import ButtonHoverAudio from "../assets/audio/button_hover.mp3";
 import GameStartAudio from "../assets/audio/game_start.mp3";
+import { useSetAtom } from "jotai";
+import {
+  blockIdQueueAtom,
+  fillingBonusAtom,
+  isPackageSendingAtom,
+  MAX_TIME,
+  packageScoreAtom,
+  scoreAtom,
+  timerAtom,
+} from "../states";
 
 // 게임 레벨 데이터
 const levels = [
@@ -67,6 +77,13 @@ const Levels = () => {
 
   const SCORE = 1234567890; // 예시 점수
 
+  const setIsPackageSending = useSetAtom(isPackageSendingAtom);
+  const setTimer = useSetAtom(timerAtom);
+  const setPackageScore = useSetAtom(packageScoreAtom);
+  const setFillingBonus = useSetAtom(fillingBonusAtom);
+  const setBlockIdQueue = useSetAtom(blockIdQueueAtom);
+  const setScore = useSetAtom(scoreAtom);
+
   // 호버 애니메이션
   const hoverAnimation = useMemo(
     () =>
@@ -80,6 +97,35 @@ const Levels = () => {
       }),
     []
   );
+
+  // 게임 데이터 초기화
+  useEffect(() => {
+    setIsPackageSending(false);
+    setTimer(MAX_TIME);
+    setScore(0);
+
+    // 포장 점수 초기화
+    setPackageScore(0);
+
+    // 채우기 보너스 초기화
+    setFillingBonus(1000);
+
+    // 타이머 초기화
+    setTimer(50);
+
+    // 블록 큐 초기화
+    const newBlockIdQueue = Array.from({ length: 8 }, () => {
+      return getRandBlockId();
+    });
+    setBlockIdQueue(newBlockIdQueue);
+  }, [
+    setBlockIdQueue,
+    setFillingBonus,
+    setIsPackageSending,
+    setPackageScore,
+    setScore,
+    setTimer,
+  ]);
 
   // 레벨 버튼 호버
   const handleHover = useCallback(() => {

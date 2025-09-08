@@ -72,6 +72,7 @@ const Package = (props: PackageProps) => {
   const { isSending } = props;
 
   const packageRef = useRef<HTMLDivElement>(null);
+  const coverRef = useRef<HTMLDivElement>(null);
   const setPackageRef = useSetAtom(packageRefAtom);
   const timer = useAtomValue(timerAtom);
 
@@ -82,12 +83,13 @@ const Package = (props: PackageProps) => {
 
   // 패키지 전송 애니메이션 실행
   useEffect(() => {
-    if (packageRef.current && isSending) {
-      packageRef.current.classList.remove("send");
+    if (isSending) {
+      packageRef.current?.classList.remove("send");
+      coverRef.current?.classList.remove("send");
+
       requestAnimationFrame(() => {
-        if (packageRef.current) {
-          packageRef.current.classList.add("send");
-        }
+        packageRef.current?.classList.add("send");
+        coverRef.current?.classList.add("send");
       });
     }
   }, [isSending]);
@@ -106,11 +108,20 @@ const Package = (props: PackageProps) => {
           animation: `${ShakeAnimation} 0.2s ease-in-out`,
         },
         "&.send": {
-          animation:
-            timer <= 0
-              ? `${SendAnimationGameEnd} ${SEND_ANIMATION_DURATION}ms ease-in-out forwards`
-              : `${SendAnimation} ${SEND_ANIMATION_DURATION}ms ease-in-out forwards`,
-          animationDelay: `${COVER_ANIMATION_DURATION}ms`,
+          animation: {
+            xs:
+              timer <= 0
+                ? `${SendAnimationGameEndMobile} ${SEND_ANIMATION_DURATION}ms ease-in-out forwards`
+                : `${SendAnimationMobile} ${SEND_ANIMATION_DURATION}ms ease-in-out forwards`,
+            md:
+              timer <= 0
+                ? `${SendAnimationGameEnd} ${SEND_ANIMATION_DURATION}ms ease-in-out forwards`
+                : `${SendAnimation} ${SEND_ANIMATION_DURATION}ms ease-in-out forwards`,
+          },
+          animationDelay: {
+            xs: `${COVER_ANIMATION_DURATION}ms`,
+            md: `${COVER_ANIMATION_DURATION}ms`,
+          },
         },
       }}
     >
@@ -177,7 +188,7 @@ const Package = (props: PackageProps) => {
 
       {/* 덮개 */}
       <Stack
-        className="package cover"
+        ref={coverRef}
         width="calc(100% + 4px)"
         height="calc(100% - 12px)"
         position="absolute"
@@ -186,9 +197,11 @@ const Package = (props: PackageProps) => {
         zIndex={1000}
         sx={{
           opacity: 0,
-          animation: isSending
-            ? `${CoverAnimation} ${COVER_ANIMATION_DURATION}ms ease-in-out`
-            : "none",
+          "&.send": {
+            animation: `${CoverAnimation} ${COVER_ANIMATION_DURATION}ms ease-in-out ${
+              timer <= 0 ? "forwards" : ""
+            }`,
+          },
         }}
       >
         <Stack

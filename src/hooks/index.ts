@@ -8,6 +8,7 @@ import {
   isPackageSendingAtom,
   packageRefAtom,
   packageScoreAtom,
+  placedBlockCountAtom,
   scoreEffectsAtom,
   timerAtom,
   type BoardGridProps,
@@ -50,6 +51,7 @@ export const useBoard = () => {
   const setFillingBonusAtom = useSetAtom(fillingBonusAtom);
   const isPackageSending = useAtomValue(isPackageSendingAtom);
   const timer = useAtomValue(timerAtom);
+  const setPlacedBlockCount = useSetAtom(placedBlockCountAtom);
 
   // 보드 크기
   const getBoardSize = useCallback((level: number) => {
@@ -70,8 +72,8 @@ export const useBoard = () => {
   }, []);
 
   // 보드 초기화
-  const resetBoard = useCallback(
-    (level: number) => {
+  const clearBoard = useCallback(
+    (level: number, disabledGridCount = 0) => {
       const board = BoardData.find((board) => board.level === Number(level));
       if (board) {
         // 새 보드 그리드 생성
@@ -92,6 +94,30 @@ export const useBoard = () => {
             blockId: -1,
           };
         });
+
+        // 비활성화된 그리드 추가
+        if (disabledGridCount > 0) {
+          for (let i = 0; i < disabledGridCount; i++) {
+            // 비어있는 그리드 필터링
+            const emptyGrids = newBoardGrid
+              .flat()
+              .filter((cell) => cell.blockId === undefined);
+            console.log("New Board Grid >> ", newBoardGrid);
+            console.log("Empty Grids >> ", emptyGrids);
+
+            // 랜덤 인덱스 선택
+            const randIndex = Math.floor(Math.random() * emptyGrids.length);
+
+            // 그리드 비활성화
+            const targetGrid = emptyGrids[randIndex];
+            console.log("Target Grid >> ", targetGrid);
+
+            newBoardGrid[targetGrid.y][targetGrid.x] = {
+              ...newBoardGrid[targetGrid.y][targetGrid.x],
+              blockId: -2,
+            };
+          }
+        }
 
         // 보드 그리드 적용
         setBoardGrid(newBoardGrid);
@@ -143,25 +169,18 @@ export const useBoard = () => {
   // 보드에 블럭 놓기
   const placeBlock = useCallback(() => {
     // 블록을 놓을 수 없는 경우 종료
-    if (!dragSnapPoint || !dragSnapPoint.isValid) {
-      return;
-    }
+    if (!dragSnapPoint || !dragSnapPoint.isValid) return;
 
     // 드래그 중인 블록이 없는 경우 종료
-    if (draggableBlockGhost.id === null) {
-      return;
-    }
+    if (draggableBlockGhost.id === null) return;
 
     // 패키지가 전송중인 경우 종료
-    if (isPackageSending) {
-      return;
-    }
+    if (isPackageSending) return;
 
     // 시간이 초과된 경우 종료
-    if (timer <= 0) {
-      return;
-    }
+    if (timer <= 0) return;
 
+    // 블록 데이터 추출
     const block = BlockData.find(
       (block) => block.id === blockIdQueue[draggableBlockGhost.id!]
     );
@@ -173,6 +192,9 @@ export const useBoard = () => {
 
     // 블록 추가
     addBlock(block.id, dragSnapPoint.x, dragSnapPoint.y);
+
+    // 배치한 블록 수 증가
+    setPlacedBlockCount((prev) => prev + 1);
 
     // 블록 큐 업데이트
     setBlockIdQueue((prevQueue) => {
@@ -212,6 +234,7 @@ export const useBoard = () => {
     setBlockIdQueue,
     setFillingBonusAtom,
     setPackageScore,
+    setPlacedBlockCount,
     setScoreEffects,
     shakePackage,
     timer,
@@ -226,7 +249,7 @@ export const useBoard = () => {
 
   return {
     getBoardSize,
-    resetBoard,
+    clearBoard,
     addBlock,
     placeBlock,
     isBoardEmpty,
