@@ -16,12 +16,6 @@ const TimeScorePanel = () => {
       sx={{
         maxWidth: isMobileLandscape ? "auto" : "700px !important",
         height: isMobileLandscape ? "80px" : "auto",
-        marginTop: isMobileLandscape
-          ? 1
-          : {
-              xs: 1,
-              md: 2,
-            },
         position: "relative",
         zIndex: 100,
       }}

@@ -222,7 +222,18 @@ const GameView = (props: GameViewProps) => {
       }}
     >
       {/* 점수 판 */}
-      <TimeScorePanel />
+      <Stack
+        marginTop={
+          isMobileLandscape
+            ? 1
+            : {
+                xs: 1,
+                md: 2,
+              }
+        }
+      >
+        <TimeScorePanel />
+      </Stack>
 
       {/* 게임 화면 */}
       <Stack display="flex" position="relative" flex={1} marginTop={1.5}>
