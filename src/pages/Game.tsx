@@ -499,7 +499,11 @@ const Game = () => {
         width="100%"
         position={isGameOver ? "relative" : "fixed"}
         bottom={0}
-        visibility={isGameOver ? "visible" : "hidden"}
+        sx={{
+          opacity: isGameOver ? 1 : 0,
+          transition: "opacity 1s ease-in-out",
+          transitionDelay: "0.5s",
+        }}
       >
         <GameOverView />
       </Box>
