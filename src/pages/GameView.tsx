@@ -133,7 +133,7 @@ const GameView = (props: GameViewProps) => {
     if (timer > 0) return;
 
     // 보드가 비어있지 않다면 실행
-    if (!isBoardEmpty) {
+    if (!isBoardEmpty && !isPackageSending) {
       // 점수 증가
       const totalScore =
         score + Math.round(packageScore * fillingBonus * 0.001);
@@ -168,6 +168,7 @@ const GameView = (props: GameViewProps) => {
   }, [
     fillingBonus,
     isBoardEmpty,
+    isPackageSending,
     packageScore,
     score,
     setBestFillingBonus,
