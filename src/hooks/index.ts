@@ -8,7 +8,7 @@ import {
   dragSnapPointAtom,
   fillingBonusAtom,
   isPackageSendingAtom,
-  MAX_TIME,
+  // MAX_TIME,
   packageRefAtom,
   packageScoreAtom,
   placedBlockCountAtom,
@@ -38,7 +38,7 @@ export const useGame = () => {
 
   const resetGame = useCallback(() => {
     setIsPackageSending(false);
-    setTimer(MAX_TIME);
+    setTimer(30);
     setScore(0);
 
     // 포장 점수 초기화

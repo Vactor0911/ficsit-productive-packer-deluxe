@@ -5,10 +5,12 @@ import Score from "./Score";
 import { useIsMobileLandscape } from "../utils";
 import { useAtomValue } from "jotai";
 import { scoreAtom } from "../states";
+import { useRef } from "react";
 
 const TimeScorePanel = () => {
   const isMobileLandscape = useIsMobileLandscape();
   const score = useAtomValue(scoreAtom);
+  const scoreContainerRef = useRef<HTMLDivElement>(null);
 
   return (
     <Container
@@ -23,7 +25,6 @@ const TimeScorePanel = () => {
       <Panel backgroundColor="#fffff7">
         <Stack
           direction="row"
-          height="100%"
           padding={
             isMobileLandscape
               ? 0.5
@@ -44,6 +45,13 @@ const TimeScorePanel = () => {
         >
           {/* 타이머 */}
           <Box
+            height={
+              isMobileLandscape
+                ? undefined
+                : {
+                    sm: scoreContainerRef.current?.clientHeight,
+                  }
+            }
             fontSize={
               isMobileLandscape
                 ? "0.65rem"
@@ -57,6 +65,7 @@ const TimeScorePanel = () => {
           </Box>
 
           <Stack
+            ref={scoreContainerRef}
             gap={
               isMobileLandscape
                 ? 0
