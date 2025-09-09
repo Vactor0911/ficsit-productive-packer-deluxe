@@ -31,7 +31,7 @@ import ScoreEffectsRenderer from "../components/ScoreEffectsRenderer";
 import SendPackageAudio from "../assets/audio/send_package.mp3";
 import TimeScorePanel from "../components/TimeScorePanel";
 import DraggableBlockGhost from "../components/DraggableBlockGhost";
-import GameOverView from "./GameOverView";
+import GameOverView from "../components/GameOverView";
 
 const Game = () => {
   const isMobileLandscape = useIsMobileLandscape();
@@ -499,7 +499,11 @@ const Game = () => {
         width="100%"
         position={isGameOver ? "relative" : "fixed"}
         bottom={0}
-        visibility={isGameOver ? "visible" : "hidden"}
+        sx={{
+          opacity: isGameOver ? 1 : 0,
+          transition: "opacity 1s ease-in-out",
+          transitionDelay: "0.5s",
+        }}
       >
         <GameOverView />
       </Box>
