@@ -179,15 +179,9 @@ const Score = (props: ScoreProps) => {
   }, [executeAnimation, score, variant]);
 
   // 점수 포매팅
-  const getFormattedScore = useCallback(
-    (score: number) => {
-      if (variant === "bonus") {
-        return Number((score * 0.001).toString().slice(0, 5));
-      }
-      return score;
-    },
-    [variant]
-  );
+  const getFormattedScore = useCallback((score: number) => {
+    return Number(score).toString().slice(0, 5);
+  }, []);
 
   return (
     <Stack

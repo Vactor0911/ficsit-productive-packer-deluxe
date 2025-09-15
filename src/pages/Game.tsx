@@ -114,7 +114,7 @@ const Game = () => {
     setPackageScore(0);
 
     // 채우기 보너스 초기화
-    setFillingBonus(1000);
+    setFillingBonus(0);
 
     // 효과음 재생
     playEffect(SendPackageAudio);

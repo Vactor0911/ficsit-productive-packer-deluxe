@@ -139,7 +139,7 @@ const GameOverView = () => {
                 ["배치한 블록:", placedBlockCount],
                 ["보낸 패키지:", sentPackageCount],
                 ["포장 최고 점수:", bestPackageScore],
-                ["최고 포장 패키지:", `${bestFillingBonus}%`],
+                ["최고 포장 패키지:", `${Math.floor(bestFillingBonus)}%`],
               ].map(([label, value], index) => (
                 <Stack
                   key={index}

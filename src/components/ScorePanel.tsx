@@ -86,7 +86,7 @@ const ScorePanel = () => {
         >
           <Score
             variant="default"
-            score={Math.round(packageScore * fillingBonus * 0.001)}
+            score={Math.round(packageScore * fillingBonus)}
           />
         </Stack>
       </Stack>
