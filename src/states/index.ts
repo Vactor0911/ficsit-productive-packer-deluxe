@@ -26,7 +26,8 @@ export const scoreAtom = atom(0);
 export const packageScoreAtom = atom(0);
 
 // 채우기 보너스
-export const fillingBonusAtom = atom(1000); // 소숫점 계산을 위해 1000배로 저장
+export const fillingPercentageAtom = atom(0);
+export const fillingBonusAtom = atom(1);
 
 // 드래그 블럭 고스트 위치
 export const draggableBlockGhostAtom = atom<{
@@ -72,4 +73,4 @@ export const sentPackageCountAtom = atom(0);
 // 포장 최고 점수
 export const bestPackageScoreAtom = atom(0);
 // 최고 포장 패키지
-export const bestFillingBonusAtom = atom(0);
+export const bestFillingPercentageAtom = atom(0);

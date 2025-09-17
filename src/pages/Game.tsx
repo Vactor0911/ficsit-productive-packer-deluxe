@@ -1,5 +1,5 @@
 import { Box, Stack } from "@mui/material";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { playEffect, useIsMobileLandscape } from "../utils";
 import ConveyorSupport from "../components/ConveyorSupport";
 import Package, {
@@ -12,10 +12,11 @@ import BlockContainer from "../components/BlockContainer";
 import MobileBlockContainer from "../components/MobileBlockContainer";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import {
-  bestFillingBonusAtom,
+  bestFillingPercentageAtom,
   bestPackageScoreAtom,
   boardGridSizeAtom,
   fillingBonusAtom,
+  fillingPercentageAtom,
   isPackageSendingAtom,
   packageScoreAtom,
   scoreAtom,
@@ -25,8 +26,8 @@ import {
 } from "../states";
 import ScorePanel from "../components/ScorePanel";
 import SendButton from "../components/SendButton";
-import { Navigate, useLocation } from "react-router-dom";
-import { useBoard } from "../hooks";
+import { Navigate } from "react-router-dom";
+import { useBoard, useGame } from "../hooks";
 import ScoreEffectsRenderer from "../components/ScoreEffectsRenderer";
 import SendPackageAudio from "../assets/audio/send_package.mp3";
 import TimeScorePanel from "../components/TimeScorePanel";
@@ -35,7 +36,7 @@ import GameOverView from "../components/GameOverView";
 
 const Game = () => {
   const isMobileLandscape = useIsMobileLandscape();
-  const location = useLocation();
+  const { level } = useGame();
   const { clearBoard, isBoardEmpty } = useBoard();
 
   const score = useAtomValue(scoreAtom);
@@ -43,12 +44,14 @@ const Game = () => {
   const setScore = useSetAtom(scoreAtom);
   const [packageScore, setPackageScore] = useAtom(packageScoreAtom);
   const [fillingBonus, setFillingBonus] = useAtom(fillingBonusAtom);
+  const fillingPercentage = useAtomValue(fillingPercentageAtom);
+  const setBestFillingPercentage = useSetAtom(bestFillingPercentageAtom);
   const [isPackageSending, setIsPackageSending] = useAtom(isPackageSendingAtom);
   const timer = useAtomValue(timerAtom);
   const boardGridSize = useAtomValue(boardGridSizeAtom);
   const setSentPackageCount = useSetAtom(sentPackageCountAtom);
   const setBestPackageScore = useSetAtom(bestPackageScoreAtom);
-  const setBestFillingBonus = useSetAtom(bestFillingBonusAtom);
+  const setBestFillingBonus = useSetAtom(bestFillingPercentageAtom);
   const timeScorePanelRef = useRef<HTMLDivElement>(null);
   const gameOverViewRef = useRef<HTMLDivElement>(null);
   const [isGameOver, setIsGameOver] = useState(false);
@@ -58,12 +61,6 @@ const Game = () => {
 
   // 컨테이너 Ref
   const rootRef = useRef<HTMLDivElement>(null);
-
-  // URL에서 레벨 추출
-  const level = useMemo(
-    () => location.pathname.split("/").pop(),
-    [location.pathname]
-  );
 
   // 게임 데이터 초기화
   useEffect(() => {
@@ -83,7 +80,7 @@ const Game = () => {
     if (timer <= 0) return;
 
     // 점수 증가
-    const totalScore = score + Math.round(packageScore * fillingBonus * 0.001);
+    const totalScore = score + Math.round(packageScore * fillingBonus);
     setScore(totalScore);
 
     // 보낸 패키지 수 증가
@@ -93,12 +90,13 @@ const Game = () => {
     setBestPackageScore((score) => Math.max(score, packageScore));
 
     // 최고 포장 패키지 점수 갱신
-    setBestFillingBonus((bonus) => Math.max(bonus, fillingBonus));
+    setBestFillingPercentage((bonus) => Math.max(bonus, fillingPercentage));
 
     // 패키지 보내기 효과 재생
     setIsPackageSending(true);
     setTimeout(() => {
       // 비활성화 그리드 수 선택
+      // TODO: 그리드 수 조정
       const disabledGridCount = Math.min(Math.floor(fillingBonus / 1000), 5);
 
       // 보드 초기화
@@ -114,7 +112,7 @@ const Game = () => {
     setPackageScore(0);
 
     // 채우기 보너스 초기화
-    setFillingBonus(1000);
+    setFillingBonus(1);
 
     // 효과음 재생
     playEffect(SendPackageAudio);
@@ -128,10 +126,11 @@ const Game = () => {
     setScore,
     setSentPackageCount,
     setBestPackageScore,
-    setBestFillingBonus,
+    setBestFillingPercentage,
     setIsPackageSending,
     setPackageScore,
     setFillingBonus,
+    fillingPercentage,
     clearBoard,
     level,
   ]);

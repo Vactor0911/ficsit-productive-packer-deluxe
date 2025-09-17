@@ -27,6 +27,7 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
+
       <BrowserRouter basename="ficsit-productive-packer-deluxe">
         <Routes>
           <Route path="/" element={<Main />} />

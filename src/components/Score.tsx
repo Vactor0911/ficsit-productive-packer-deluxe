@@ -178,17 +178,6 @@ const Score = (props: ScoreProps) => {
     }
   }, [executeAnimation, score, variant]);
 
-  // 점수 포매팅
-  const getFormattedScore = useCallback(
-    (score: number) => {
-      if (variant === "bonus") {
-        return Number((score * 0.001).toString().slice(0, 5));
-      }
-      return score;
-    },
-    [variant]
-  );
-
   return (
     <Stack
       direction="row"
@@ -251,7 +240,7 @@ const Score = (props: ScoreProps) => {
         )}
 
         {/* 점수 표기 */}
-        {getFormattedScore(localScore)}
+        {Number(Number(localScore).toFixed(3))}
 
         {/* 점수 상승 애니메이션 */}
         <span
@@ -273,7 +262,7 @@ const Score = (props: ScoreProps) => {
           }}
         >
           {scoreDelta > 0 && "+"}
-          {getFormattedScore(scoreDelta)}
+          {Number(Number(scoreDelta).toFixed(3))}
         </span>
       </Typography>
     </Stack>

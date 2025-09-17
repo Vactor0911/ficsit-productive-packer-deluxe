@@ -65,7 +65,7 @@ const ScorePanel = () => {
           borderRadius="50px"
           bgcolor="#49859d"
         >
-          <Score variant="bonus" score={fillingBonus} />
+          <Score variant="bonus" score={fillingBonus.toFixed(3)} />
         </Stack>
 
         {/* 최종 배달 점수 */}
@@ -86,7 +86,7 @@ const ScorePanel = () => {
         >
           <Score
             variant="default"
-            score={Math.round(packageScore * fillingBonus * 0.001)}
+            score={Math.round(packageScore * fillingBonus)}
           />
         </Stack>
       </Stack>
