@@ -1,14 +1,15 @@
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import {
-  bestFillingBonusAtom,
+  bestFillingPercentageAtom,
   bestPackageScoreAtom,
   blockIdQueueAtom,
   boardGridAtom,
   draggableBlockGhostAtom,
   dragSnapPointAtom,
   fillingBonusAtom,
+  fillingPercentageAtom,
   isPackageSendingAtom,
-  // MAX_TIME,
+  MAX_TIME,
   packageRefAtom,
   packageScoreAtom,
   placedBlockCountAtom,
@@ -28,24 +29,37 @@ export const useGame = () => {
   const setIsPackageSending = useSetAtom(isPackageSendingAtom);
   const setTimer = useSetAtom(timerAtom);
   const setPackageScore = useSetAtom(packageScoreAtom);
-  const setFillingBonus = useSetAtom(fillingBonusAtom);
+  const setFillingBonus = useSetAtom(fillingPercentageAtom);
   const setBlockIdQueue = useSetAtom(blockIdQueueAtom);
   const setScore = useSetAtom(scoreAtom);
   const placedBlockCount = useSetAtom(placedBlockCountAtom);
   const sentPackageCount = useSetAtom(sentPackageCountAtom);
   const bestPackageScore = useSetAtom(bestPackageScoreAtom);
-  const bestFillingBonus = useSetAtom(bestFillingBonusAtom);
+  const bestFillingBonus = useSetAtom(bestFillingPercentageAtom);
+  const boardGrid = useAtomValue(boardGridAtom);
+
+  // URL에서 레벨 추출
+  const level = useMemo(() => location.pathname.split("/").pop(), []);
+
+  const boardCellCount = useMemo(() => {
+    return boardGrid.flat().filter((cell) => cell.blockId !== -1).length;
+  }, [boardGrid]);
+
+  // 채우기 보너스 배율
+  const fillingBonusMultiplier = useMemo(() => {
+    return (1 / boardCellCount!) * 10;
+  }, [boardCellCount]);
 
   const resetGame = useCallback(() => {
     setIsPackageSending(false);
-    setTimer(30);
+    setTimer(MAX_TIME);
     setScore(0);
 
     // 포장 점수 초기화
     setPackageScore(0);
 
     // 채우기 보너스 초기화
-    setFillingBonus(1000);
+    setFillingBonus(0);
 
     placedBlockCount(0);
     sentPackageCount(0);
@@ -70,7 +84,7 @@ export const useGame = () => {
     setTimer,
   ]);
 
-  return { resetGame };
+  return { level, fillingBonusMultiplier, resetGame };
 };
 
 // 패키지
@@ -102,10 +116,12 @@ export const useBoard = () => {
   const { shakePackage } = usePackage();
   const setScoreEffects = useSetAtom(scoreEffectsAtom);
   const setPackageScore = useSetAtom(packageScoreAtom);
-  const setFillingBonusAtom = useSetAtom(fillingBonusAtom);
+  const setFillingBonus = useSetAtom(fillingBonusAtom);
+  const setFillingPercentageAtom = useSetAtom(fillingPercentageAtom);
   const isPackageSending = useAtomValue(isPackageSendingAtom);
   const timer = useAtomValue(timerAtom);
   const setPlacedBlockCount = useSetAtom(placedBlockCountAtom);
+  const { fillingBonusMultiplier } = useGame();
 
   // 보드 크기
   const getBoardSize = useCallback((level: number) => {
@@ -276,17 +292,34 @@ export const useBoard = () => {
     // 점수 계산
     setPackageScore((prev) => prev + block.score);
 
-    const fillingBonus =
-      block.grid.flat().filter((cell) => cell === 1).length * 132;
-    setFillingBonusAtom((prev) => prev + fillingBonus);
+    // 채우기 퍼센트 계산
+    const totalCellCount = boardGrid.flat().length;
+    const filledCellCount = boardGrid
+      .flat()
+      .filter((cell) => cell.blockId !== undefined).length;
+
+    const fillingPercentage = (filledCellCount / totalCellCount) * 100;
+    setFillingPercentageAtom(fillingPercentage);
+
+    // 채우기 보너스 계산
+    const blockCellCount = block.grid
+      .flat()
+      .filter((cell) => cell === 1).length;
+
+    const fillingBonus = blockCellCount * fillingBonusMultiplier;
+    console.log(blockCellCount, fillingBonus);
+    setFillingBonus((prev) => Number((prev + fillingBonus).toFixed(3)));
   }, [
     addBlock,
     blockIdQueue,
+    boardGrid,
     dragSnapPoint,
     draggableBlockGhost.id,
+    fillingBonusMultiplier,
     isPackageSending,
     setBlockIdQueue,
-    setFillingBonusAtom,
+    setFillingBonus,
+    setFillingPercentageAtom,
     setPackageScore,
     setPlacedBlockCount,
     setScoreEffects,

@@ -6,7 +6,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useCallback, useMemo } from "react";
 import Panel from "../components/Panel";
 import StarTwoToneIcon from "@mui/icons-material/StarTwoTone";
@@ -15,30 +15,25 @@ import {
   placedBlockCountAtom,
   sentPackageCountAtom,
   bestPackageScoreAtom,
-  bestFillingBonusAtom,
+  bestFillingPercentageAtom,
 } from "../states";
 import { useAtomValue } from "jotai";
 import BoardData from "../assets/boards.json";
 import Button from "../components/Button";
 import Bolt from "../components/Bolt";
+import { useGame } from "../hooks";
 
 const GameOverView = () => {
   const theme = useTheme();
-  const location = useLocation();
   const navigate = useNavigate();
+  const { level } = useGame();
 
   const isMobileLandscape = useIsMobileLandscape();
   const isXs = useMediaQuery(theme.breakpoints.down("sm"));
   const placedBlockCount = useAtomValue(placedBlockCountAtom);
   const sentPackageCount = useAtomValue(sentPackageCountAtom);
   const bestPackageScore = useAtomValue(bestPackageScoreAtom);
-  const bestFillingBonus = useAtomValue(bestFillingBonusAtom);
-
-  // URL에서 레벨 추출
-  const level = useMemo(
-    () => location.pathname.split("/").pop(),
-    [location.pathname]
-  );
+  const bestFillingBonus = useAtomValue(bestFillingPercentageAtom);
 
   // 현재 레벨의 별점
   const starPoints = useMemo(() => {

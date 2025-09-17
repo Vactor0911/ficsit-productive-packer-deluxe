@@ -1,6 +1,5 @@
 import { Box } from "@mui/material";
 import * as Levels from "../assets/images/levels";
-import { useLocation } from "react-router-dom";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import { useAtomValue, useSetAtom } from "jotai";
 import {
@@ -9,12 +8,12 @@ import {
   boardPositionRefAtom,
   type BoardGridProps,
 } from "../states";
-import { useBoard } from "../hooks";
+import { useBoard, useGame } from "../hooks";
 import BlockBase from "./BlockBase";
 import BlockPlacePreview from "./BlockPlacePreview";
 
 const Board = () => {
-  const location = useLocation();
+  const { level } = useGame();
   const { getBoardSize } = useBoard();
 
   const boardRef = useRef<HTMLDivElement>(null);
@@ -22,12 +21,6 @@ const Board = () => {
   const setBoardPositionRef = useSetAtom(boardPositionRefAtom);
   const boardGrid = useAtomValue(boardGridAtom);
   const setBoardGridSize = useSetAtom(boardGridSizeAtom);
-
-  // 레벨
-  const level = useMemo(
-    () => location.pathname.split("/").pop(),
-    [location.pathname]
-  );
 
   // 보드 객체
   useEffect(() => {
