@@ -91,12 +91,14 @@ const Package = (props: PackageProps) => {
         packageRef.current?.classList.add("send");
         coverRef.current?.classList.add("send");
         setTimeout(() => {
-          packageRef.current?.classList.remove("send");
-          coverRef.current?.classList.remove("send");
+          if (timer > 0) {
+            packageRef.current?.classList.remove("send");
+            coverRef.current?.classList.remove("send");
+          }
         }, COVER_ANIMATION_DURATION + SEND_ANIMATION_DURATION);
       });
     }
-  }, [isSending]);
+  }, [isSending, timer]);
 
   return (
     <Stack
