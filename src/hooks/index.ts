@@ -93,14 +93,14 @@ export const usePackage = () => {
 
   const shakePackage = useCallback(() => {
     // 패키지 객체가 없다면 종료
-    if (!packageRef) {
+    if (!packageRef?.current) {
       return;
     }
 
     // 패키지 객체 흔들기
-    packageRef.classList.add("shake");
+    packageRef.current.classList.add("shake");
     setTimeout(() => {
-      packageRef.classList.remove("shake");
+      packageRef.current!.classList.remove("shake");
     }, 250);
   }, [packageRef]);
 

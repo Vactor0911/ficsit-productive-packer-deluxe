@@ -1,5 +1,6 @@
 import { atom } from "jotai";
 import type { BlockBaseProps } from "../components/BlockBase";
+import type { RefObject } from "react";
 
 // vh 단위 보정
 export const vhAtom = atom(window.innerHeight * 0.01);
@@ -48,7 +49,7 @@ export const dragSnapPointAtom = atom<{
 } | null>(null);
 
 // 패키지 객체
-export const packageRefAtom = atom<HTMLDivElement | null>(null);
+export const packageRefAtom = atom<RefObject<HTMLDivElement | null> | null>(null);
 
 // 점수 이펙트 객체 배열
 export const scoreEffectsAtom = atom<
