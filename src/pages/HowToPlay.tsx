@@ -53,13 +53,7 @@ const HowToPlay = () => {
           />
 
           {/* 플레이 방법 */}
-          <StyledOverlayScrollbarsComponent
-            defer
-            css={{
-              position: "absolute",
-              zIndex: 2,
-            }}
-          >
+          <StyledOverlayScrollbarsComponent defer>
             <Stack
               paddingRight={2}
               paddingY={{
@@ -115,8 +109,23 @@ const HowToPlay = () => {
               </Typography>
 
               {/* 패키지 보내기 */}
-              <Stack width="50%" minWidth="160px" alignSelf="center">
+              <Stack
+                width="50%"
+                minWidth="160px"
+                alignSelf="center"
+                position="relative"
+              >
                 <SendButton />
+
+                {/* 클릭 막기용 커버 */}
+                <Box
+                  position="absolute"
+                  width="100%"
+                  height="100%"
+                  top={0}
+                  left={0}
+                  zIndex={2}
+                />
               </Stack>
               <Typography variant="h4" textAlign="center">
                 패키지 보내기

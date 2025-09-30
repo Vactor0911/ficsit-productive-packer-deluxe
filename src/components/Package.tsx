@@ -78,7 +78,7 @@ const Package = (props: PackageProps) => {
 
   // 패키지 객체
   useEffect(() => {
-    setPackageRef(packageRef.current);
+    setPackageRef(packageRef);
   }, [setPackageRef]);
 
   // 패키지 전송 애니메이션 실행
@@ -90,9 +90,15 @@ const Package = (props: PackageProps) => {
       requestAnimationFrame(() => {
         packageRef.current?.classList.add("send");
         coverRef.current?.classList.add("send");
+        setTimeout(() => {
+          if (timer > 0) {
+            packageRef.current?.classList.remove("send");
+            coverRef.current?.classList.remove("send");
+          }
+        }, COVER_ANIMATION_DURATION + SEND_ANIMATION_DURATION);
       });
     }
-  }, [isSending]);
+  }, [isSending, timer]);
 
   return (
     <Stack
