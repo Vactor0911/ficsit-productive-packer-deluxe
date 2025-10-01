@@ -97,8 +97,7 @@ const Game = () => {
     setIsPackageSending(true);
     setTimeout(() => {
       // 비활성화 그리드 수 선택
-      // TODO: 그리드 수 조정
-      const disabledGridCount = Math.min(Math.floor(fillingBonus / 1000), 5);
+      const disabledGridCount = Math.floor(totalScore / 400);
 
       // 보드 초기화
       clearBoard(Number(level), disabledGridCount);
@@ -156,11 +155,9 @@ const Game = () => {
     if (!isTimeOver) return;
 
     // 보드가 비어있지 않다면 실행
-    if (!isBoardEmpty && !isPackageSending) {
+    if (!isBoardEmpty) {
       // 점수 증가
-      const totalScore =
-        score + Math.round(packageScore * fillingBonus * 0.001);
-      setScore(totalScore);
+      setScore((score) => score + Math.round(packageScore * fillingBonus));
 
       // 보낸 패키지 수 증가
       setSentPackageCount((count) => count + 1);
@@ -192,20 +189,16 @@ const Game = () => {
       }, 1000);
     }, 1000);
   }, [
+    calcTimeScorePanelPosition,
     fillingBonus,
     isBoardEmpty,
-    isPackageSending,
+    isTimeOver,
     packageScore,
-    score,
     setBestFillingBonus,
     setBestPackageScore,
-    setIsGameOver,
     setIsPackageSending,
     setScore,
     setSentPackageCount,
-    calcTimeScorePanelPosition,
-    getTimerLeft,
-    isTimeOver,
   ]);
 
   // 레벨 유효성 검증
@@ -507,7 +500,7 @@ const Game = () => {
           transitionDelay: "0.5s",
         }}
       >
-        <GameOverView />
+        <GameOverView show={isGameOver} />
       </Box>
     </Stack>
   );

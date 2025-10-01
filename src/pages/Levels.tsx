@@ -16,7 +16,7 @@ import {
 } from "../assets/images/levels";
 import Button from "../components/Button";
 import StarTwoToneIcon from "@mui/icons-material/StarTwoTone";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { playEffect } from "../utils";
 import ButtonHoverAudio from "../assets/audio/button_hover.mp3";
@@ -87,11 +87,6 @@ const Levels = () => {
     []
   );
 
-  // 게임 데이터 초기화
-  useEffect(() => {
-    resetGame();
-  }, [resetGame]);
-
   // 레벨 버튼 호버
   const handleHover = useCallback(() => {
     playEffect(ButtonHoverAudio);
@@ -100,6 +95,9 @@ const Levels = () => {
   // 레벨 버튼 클릭
   const handleClick = useCallback(
     (level: number) => {
+      // 게임 상태 초기화
+      resetGame();
+
       // 타이머 초기화
       setTimer(Date.now());
       setIsTimerOver(false);
@@ -107,7 +105,7 @@ const Levels = () => {
       playEffect(GameStartAudio);
       navigate(`/game/${level}`);
     },
-    [navigate, setIsTimerOver, setTimer]
+    [navigate, resetGame, setIsTimerOver, setTimer]
   );
 
   // 메인 화면으로 버튼 클릭

@@ -23,7 +23,29 @@ import BoardData from "../assets/boards.json";
 import Button from "../components/Button";
 import Bolt from "../components/Bolt";
 import { useGame } from "../hooks";
+import { theme } from "../utils/theme";
 
+// 별 점등 애니메이션
+const StarLightUpAnimation = keyframes`
+  0% {
+    color: ${theme.palette.text.secondary};
+  }
+  100% {
+    color: ${theme.palette.primary.main};
+  }
+`;
+
+// 텍스트 점등 애니메이션
+const TextLightUpAnimation = keyframes`
+  0% {
+    color: ${theme.palette.text.secondary};
+  }
+  100% {
+    color: white;
+  }
+`;
+
+// 슬라이딩 애니메이션 (좌측)
 const SlideLeftAnimation = keyframes`
   0% {
     opacity: 0;
@@ -34,6 +56,8 @@ const SlideLeftAnimation = keyframes`
     transform: translateX(0);
   }
 `;
+
+// 슬라이딩 애니메이션 (우측)
 const SlideRightAnimation = keyframes`
   0% {
     opacity: 0;
@@ -45,10 +69,18 @@ const SlideRightAnimation = keyframes`
   }
 `;
 
-const GameOverView = () => {
+interface GameOverViewProps {
+  show: boolean;
+}
+
+const ANIMATION_DELAY = 1.5;
+
+const GameOverView = (props: GameOverViewProps) => {
+  const { show } = props;
+
   const theme = useTheme();
   const navigate = useNavigate();
-  const { level } = useGame();
+  const { level, getStarLevel } = useGame();
 
   const isMobileLandscape = useIsMobileLandscape();
   const isXs = useMediaQuery(theme.breakpoints.down("sm"));
@@ -103,6 +135,13 @@ const GameOverView = () => {
                             xs: "3.5rem",
                             sm: "5rem",
                           },
+                      animation: show
+                        ? getStarLevel() > index
+                          ? `${StarLightUpAnimation} 0.25s ease-out ${
+                              index * 0.5 + ANIMATION_DELAY
+                            }s forwards`
+                          : "none"
+                        : "none",
                     }}
                   />
                   <Typography
@@ -114,6 +153,13 @@ const GameOverView = () => {
                       WebkitTextStroke: "4px black",
                       paintOrder: "stroke fill",
                       textShadow: "0.1em 0.1em 0 rgba(0, 0, 0, 0.25)",
+                      animation: show
+                        ? getStarLevel() > index
+                          ? `${TextLightUpAnimation} 0.25s ease-out ${
+                              index * 0.5 + ANIMATION_DELAY
+                            }s forwards`
+                          : "none"
+                        : "none",
                     }}
                   >
                     {points}
@@ -167,9 +213,11 @@ const GameOverView = () => {
                     variant={isMobileLandscape ? "subtitle2" : "h5"}
                     sx={{
                       opacity: 0,
-                      animation: `${SlideRightAnimation} 0.2s ease-out ${
-                        index * 0.15 + 5
-                      }s forwards`,
+                      animation: show
+                        ? `${SlideRightAnimation} 0.2s ease-out ${
+                            index * 0.15 + ANIMATION_DELAY
+                          }s forwards`
+                        : "none",
                     }}
                   >
                     {label}
@@ -179,9 +227,11 @@ const GameOverView = () => {
                     variant={isMobileLandscape ? "subtitle1" : "h4"}
                     sx={{
                       opacity: 0,
-                      animation: `${SlideLeftAnimation} 0.2s ease-out ${
-                        index * 0.15 + 5
-                      }s forwards`,
+                      animation: show
+                        ? `${SlideLeftAnimation} 0.2s ease-out ${
+                            index * 0.15 + ANIMATION_DELAY
+                          }s forwards`
+                        : "none",
                     }}
                   >
                     {value}

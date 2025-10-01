@@ -31,6 +31,7 @@ export const useGame = () => {
   const setPackageScore = useSetAtom(packageScoreAtom);
   const setFillingBonus = useSetAtom(fillingPercentageAtom);
   const setBlockIdQueue = useSetAtom(blockIdQueueAtom);
+  const score = useAtomValue(scoreAtom);
   const setScore = useSetAtom(scoreAtom);
   const placedBlockCount = useSetAtom(placedBlockCountAtom);
   const sentPackageCount = useSetAtom(sentPackageCountAtom);
@@ -91,7 +92,30 @@ export const useGame = () => {
     return Math.max(timeLeft, 0);
   }, [timer]);
 
-  return { level, fillingBonusMultiplier, resetGame, getTimerLeft };
+  // 획득 별 개수 반환
+  const getStarLevel = useCallback(() => {
+    const board = BoardData.find((board) => board.level === Number(level));
+    if (!board) {
+      return 10000;
+    }
+
+    const stars = board.stars;
+    const starLevel = stars.reduce((acc, curr, index) => {
+      if (score >= curr) {
+        return index + 1;
+      }
+      return acc;
+    }, 0);
+    return starLevel;
+  }, [level, score]);
+
+  return {
+    level,
+    fillingBonusMultiplier,
+    resetGame,
+    getTimerLeft,
+    getStarLevel,
+  };
 };
 
 // 패키지
