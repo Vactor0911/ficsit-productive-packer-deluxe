@@ -1,6 +1,7 @@
 import {
   Box,
   Container,
+  keyframes,
   Stack,
   Typography,
   useMediaQuery,
@@ -22,6 +23,27 @@ import BoardData from "../assets/boards.json";
 import Button from "../components/Button";
 import Bolt from "../components/Bolt";
 import { useGame } from "../hooks";
+
+const SlideLeftAnimation = keyframes`
+  0% {
+    opacity: 0;
+    transform: translateX(1em);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+`;
+const SlideRightAnimation = keyframes`
+  0% {
+    opacity: 0;
+    transform: translateX(-1em);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+`;
 
 const GameOverView = () => {
   const theme = useTheme();
@@ -137,16 +159,30 @@ const GameOverView = () => {
                 ["최고 포장 패키지:", `${Math.floor(bestFillingBonus)}%`],
               ].map(([label, value], index) => (
                 <Stack
-                  key={index}
+                  key={`game-result-${index}`}
                   direction="row"
                   justifyContent="space-between"
                 >
-                  <Typography variant={isMobileLandscape ? "subtitle2" : "h5"}>
+                  <Typography
+                    variant={isMobileLandscape ? "subtitle2" : "h5"}
+                    sx={{
+                      opacity: 0,
+                      animation: `${SlideRightAnimation} 0.2s ease-out ${
+                        index * 0.15 + 5
+                      }s forwards`,
+                    }}
+                  >
                     {label}
                   </Typography>
                   <Typography
                     className="outlined"
                     variant={isMobileLandscape ? "subtitle1" : "h4"}
+                    sx={{
+                      opacity: 0,
+                      animation: `${SlideLeftAnimation} 0.2s ease-out ${
+                        index * 0.15 + 5
+                      }s forwards`,
+                    }}
                   >
                     {value}
                   </Typography>
