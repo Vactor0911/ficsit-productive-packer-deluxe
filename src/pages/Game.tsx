@@ -18,10 +18,10 @@ import {
   fillingBonusAtom,
   fillingPercentageAtom,
   isPackageSendingAtom,
+  isTimeOverAtom,
   packageScoreAtom,
   scoreAtom,
   sentPackageCountAtom,
-  timerAtom,
   vhAtom,
 } from "../states";
 import ScorePanel from "../components/ScorePanel";
@@ -47,7 +47,7 @@ const Game = () => {
   const fillingPercentage = useAtomValue(fillingPercentageAtom);
   const setBestFillingPercentage = useSetAtom(bestFillingPercentageAtom);
   const [isPackageSending, setIsPackageSending] = useAtom(isPackageSendingAtom);
-  const timer = useAtomValue(timerAtom);
+  const { getTimerLeft } = useGame();
   const boardGridSize = useAtomValue(boardGridSizeAtom);
   const setSentPackageCount = useSetAtom(sentPackageCountAtom);
   const setBestPackageScore = useSetAtom(bestPackageScoreAtom);
@@ -55,6 +55,7 @@ const Game = () => {
   const timeScorePanelRef = useRef<HTMLDivElement>(null);
   const gameOverViewRef = useRef<HTMLDivElement>(null);
   const [isGameOver, setIsGameOver] = useState(false);
+  const isTimeOver = useAtomValue(isTimeOverAtom);
 
   // 게임 종료 시 TimeScorePanel 위치 상태
   const [timeScorePanelPosition, setTimeScorePanelPosition] = useState(20);
@@ -77,7 +78,7 @@ const Game = () => {
     // 패키지를 이미 보내고 있다면 종료
     if (isPackageSending) return;
     // 시간이 종료되었다면 종료
-    if (timer <= 0) return;
+    if (getTimerLeft() <= 0) return;
 
     // 점수 증가
     const totalScore = score + Math.round(packageScore * fillingBonus);
@@ -96,8 +97,7 @@ const Game = () => {
     setIsPackageSending(true);
     setTimeout(() => {
       // 비활성화 그리드 수 선택
-      // TODO: 그리드 수 조정
-      const disabledGridCount = Math.min(Math.floor(fillingBonus / 1000), 5);
+      const disabledGridCount = Math.floor(totalScore / 400);
 
       // 보드 초기화
       clearBoard(Number(level), disabledGridCount);
@@ -119,7 +119,7 @@ const Game = () => {
   }, [
     isBoardEmpty,
     isPackageSending,
-    timer,
+    getTimerLeft,
     score,
     packageScore,
     fillingBonus,
@@ -147,20 +147,17 @@ const Game = () => {
 
     const newPosition = Math.max(y, 20);
     setTimeScorePanelPosition(newPosition);
-    console.log("New TimeScorePanel Position >> ", newPosition);
   }, []);
 
   // 시간 종료 애니메이션 실행
   useEffect(() => {
     // 시간이 종료되지 않았다면 종료
-    if (timer > 0) return;
+    if (!isTimeOver) return;
 
     // 보드가 비어있지 않다면 실행
-    if (!isBoardEmpty && !isPackageSending) {
+    if (!isBoardEmpty) {
       // 점수 증가
-      const totalScore =
-        score + Math.round(packageScore * fillingBonus * 0.001);
-      setScore(totalScore);
+      setScore((score) => score + Math.round(packageScore * fillingBonus));
 
       // 보낸 패키지 수 증가
       setSentPackageCount((count) => count + 1);
@@ -192,19 +189,16 @@ const Game = () => {
       }, 1000);
     }, 1000);
   }, [
+    calcTimeScorePanelPosition,
     fillingBonus,
     isBoardEmpty,
-    isPackageSending,
+    isTimeOver,
     packageScore,
-    score,
     setBestFillingBonus,
     setBestPackageScore,
-    setIsGameOver,
     setIsPackageSending,
     setScore,
     setSentPackageCount,
-    timer,
-    calcTimeScorePanelPosition,
   ]);
 
   // 레벨 유효성 검증
@@ -354,7 +348,9 @@ const Game = () => {
               {/* 보내기 버튼 */}
               <SendButton
                 onClick={handleSendButtonClick}
-                disabled={isBoardEmpty || isPackageSending || timer <= 0}
+                disabled={
+                  isBoardEmpty || isPackageSending || getTimerLeft() <= 0
+                }
               />
             </Stack>
           </Box>
@@ -433,7 +429,7 @@ const Game = () => {
           >
             <SendButton
               onClick={handleSendButtonClick}
-              disabled={isBoardEmpty || isPackageSending || timer <= 0}
+              disabled={isBoardEmpty || isPackageSending || getTimerLeft() <= 0}
             />
           </Box>
         </Box>
@@ -504,7 +500,7 @@ const Game = () => {
           transitionDelay: "0.5s",
         }}
       >
-        <GameOverView />
+        <GameOverView show={isGameOver} />
       </Box>
     </Stack>
   );

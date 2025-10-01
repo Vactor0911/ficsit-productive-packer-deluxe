@@ -1,37 +1,33 @@
-import {
-  Box,
-  Stack,
-  Typography,
-  useTheme,
-} from "@mui/material";
-import { useAtom } from "jotai";
-import { MAX_TIME, timerAtom } from "../states";
-import { useEffect, useMemo } from "react";
+import { Box, Stack, Typography, useTheme } from "@mui/material";
+import { isTimeOverAtom, MAX_TIME } from "../states";
+import { useEffect, useMemo, useState } from "react";
+import { useGame } from "../hooks";
+import { useSetAtom } from "jotai";
 
 const Timer = () => {
   const theme = useTheme();
-  const [timer, setTimer] = useAtom(timerAtom);
+  const { getTimerLeft } = useGame();
+  const [progress, setProgress] = useState(0);
+  const setIsTimeOver = useSetAtom(isTimeOverAtom);
 
-  // 타이머
   useEffect(() => {
-    const interval = setInterval(() => {
-      setTimer((prev) => (prev > 0 ? prev - 1 : 0));
+    // 0.1초마다 진행률 업데이트
+    const id = setInterval(() => {
+      const newProgress = Math.max(0, Math.min(1, getTimerLeft() / MAX_TIME));
+      setProgress(newProgress);
+
+      // 시간이 다 되면 인터벌 종료
+      if (newProgress <= 0) {
+        setIsTimeOver(true);
+        clearInterval(id);
+      }
     }, 100);
 
-    return () => clearInterval(interval);
-  }, [setTimer]);
-
-  // 시간 종료
-  useEffect(() => {
-    if (timer <= 0) {
-      console.log("시간 종료!");
-    }
-  }, [timer]);
-
-  // 제한 시간 진행률
-  const progress = useMemo(() => {
-    return Math.max(0, Math.min(1, timer / MAX_TIME));
-  }, [timer]);
+    // 클리너
+    return () => {
+      clearInterval(id);
+    };
+  }, [getTimerLeft, setIsTimeOver]);
 
   // conic-gradient 각도
   const angle = useMemo(() => {
@@ -101,7 +97,7 @@ const Timer = () => {
               lineHeight="100%"
               fontWeight="bold"
             >
-              {(timer / 10).toFixed(1)}초
+              {(getTimerLeft() * 0.001).toFixed(1)}초
             </Typography>
 
             {/* 여백 */}

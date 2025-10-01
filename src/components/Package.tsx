@@ -2,9 +2,10 @@ import { Box, keyframes, Stack, Typography } from "@mui/material";
 import Board from "./Board";
 import FicsitLogo from "../assets/images/ficsit.svg";
 import { useEffect, useRef } from "react";
-import { useAtomValue, useSetAtom } from "jotai";
-import { packageRefAtom, timerAtom } from "../states";
+import { useSetAtom } from "jotai";
+import { packageRefAtom } from "../states";
 import CoveredPackage from "./CoveredPackage";
+import { useGame } from "../hooks";
 
 // 덮개 애니메이션
 const CoverAnimation = keyframes`
@@ -74,7 +75,7 @@ const Package = (props: PackageProps) => {
   const packageRef = useRef<HTMLDivElement>(null);
   const coverRef = useRef<HTMLDivElement>(null);
   const setPackageRef = useSetAtom(packageRefAtom);
-  const timer = useAtomValue(timerAtom);
+  const { getTimerLeft } = useGame();
 
   // 패키지 객체
   useEffect(() => {
@@ -91,14 +92,14 @@ const Package = (props: PackageProps) => {
         packageRef.current?.classList.add("send");
         coverRef.current?.classList.add("send");
         setTimeout(() => {
-          if (timer > 0) {
+          if (getTimerLeft() > 0) {
             packageRef.current?.classList.remove("send");
             coverRef.current?.classList.remove("send");
           }
         }, COVER_ANIMATION_DURATION + SEND_ANIMATION_DURATION);
       });
     }
-  }, [isSending, timer]);
+  }, [getTimerLeft, isSending]);
 
   return (
     <Stack
@@ -116,11 +117,11 @@ const Package = (props: PackageProps) => {
         "&.send": {
           animation: {
             xs:
-              timer <= 0
+              getTimerLeft() <= 0
                 ? `${SendAnimationGameEndMobile} ${SEND_ANIMATION_DURATION}ms ease-in-out forwards`
                 : `${SendAnimationMobile} ${SEND_ANIMATION_DURATION}ms ease-in-out forwards`,
             md:
-              timer <= 0
+              getTimerLeft() <= 0
                 ? `${SendAnimationGameEnd} ${SEND_ANIMATION_DURATION}ms ease-in-out forwards`
                 : `${SendAnimation} ${SEND_ANIMATION_DURATION}ms ease-in-out forwards`,
           },
@@ -205,7 +206,7 @@ const Package = (props: PackageProps) => {
           opacity: 0,
           "&.send": {
             animation: `${CoverAnimation} ${COVER_ANIMATION_DURATION}ms ease-in-out ${
-              timer <= 0 ? "forwards" : ""
+              getTimerLeft() <= 0 ? "forwards" : ""
             }`,
           },
         }}

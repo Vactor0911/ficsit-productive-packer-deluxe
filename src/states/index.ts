@@ -64,8 +64,11 @@ export const scoreEffectsAtom = atom<
 export const isPackageSendingAtom = atom(false);
 
 // 게임 타이머
-export const MAX_TIME = 900; // ms 단위
-export const timerAtom = atom(MAX_TIME);
+export const MAX_TIME = 90000; // ms 단위
+export const timerAtom = atom(Date.now());
+
+// 시간 초과 여부
+export const isTimeOverAtom = atom(false);
 
 // 배치한 블록 수
 export const placedBlockCountAtom = atom(0);

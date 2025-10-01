@@ -65,7 +65,7 @@ const ScorePanel = () => {
           borderRadius="50px"
           bgcolor="#49859d"
         >
-          <Score variant="bonus" score={fillingBonus.toFixed(3)} />
+          <Score variant="bonus" score={Number(fillingBonus.toFixed(3))} />
         </Stack>
 
         {/* 최종 배달 점수 */}
