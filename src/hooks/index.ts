@@ -27,7 +27,7 @@ import BlockPlacedAudio from "../assets/audio/block_placed.mp3";
 
 export const useGame = () => {
   const setIsPackageSending = useSetAtom(isPackageSendingAtom);
-  const setTimer = useSetAtom(timerAtom);
+  const timer = useAtomValue(timerAtom);
   const setPackageScore = useSetAtom(packageScoreAtom);
   const setFillingBonus = useSetAtom(fillingPercentageAtom);
   const setBlockIdQueue = useSetAtom(blockIdQueueAtom);
@@ -41,6 +41,7 @@ export const useGame = () => {
   // URL에서 레벨 추출
   const level = useMemo(() => location.pathname.split("/").pop(), []);
 
+  // 보드의 유효한 셀 개수
   const boardCellCount = useMemo(() => {
     return boardGrid.flat().filter((cell) => cell.blockId !== -1).length;
   }, [boardGrid]);
@@ -50,9 +51,9 @@ export const useGame = () => {
     return (1 / boardCellCount!) * 10;
   }, [boardCellCount]);
 
+  // 게임 초기화
   const resetGame = useCallback(() => {
     setIsPackageSending(false);
-    setTimer(MAX_TIME);
     setScore(0);
 
     // 포장 점수 초기화
@@ -81,10 +82,16 @@ export const useGame = () => {
     setIsPackageSending,
     setPackageScore,
     setScore,
-    setTimer,
   ]);
 
-  return { level, fillingBonusMultiplier, resetGame };
+  // 타이머 남은 시간 구하기
+  const getTimerLeft = useCallback(() => {
+    const elapsedTime = Date.now() - timer;
+    const timeLeft = MAX_TIME - elapsedTime;
+    return Math.max(timeLeft, 0);
+  }, [timer]);
+
+  return { level, fillingBonusMultiplier, resetGame, getTimerLeft };
 };
 
 // 패키지
@@ -119,7 +126,7 @@ export const useBoard = () => {
   const setFillingBonus = useSetAtom(fillingBonusAtom);
   const setFillingPercentageAtom = useSetAtom(fillingPercentageAtom);
   const isPackageSending = useAtomValue(isPackageSendingAtom);
-  const timer = useAtomValue(timerAtom);
+  const { getTimerLeft } = useGame();
   const setPlacedBlockCount = useSetAtom(placedBlockCountAtom);
   const { fillingBonusMultiplier } = useGame();
 
@@ -172,15 +179,12 @@ export const useBoard = () => {
             const emptyGrids = newBoardGrid
               .flat()
               .filter((cell) => cell.blockId === undefined);
-            console.log("New Board Grid >> ", newBoardGrid);
-            console.log("Empty Grids >> ", emptyGrids);
 
             // 랜덤 인덱스 선택
             const randIndex = Math.floor(Math.random() * emptyGrids.length);
 
             // 그리드 비활성화
             const targetGrid = emptyGrids[randIndex];
-            console.log("Target Grid >> ", targetGrid);
 
             newBoardGrid[targetGrid.y][targetGrid.x] = {
               ...newBoardGrid[targetGrid.y][targetGrid.x],
@@ -248,7 +252,7 @@ export const useBoard = () => {
     if (isPackageSending) return;
 
     // 시간이 초과된 경우 종료
-    if (timer <= 0) return;
+    if (getTimerLeft() <= 0) return;
 
     // 블록 데이터 추출
     const block = BlockData.find(
@@ -307,7 +311,6 @@ export const useBoard = () => {
       .filter((cell) => cell === 1).length;
 
     const fillingBonus = blockCellCount * fillingBonusMultiplier;
-    console.log(blockCellCount, fillingBonus);
     setFillingBonus((prev) => Number((prev + fillingBonus).toFixed(3)));
   }, [
     addBlock,
@@ -316,6 +319,7 @@ export const useBoard = () => {
     dragSnapPoint,
     draggableBlockGhost.id,
     fillingBonusMultiplier,
+    getTimerLeft,
     isPackageSending,
     setBlockIdQueue,
     setFillingBonus,
@@ -324,7 +328,6 @@ export const useBoard = () => {
     setPlacedBlockCount,
     setScoreEffects,
     shakePackage,
-    timer,
   ]);
 
   // 보드 비어있음 여부 확인

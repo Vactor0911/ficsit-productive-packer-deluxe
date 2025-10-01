@@ -14,10 +14,9 @@ import {
   draggableBlockGhostAtom,
   dragSnapPointAtom,
   isPackageSendingAtom,
-  timerAtom,
 } from "../states";
 import BlockPickUpAudio from "../assets/audio/block_pickup.mp3";
-import { useBoard } from "../hooks";
+import { useBoard, useGame } from "../hooks";
 
 const DraggableBlock = (props: BlockProps) => {
   const { id, blockId, shadow, ...others } = props;
@@ -49,7 +48,7 @@ const DraggableBlock = (props: BlockProps) => {
   const { placeBlock } = useBoard();
 
   // 시간
-  const timer = useAtomValue(timerAtom);
+  const { getTimerLeft } = useGame();
 
   // 블록 크기 계산
   const calcBlockSize = useCallback(() => {
@@ -94,7 +93,7 @@ const DraggableBlock = (props: BlockProps) => {
       }
 
       // 시간이 종료된 경우 중지
-      if (timer <= 0) {
+      if (getTimerLeft() <= 0) {
         return;
       }
 
@@ -112,7 +111,7 @@ const DraggableBlock = (props: BlockProps) => {
 
       setGhost({ id: index, x: e.clientX, y: e.clientY + offsetY });
     },
-    [id, isPackageSending, offsetY, setDragSnapPoint, setGhost, timer]
+    [getTimerLeft, id, isPackageSending, offsetY, setDragSnapPoint, setGhost]
   );
 
   // 드래그
@@ -184,11 +183,11 @@ const DraggableBlock = (props: BlockProps) => {
 
   // 시간 종료
   useEffect(() => {
-    if (timer <= 0) {
+    if (getTimerLeft() <= 0) {
       setDragging(false);
       setGhost((g) => ({ ...g, id: null }));
     }
-  }, [setGhost, timer]);
+  }, [setGhost, getTimerLeft]);
 
   if (!block) {
     return null;

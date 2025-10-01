@@ -22,6 +22,8 @@ import { playEffect } from "../utils";
 import ButtonHoverAudio from "../assets/audio/button_hover.mp3";
 import GameStartAudio from "../assets/audio/game_start.mp3";
 import { useGame } from "../hooks";
+import { useSetAtom } from "jotai";
+import { isTimeOverAtom, timerAtom } from "../states";
 
 // 게임 레벨 데이터
 const levels = [
@@ -65,7 +67,8 @@ const levels = [
 
 const Levels = () => {
   const navigate = useNavigate();
-
+  const setTimer = useSetAtom(timerAtom);
+  const setIsTimerOver = useSetAtom(isTimeOverAtom);
   const { resetGame } = useGame();
 
   const SCORE = 1234567890; // 예시 점수
@@ -97,10 +100,14 @@ const Levels = () => {
   // 레벨 버튼 클릭
   const handleClick = useCallback(
     (level: number) => {
+      // 타이머 초기화
+      setTimer(Date.now());
+      setIsTimerOver(false);
+
       playEffect(GameStartAudio);
       navigate(`/game/${level}`);
     },
-    [navigate]
+    [navigate, setIsTimerOver, setTimer]
   );
 
   // 메인 화면으로 버튼 클릭
