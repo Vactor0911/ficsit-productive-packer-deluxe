@@ -8,13 +8,16 @@
     "devLan": "vite --port 8080 --host",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview --port 8080"
+    "preview": "vite preview --port 8080",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.14.1",
     "@mui/icons-material": "^7.2.0",
     "@mui/material": "^7.2.0",
+    "gh-pages": "^6.3.0",
     "jotai": "^2.12.5",
     "overlayscrollbars-react": "^0.5.6",
     "react": "^19.1.1",
@@ -35,5 +38,6 @@
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.44.0",
     "vite": "^7.1.7"
-  }
+  },
+  "homepage": "https://vactor0911.github.io/ficsit-productive-packer-deluxe"
 }
