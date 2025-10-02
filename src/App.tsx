@@ -6,6 +6,8 @@ import { theme } from "./utils/theme";
 import { useEffect } from "react";
 import { useSetAtom } from "jotai";
 import { vhAtom } from "./states";
+import { playMusic } from "./utils/audio";
+import MainAudio from "./assets/audio/music_1.mp3";
 
 const App = () => {
   const setVh = useSetAtom(vhAtom);
@@ -23,6 +25,18 @@ const App = () => {
     // 클리너
     return () => window.removeEventListener("resize", calcVh);
   }, [setVh]);
+
+  // 게임 배경 음악 재생
+  useEffect(() => {
+    const handleFirstClick = () => {
+      playMusic(MainAudio);
+      window.removeEventListener("click", handleFirstClick);
+    };
+
+    window.addEventListener("click", handleFirstClick);
+
+    return () => window.removeEventListener("click", handleFirstClick);
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>

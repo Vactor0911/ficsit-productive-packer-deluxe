@@ -18,7 +18,7 @@ import Button from "../components/Button";
 import StarTwoToneIcon from "@mui/icons-material/StarTwoTone";
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { playEffect } from "../utils";
+import { playEffect } from "../utils/audio";
 import ButtonHoverAudio from "../assets/audio/button_hover.mp3";
 import GameStartAudio from "../assets/audio/game_start.mp3";
 import { useGame } from "../hooks";
@@ -174,7 +174,7 @@ const Levels = () => {
                 >
                   {scores[levelIndex]?.maxScore <= 0
                     ? "없음"
-                    : scores[levelIndex].maxScore.toLocaleString()}
+                    : scores[levelIndex]?.maxScore.toLocaleString()}
                 </Typography>
               </Stack>
             </Stack>

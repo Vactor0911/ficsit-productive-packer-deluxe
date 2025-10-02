@@ -22,8 +22,9 @@ import {
 import BoardData from "../assets/boards.json";
 import BlockData from "../assets/blocks.json";
 import { useCallback, useMemo } from "react";
-import { getRandBlockId, playEffect } from "../utils";
+import { getRandBlockId } from "../utils";
 import BlockPlacedAudio from "../assets/audio/block_placed.mp3";
+import { playEffect } from "../utils/audio";
 
 export const useGame = () => {
   const setIsPackageSending = useSetAtom(isPackageSendingAtom);

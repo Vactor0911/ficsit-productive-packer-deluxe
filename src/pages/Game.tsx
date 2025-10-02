@@ -1,6 +1,6 @@
 import { Box, Stack } from "@mui/material";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { playEffect, useIsMobileLandscape } from "../utils";
+import { useIsMobileLandscape } from "../utils";
 import ConveyorSupport from "../components/ConveyorSupport";
 import Package, {
   COVER_ANIMATION_DURATION,
@@ -33,6 +33,9 @@ import SendPackageAudio from "../assets/audio/send_package.mp3";
 import TimeScorePanel from "../components/TimeScorePanel";
 import DraggableBlockGhost from "../components/DraggableBlockGhost";
 import GameOverView from "../components/GameOverView";
+import { playEffect, playMusic } from "../utils/audio";
+import GameAudio from "../assets/audio/music_2.mp3";
+import GameOverAudio from "../assets/audio/game_end.mp3";
 
 const Game = () => {
   const isMobileLandscape = useIsMobileLandscape();
@@ -68,6 +71,9 @@ const Game = () => {
     if (level) {
       // 보드 초기화
       clearBoard(Number(level));
+
+      // 배경 음악 변경
+      playMusic(GameAudio);
     }
   }, [clearBoard, level]);
 
@@ -171,6 +177,9 @@ const Game = () => {
 
     // 패키지 보내기 효과 재생
     setIsPackageSending(true);
+
+    // 배경 음악 재생
+    playMusic(GameOverAudio);
 
     setTimeout(() => {
       // 애니메이션 재생 전에 위치 계산
