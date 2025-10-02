@@ -8,6 +8,8 @@ import { useIsMobileLandscape } from "../utils";
 import { useAtomValue } from "jotai";
 import { vhAtom } from "../states";
 import SendButton from "../components/SendButton";
+import Block from "../components/Block";
+import Score from "../components/Score";
 
 const HowToPlay = () => {
   const navigate = useNavigate();
@@ -84,9 +86,18 @@ const HowToPlay = () => {
               </Typography>
 
               {/* 블록 */}
-              <Stack direction="row" gap={2} justifyContent="center">
-                {/* TODO: 블록 추가 */}
-                <Box height="80px" />
+              <Stack direction="row" justifyContent="center">
+                {[3, 19, 14].map((blockId, index) => (
+                  <Box key={`block-container-${index}`} height={120}>
+                    <Block
+                      id={`block-${index}`}
+                      blockId={blockId}
+                      displayScore={false}
+                      width="100%"
+                      height="100%"
+                    />
+                  </Box>
+                ))}
               </Stack>
               <Typography variant="h4" textAlign="center">
                 블록
@@ -98,8 +109,16 @@ const HowToPlay = () => {
               </Typography>
 
               {/* 채우기 보너스 */}
-              {/* TODO: 채우기 보너스 컴포넌트 추가 */}
-              <Box height="50px" />
+              <Stack alignItems="center">
+                <Stack
+                  alignItems="center"
+                  padding={isMobileLandscape ? "0 32px" : "2px 64px"}
+                  borderRadius="50px"
+                  bgcolor="rgba(0, 0, 0, 0.2)"
+                >
+                  <Score variant="bonus" score={1} />
+                </Stack>
+              </Stack>
               <Typography variant="h4" textAlign="center">
                 채우기 보너스
               </Typography>
@@ -139,7 +158,8 @@ const HowToPlay = () => {
                 할당 기간 동안 원하는 만큼 패키지를 보낼 수 있습니다!
               </Typography>
 
-              {/* 보너스 타일 */}
+              {/* TODO: 보너스 타일 구현 */}
+              {/* 보너스 타일
               <Box height="50px" />
               <Typography variant="h4" textAlign="center">
                 보너스 타일
@@ -148,7 +168,7 @@ const HowToPlay = () => {
                 때때로 패키지에 보너스 타일이 생성됩니다. 사라지기 전에 이
                 타일에 블록을 떨어뜨리면 해당 블록이 보통 포인트의 4배를 얻게
                 됩니다!
-              </Typography>
+              </Typography> */}
             </Stack>
           </StyledOverlayScrollbarsComponent>
 
