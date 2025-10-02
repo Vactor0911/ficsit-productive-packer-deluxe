@@ -172,7 +172,8 @@ const Levels = () => {
                     whiteSpace: "nowrap",
                   }}
                 >
-                  {scores[levelIndex]?.maxScore <= 0
+                  {!scores[levelIndex]?.maxScore ||
+                  scores[levelIndex]?.maxScore <= 0
                     ? "없음"
                     : scores[levelIndex]?.maxScore.toLocaleString()}
                 </Typography>
