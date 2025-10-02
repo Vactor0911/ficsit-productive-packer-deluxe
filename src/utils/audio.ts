@@ -40,7 +40,6 @@ export const playMusic = (src: string, volume = 0.3, loop = true) => {
       prevAudio.volume = 0;
       prevAudio.pause();
       musicAudios.pop();
-      console.log("play music / pop:", musicAudios);
       clearInterval(fadeOutInterval);
     }
   }, 100);
@@ -55,8 +54,6 @@ export const playMusic = (src: string, volume = 0.3, loop = true) => {
       clearInterval(fadeInInterval);
     }
   }, 100);
-
-  console.log("play music:", src, musicAudios);
 };
 
 /**
