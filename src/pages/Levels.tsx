@@ -16,76 +16,46 @@ import {
 } from "../assets/images/levels";
 import Button from "../components/Button";
 import StarTwoToneIcon from "@mui/icons-material/StarTwoTone";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { playEffect } from "../utils";
 import ButtonHoverAudio from "../assets/audio/button_hover.mp3";
 import GameStartAudio from "../assets/audio/game_start.mp3";
 import { useGame } from "../hooks";
 import { useSetAtom } from "jotai";
-import { isTimeOverAtom, timerAtom } from "../states";
+import {
+  isTimeOverAtom,
+  LeaderBoard,
+  timerAtom,
+  type LeaderBoardData,
+} from "../states";
 
 // 게임 레벨 데이터
-const levels = [
-  {
-    level: 1,
-    stars: 0,
-    maxScore: "",
-    image: Level1,
-  },
-  {
-    level: 2,
-    stars: 0,
-    maxScore: "",
-    image: Level2,
-  },
-  {
-    level: 3,
-    stars: 0,
-    maxScore: "",
-    image: Level3,
-  },
-  {
-    level: 4,
-    stars: 0,
-    maxScore: "",
-    image: Level4,
-  },
-  {
-    level: 5,
-    stars: 0,
-    maxScore: "",
-    image: Level5,
-  },
-  {
-    level: 6,
-    stars: 0,
-    maxScore: "",
-    image: Level6,
-  },
-];
+const LEVEL_IMAGES = [Level1, Level2, Level3, Level4, Level5, Level6];
+
+const HoverAnimation = keyframes`
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+`;
 
 const Levels = () => {
   const navigate = useNavigate();
-  const setTimer = useSetAtom(timerAtom);
-  const setIsTimerOver = useSetAtom(isTimeOverAtom);
   const { resetGame } = useGame();
 
-  const SCORE = 1234567890; // 예시 점수
+  const setTimer = useSetAtom(timerAtom);
+  const setIsTimerOver = useSetAtom(isTimeOverAtom);
+  const [scores, setScores] = useState<LeaderBoardData[]>([]);
 
-  // 호버 애니메이션
-  const hoverAnimation = useMemo(
-    () =>
-      keyframes({
-        "0%": {
-          transform: "translateX(-100%)",
-        },
-        "100%": {
-          transform: "translateX(100%)",
-        },
-      }),
-    []
-  );
+  useEffect(() => {
+    const storedScores = localStorage.getItem(LeaderBoard);
+    if (storedScores) {
+      setScores(JSON.parse(storedScores));
+    }
+  }, []);
 
   // 레벨 버튼 호버
   const handleHover = useCallback(() => {
@@ -116,12 +86,12 @@ const Levels = () => {
   return (
     <Container maxWidth="md">
       <Stack gap={2} paddingY={4}>
-        {levels.map((level) => (
+        {Array.from({ length: 6 }).map((_, levelIndex) => (
           <ButtonBase
-            key={`level-button-${level.level}`}
+            key={`level-button-${levelIndex + 1}`}
             disableRipple
             onMouseEnter={handleHover}
-            onClick={() => handleClick(level.level)}
+            onClick={() => handleClick(levelIndex + 1)}
             sx={{
               width: "100%",
               boxShadow: `0 8px 0 rgba(0, 0, 0, 0.15)`,
@@ -157,7 +127,7 @@ const Levels = () => {
                       rgba(255, 255, 255, 0.25) 60%,
                       transparent 60%
                     )`,
-                    animation: `${hoverAnimation} 0.6s linear`,
+                    animation: `${HoverAnimation} 0.6s linear`,
                   },
                 },
               }}
@@ -165,21 +135,29 @@ const Levels = () => {
               {/* 레벨 이미지 */}
               <Box
                 component="img"
-                alt={`Level ${level.level}`}
-                src={level.image}
+                alt={`Level ${levelIndex + 1}`}
+                src={LEVEL_IMAGES[levelIndex]}
                 height="100px"
               />
 
               {/* 레벨 정보 */}
               <Stack flex={1} textAlign="left" overflow="hidden">
                 {/* 레벨 */}
-                <Typography variant="h5">레벨 {level.level}</Typography>
+                <Typography variant="h5">레벨 {levelIndex + 1}</Typography>
 
                 {/* 별 */}
                 <Stack direction="row" alignItems="center">
-                  <StarTwoToneIcon fontSize="large" />
-                  <StarTwoToneIcon fontSize="large" />
-                  <StarTwoToneIcon fontSize="large" />
+                  {Array.from({ length: 3 }).map((_, starIndex) => (
+                    <StarTwoToneIcon
+                      key={`level-star-${starIndex}`}
+                      fontSize="large"
+                      color={
+                        starIndex < scores[levelIndex]?.stars
+                          ? "primary"
+                          : "inherit"
+                      }
+                    />
+                  ))}
                 </Stack>
 
                 {/* 최고 점수 */}
@@ -194,7 +172,9 @@ const Levels = () => {
                     whiteSpace: "nowrap",
                   }}
                 >
-                  홍길동: {SCORE.toLocaleString()}
+                  {scores[levelIndex]?.maxScore <= 0
+                    ? "없음"
+                    : scores[levelIndex].maxScore.toLocaleString()}
                 </Typography>
               </Stack>
             </Stack>

@@ -8,7 +8,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import Panel from "../components/Panel";
 import StarTwoToneIcon from "@mui/icons-material/StarTwoTone";
 import { useIsMobileLandscape } from "../utils";
@@ -17,6 +17,9 @@ import {
   sentPackageCountAtom,
   bestPackageScoreAtom,
   bestFillingPercentageAtom,
+  scoreAtom,
+  type LeaderBoardData,
+  LeaderBoard,
 } from "../states";
 import { useAtomValue } from "jotai";
 import BoardData from "../assets/boards.json";
@@ -88,12 +91,36 @@ const GameOverView = (props: GameOverViewProps) => {
   const sentPackageCount = useAtomValue(sentPackageCountAtom);
   const bestPackageScore = useAtomValue(bestPackageScoreAtom);
   const bestFillingBonus = useAtomValue(bestFillingPercentageAtom);
+  const score = useAtomValue(scoreAtom);
 
   // 현재 레벨의 별점
   const starPoints = useMemo(() => {
     const board = BoardData.find((board) => board.level === Number(level));
     return board ? board.stars : [0, 0, 0];
   }, [level]);
+
+  // 점수 로컬 스토리지에 저장
+  useEffect(() => {
+    const levelNum = Number(level);
+    const storedScores = localStorage.getItem(LeaderBoard);
+    if (storedScores) {
+      const scores = JSON.parse(storedScores) as LeaderBoardData[];
+
+      if (scores[levelNum - 1]) {
+        // 기존 점수보다 높을 때만 업데이트
+        if (score > scores[levelNum - 1].maxScore) {
+          const stars = getStarLevel();
+          scores[levelNum - 1] = { stars, maxScore: score };
+          localStorage.setItem(LeaderBoard, JSON.stringify(scores));
+        }
+      }
+    } else {
+      const stars = getStarLevel();
+      const scores: LeaderBoardData[] = Array(6).fill({ stars: 0, maxScore: 0 });
+      scores[levelNum - 1] = { stars, maxScore: score };
+      localStorage.setItem(LeaderBoard, JSON.stringify(scores));
+    }
+  }, [getStarLevel, level, score]);
 
   // 메뉴로 돌아가기 버튼 클릭
   const handleMenuButtonClick = useCallback(() => {
