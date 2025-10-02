@@ -6,6 +6,7 @@ import { theme } from "./utils/theme";
 import { useEffect } from "react";
 import { useSetAtom } from "jotai";
 import { vhAtom } from "./states";
+import AudioPlayerWrapper from "./components/AudioPlayerWrapper";
 
 const App = () => {
   const setVh = useSetAtom(vhAtom);
@@ -29,13 +30,15 @@ const App = () => {
       <CssBaseline />
 
       <BrowserRouter basename="ficsit-productive-packer-deluxe">
-        <Routes>
-          <Route path="/" element={<Main />} />
-          <Route path="levels" element={<Levels />} />
-          <Route path="how-to-play" element={<HowToPlay />} />
-          <Route path="game/:level" element={<Game />} />
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
+        <AudioPlayerWrapper>
+          <Routes>
+            <Route path="/" element={<Main />} />
+            <Route path="levels" element={<Levels />} />
+            <Route path="how-to-play" element={<HowToPlay />} />
+            <Route path="game/:level" element={<Game />} />
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+        </AudioPlayerWrapper>
       </BrowserRouter>
     </ThemeProvider>
   );

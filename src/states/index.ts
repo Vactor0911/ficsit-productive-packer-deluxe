@@ -78,3 +78,10 @@ export const sentPackageCountAtom = atom(0);
 export const bestPackageScoreAtom = atom(0);
 // 최고 포장 패키지
 export const bestFillingPercentageAtom = atom(0);
+
+// 로컬 저장소 점수 데이터
+export const LeaderBoard = "LeaderBoard";
+export interface LeaderBoardData {
+  stars: number;
+  maxScore: number;
+}

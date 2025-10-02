@@ -3,7 +3,7 @@ import Panel, { type PanelProps } from "./Panel";
 import React, { useCallback, useState } from "react";
 import Marquee from "react-fast-marquee";
 import DiagonalPattern from "../assets/images/diagonal_pattern.svg?react";
-import { playEffect } from "../utils";
+import { playEffect } from "../utils/audio";
 import ButtonHoverAudio from "../assets/audio/button_hover.mp3";
 import ButtonClickAudio from "../assets/audio/button_click.mp3";
 

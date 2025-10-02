@@ -8,7 +8,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import Panel from "../components/Panel";
 import StarTwoToneIcon from "@mui/icons-material/StarTwoTone";
 import { useIsMobileLandscape } from "../utils";
@@ -24,6 +24,13 @@ import Button from "../components/Button";
 import Bolt from "../components/Bolt";
 import { useGame } from "../hooks";
 import { theme } from "../utils/theme";
+import { playEffect } from "../utils/audio";
+import Star1Audio from "../assets/audio/star_1.mp3";
+import Star2Audio from "../assets/audio/star_2.mp3";
+import Star3Audio from "../assets/audio/star_3.mp3";
+
+// 별 효과음
+const STAR_AUDIOS = [Star1Audio, Star2Audio, Star3Audio];
 
 // 별 점등 애니메이션
 const StarLightUpAnimation = keyframes`
@@ -73,7 +80,7 @@ interface GameOverViewProps {
   show: boolean;
 }
 
-const ANIMATION_DELAY = 1.5;
+const ANIMATION_DELAY = 0.5;
 
 const GameOverView = (props: GameOverViewProps) => {
   const { show } = props;
@@ -94,6 +101,32 @@ const GameOverView = (props: GameOverViewProps) => {
     const board = BoardData.find((board) => board.level === Number(level));
     return board ? board.stars : [0, 0, 0];
   }, [level]);
+
+  // 별점 효과음 재생
+  useEffect(() => {
+    if (!show) {
+      return;
+    }
+
+    (async () => {
+      const starLevel = getStarLevel();
+
+      // 애니메이션 딜레이 계산
+      await new Promise((resolve) =>
+        setTimeout(resolve, (ANIMATION_DELAY - 0.5) * 1000)
+      );
+
+      let currentStar = 0;
+      const starEffectInterval = setInterval(() => {
+        if (currentStar < starLevel) {
+          playEffect(STAR_AUDIOS[currentStar]);
+          currentStar++;
+        } else {
+          clearInterval(starEffectInterval);
+        }
+      }, 500);
+    })();
+  }, [getStarLevel, show]);
 
   // 메뉴로 돌아가기 버튼 클릭
   const handleMenuButtonClick = useCallback(() => {

@@ -8,7 +8,7 @@ import React, {
 import Block, { type BlockProps } from "./Block";
 import { Box, Stack, useMediaQuery, useTheme } from "@mui/material";
 import BlockData from "../assets/blocks.json";
-import { playEffect, useIsMobileLandscape } from "../utils";
+import { useIsMobileLandscape } from "../utils";
 import { useAtomValue, useSetAtom } from "jotai";
 import {
   draggableBlockGhostAtom,
@@ -17,6 +17,7 @@ import {
 } from "../states";
 import BlockPickUpAudio from "../assets/audio/block_pickup.mp3";
 import { useBoard, useGame } from "../hooks";
+import { playEffect } from "../utils/audio";
 
 const DraggableBlock = (props: BlockProps) => {
   const { id, blockId, shadow, ...others } = props;

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { effectAudios, musicAudio } from "./audio";
 import BlockData from "../assets/blocks.json";
+import { LeaderBoard, type LeaderBoardData } from "../states";
 
 /**
  * 숫자 혹은 문자열 형태의 값을 px 단위로 변환하는 함수
@@ -12,33 +12,6 @@ export const calculatePixel = (value: number | string) => {
     return `${value * 8}px`;
   }
   return value;
-};
-
-/**
- * 배경 음악을 재생하는 함수
- * @param src 음악 파일의 경로
- * @param volume 음악 볼륨 (기본값: 0.3)
- */
-export const playMusic = (src: string, volume = 0.3) => {
-  musicAudio.src = src;
-  musicAudio.volume = volume;
-  musicAudio.play();
-};
-
-/**
- * 효과음을 재생하는 함수
- * @param src 효과음 파일의 경로
- * @param volume 효과음 볼륨 (기본값: 0.3)
- */
-export const playEffect = (src: string, volume = 0.3) => {
-  for (const audio of effectAudios) {
-    if (audio.paused) {
-      audio.src = src;
-      audio.volume = volume;
-      audio.play();
-      break;
-    }
-  }
 };
 
 /**
@@ -75,4 +48,43 @@ export const getRandBlockId = () => {
   const randomIndex = Math.floor(Math.random() * blockIds.length);
 
   return blockIds[randomIndex];
+};
+
+/**
+ * 게임 점수를 로컬 스토리지에 저장하는 함수
+ * @param level 게임 레벨
+ * @param score 점수
+ * @param stars 별 개수
+ */
+export const saveScoreToLocalStorage = (
+  level?: string,
+  score?: number,
+  stars?: number
+) => {
+  const levelNum = Number(level);
+
+  // 파라미터 검증
+  if (!levelNum || !score || !stars) {
+    return;
+  }
+
+  const storedScores = localStorage.getItem(LeaderBoard);
+  if (storedScores) {
+    const scores = JSON.parse(storedScores) as LeaderBoardData[];
+
+    if (scores[levelNum - 1]) {
+      // 기존 점수보다 높을 때만 업데이트
+      if (score > scores[levelNum - 1].maxScore) {
+        scores[levelNum - 1] = { stars, maxScore: score };
+        localStorage.setItem(LeaderBoard, JSON.stringify(scores));
+      }
+    }
+  } else {
+    const scores: LeaderBoardData[] = Array(6).fill({
+      stars: 0,
+      maxScore: 0,
+    });
+    scores[levelNum - 1] = { stars, maxScore: score };
+    localStorage.setItem(LeaderBoard, JSON.stringify(scores));
+  }
 };
