@@ -17,9 +17,6 @@ import {
   sentPackageCountAtom,
   bestPackageScoreAtom,
   bestFillingPercentageAtom,
-  scoreAtom,
-  type LeaderBoardData,
-  LeaderBoard,
 } from "../states";
 import { useAtomValue } from "jotai";
 import BoardData from "../assets/boards.json";
@@ -27,6 +24,13 @@ import Button from "../components/Button";
 import Bolt from "../components/Bolt";
 import { useGame } from "../hooks";
 import { theme } from "../utils/theme";
+import { playEffect } from "../utils/audio";
+import Star1Audio from "../assets/audio/star_1.mp3";
+import Star2Audio from "../assets/audio/star_2.mp3";
+import Star3Audio from "../assets/audio/star_3.mp3";
+
+// 별 효과음
+const STAR_AUDIOS = [Star1Audio, Star2Audio, Star3Audio];
 
 // 별 점등 애니메이션
 const StarLightUpAnimation = keyframes`
@@ -76,7 +80,7 @@ interface GameOverViewProps {
   show: boolean;
 }
 
-const ANIMATION_DELAY = 1.5;
+const ANIMATION_DELAY = 0.5;
 
 const GameOverView = (props: GameOverViewProps) => {
   const { show } = props;
@@ -91,7 +95,6 @@ const GameOverView = (props: GameOverViewProps) => {
   const sentPackageCount = useAtomValue(sentPackageCountAtom);
   const bestPackageScore = useAtomValue(bestPackageScoreAtom);
   const bestFillingBonus = useAtomValue(bestFillingPercentageAtom);
-  const score = useAtomValue(scoreAtom);
 
   // 현재 레벨의 별점
   const starPoints = useMemo(() => {
@@ -99,28 +102,31 @@ const GameOverView = (props: GameOverViewProps) => {
     return board ? board.stars : [0, 0, 0];
   }, [level]);
 
-  // 점수 로컬 스토리지에 저장
+  // 별점 효과음 재생
   useEffect(() => {
-    const levelNum = Number(level);
-    const storedScores = localStorage.getItem(LeaderBoard);
-    if (storedScores) {
-      const scores = JSON.parse(storedScores) as LeaderBoardData[];
-
-      if (scores[levelNum - 1]) {
-        // 기존 점수보다 높을 때만 업데이트
-        if (score > scores[levelNum - 1].maxScore) {
-          const stars = getStarLevel();
-          scores[levelNum - 1] = { stars, maxScore: score };
-          localStorage.setItem(LeaderBoard, JSON.stringify(scores));
-        }
-      }
-    } else {
-      const stars = getStarLevel();
-      const scores: LeaderBoardData[] = Array(6).fill({ stars: 0, maxScore: 0 });
-      scores[levelNum - 1] = { stars, maxScore: score };
-      localStorage.setItem(LeaderBoard, JSON.stringify(scores));
+    if (!show) {
+      return;
     }
-  }, [getStarLevel, level, score]);
+
+    (async () => {
+      const starLevel = getStarLevel();
+
+      // 애니메이션 딜레이 계산
+      await new Promise((resolve) =>
+        setTimeout(resolve, (ANIMATION_DELAY - 0.5) * 1000)
+      );
+
+      let currentStar = 0;
+      const starEffectInterval = setInterval(() => {
+        if (currentStar < starLevel) {
+          playEffect(STAR_AUDIOS[currentStar]);
+          currentStar++;
+        } else {
+          clearInterval(starEffectInterval);
+        }
+      }, 500);
+    })();
+  }, [getStarLevel, show]);
 
   // 메뉴로 돌아가기 버튼 클릭
   const handleMenuButtonClick = useCallback(() => {

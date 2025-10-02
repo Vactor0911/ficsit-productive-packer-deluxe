@@ -1,6 +1,6 @@
 import { Box, Stack } from "@mui/material";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useIsMobileLandscape } from "../utils";
+import { saveScoreToLocalStorage, useIsMobileLandscape } from "../utils";
 import ConveyorSupport from "../components/ConveyorSupport";
 import Package, {
   COVER_ANIMATION_DURATION,
@@ -58,7 +58,9 @@ const Game = () => {
   const timeScorePanelRef = useRef<HTMLDivElement>(null);
   const gameOverViewRef = useRef<HTMLDivElement>(null);
   const [isGameOver, setIsGameOver] = useState(false);
+  const [isGameOverViewVisible, setIsGameOverViewVisible] = useState(false);
   const isTimeOver = useAtomValue(isTimeOverAtom);
+  const { getStarLevel } = useGame();
 
   // 게임 종료 시 TimeScorePanel 위치 상태
   const [timeScorePanelPosition, setTimeScorePanelPosition] = useState(20);
@@ -72,7 +74,7 @@ const Game = () => {
       // 보드 초기화
       clearBoard(Number(level));
 
-      // 배경 음악 변경
+      // 게임 배경 음악 재생
       playMusic(GameAudio);
     }
   }, [clearBoard, level]);
@@ -123,22 +125,22 @@ const Game = () => {
     // 효과음 재생
     playEffect(SendPackageAudio);
   }, [
+    clearBoard,
+    fillingBonus,
+    fillingPercentage,
+    getTimerLeft,
     isBoardEmpty,
     isPackageSending,
-    getTimerLeft,
-    score,
+    level,
     packageScore,
-    fillingBonus,
-    setScore,
-    setSentPackageCount,
-    setBestPackageScore,
+    score,
     setBestFillingPercentage,
+    setBestPackageScore,
+    setFillingBonus,
     setIsPackageSending,
     setPackageScore,
-    setFillingBonus,
-    fillingPercentage,
-    clearBoard,
-    level,
+    setScore,
+    setSentPackageCount,
   ]);
 
   // 게임 종료시 TimerScorePanel 위치 계산
@@ -155,31 +157,33 @@ const Game = () => {
     setTimeScorePanelPosition(newPosition);
   }, []);
 
-  // 시간 종료 애니메이션 실행
-  useEffect(() => {
-    // 시간이 종료되지 않았다면 종료
-    if (!isTimeOver) return;
-
+  // 게임 종료 시 마지막 패키지 전송
+  const sendLastPackage = useCallback(() => {
     // 보드가 비어있지 않다면 실행
-    if (!isBoardEmpty) {
-      // 점수 증가
-      setScore((score) => score + Math.round(packageScore * fillingBonus));
-
-      // 보낸 패키지 수 증가
-      setSentPackageCount((count) => count + 1);
-
-      // 포장 최고 점수 갱신
-      setBestPackageScore((score) => Math.max(score, packageScore));
-
-      // 최고 포장 패키지 점수 갱신
-      setBestFillingBonus((bonus) => Math.max(bonus, fillingBonus));
+    if (isBoardEmpty) {
+      return;
     }
 
+    setScore((score) => score + Math.round(packageScore * fillingBonus)); // 점수 증가
+    setSentPackageCount((count) => count + 1); // 보낸 패키지 수 증가
+    setBestPackageScore((score) => Math.max(score, packageScore)); // 포장 최고 점수 갱신
+    setBestFillingBonus((bonus) => Math.max(bonus, fillingBonus)); // 최고 포장 패키지 점수 갱신
+  }, [
+    fillingBonus,
+    isBoardEmpty,
+    packageScore,
+    setBestFillingBonus,
+    setBestPackageScore,
+    setScore,
+    setSentPackageCount,
+  ]);
+
+  const handleGameOver = useCallback(() => {
     // 패키지 보내기 효과 재생
     setIsPackageSending(true);
 
-    // 배경 음악 재생
-    playMusic(GameOverAudio);
+    // 게임 종료 배경 음악 재생
+    playMusic(GameOverAudio, undefined, false);
 
     setTimeout(() => {
       // 애니메이션 재생 전에 위치 계산
@@ -187,27 +191,35 @@ const Game = () => {
 
       // 애니메이션 재생
       rootRef.current?.classList.remove("game-over");
-
       requestAnimationFrame(() => {
         rootRef.current?.classList.add("game-over");
       });
 
-      // 게임 화면 렌더링 비활성화
+      // 게임 오버 화면 렌더링
       setTimeout(() => {
-        setIsGameOver(true);
+        setIsGameOverViewVisible(true);
       }, 1000);
     }, 1000);
+  }, [calcTimeScorePanelPosition, setIsPackageSending]);
+
+  // 시간 종료 처리
+  useEffect(() => {
+    if (!isTimeOver || isGameOver) {
+      return;
+    }
+
+    setIsGameOver(true);
+    sendLastPackage(); // 남은 패키지 전송
+    saveScoreToLocalStorage(level, score, getStarLevel()); // 게임 점수를 로컬 스토리지에 저장
+    handleGameOver(); // 게임 종료 처리
   }, [
-    calcTimeScorePanelPosition,
-    fillingBonus,
-    isBoardEmpty,
+    getStarLevel,
+    handleGameOver,
+    isGameOver,
     isTimeOver,
-    packageScore,
-    setBestFillingBonus,
-    setBestPackageScore,
-    setIsPackageSending,
-    setScore,
-    setSentPackageCount,
+    level,
+    score,
+    sendLastPackage,
   ]);
 
   // 레벨 유효성 검증
@@ -223,9 +235,9 @@ const Game = () => {
   return (
     <Stack
       ref={rootRef}
-      height={isGameOver ? "auto" : `${vh * 100}px`}
+      height={isGameOverViewVisible ? "auto" : `${vh * 100}px`}
       minHeight={`${vh * 100}px`}
-      justifyContent={isGameOver ? "flex-end" : ""}
+      justifyContent={isGameOverViewVisible ? "flex-end" : ""}
       overflow="hidden"
       sx={{
         "&.game-over": {
@@ -270,7 +282,7 @@ const Game = () => {
               }
         }
         sx={{
-          transition: isGameOver
+          transition: isGameOverViewVisible
             ? ""
             : "margin-top 1s ease-in-out, transform 1s ease-in-out",
         }}
@@ -280,7 +292,7 @@ const Game = () => {
 
       {/* 게임 화면 */}
       <Stack
-        display={isGameOver ? "none" : "flex"}
+        display={isGameOverViewVisible ? "none" : "flex"}
         position="relative"
         flex={1}
         marginTop={1.5}
@@ -475,7 +487,7 @@ const Game = () => {
       <Stack
         className="mobile-block-container"
         display={
-          isGameOver
+          isGameOverViewVisible
             ? "none"
             : isMobileLandscape
             ? "none"
@@ -501,15 +513,14 @@ const Game = () => {
       <Box
         ref={gameOverViewRef}
         width="100%"
-        position={isGameOver ? "relative" : "fixed"}
+        position={isGameOverViewVisible ? "relative" : "fixed"}
         bottom={0}
         sx={{
-          opacity: isGameOver ? 1 : 0,
-          transition: "opacity 1s ease-in-out",
-          transitionDelay: "0.5s",
+          opacity: isGameOverViewVisible ? 1 : 0,
+          transition: "opacity 0.5s ease-in-out",
         }}
       >
-        <GameOverView show={isGameOver} />
+        <GameOverView show={isGameOverViewVisible} />
       </Box>
     </Stack>
   );

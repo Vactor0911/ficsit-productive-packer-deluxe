@@ -15,17 +15,16 @@ const effectAudios = [
  * @param src 음악 파일의 경로
  * @param volume 음악 볼륨 (기본값: 0.3)
  */
-export const playMusic = (src: string, volume = 0.3) => {
+export const playMusic = (src: string, volume = 0.3, loop = true) => {
   // 이미 재생 중인 음악이면 무시
-  if (musicAudios[0].src === src && !musicAudios[0].paused) {
+  if (musicAudios[0].src.endsWith(src) && !musicAudios[0].paused) {
     return;
   }
 
   // 새로운 오디오 객체 생성
-  const newMusicAudio = new Audio();
-  newMusicAudio.src = src;
+  const newMusicAudio = new Audio(src);
   newMusicAudio.autoplay = true;
-  newMusicAudio.loop = true;
+  newMusicAudio.loop = loop;
   newMusicAudio.volume = volume;
   newMusicAudio.play();
 
@@ -38,8 +37,10 @@ export const playMusic = (src: string, volume = 0.3) => {
     if (prevAudio.volume > 0.1) {
       prevAudio.volume -= 0.05;
     } else {
+      prevAudio.volume = 0;
       prevAudio.pause();
       musicAudios.pop();
+      console.log("play music / pop:", musicAudios);
       clearInterval(fadeOutInterval);
     }
   }, 100);
@@ -54,6 +55,8 @@ export const playMusic = (src: string, volume = 0.3) => {
       clearInterval(fadeInInterval);
     }
   }, 100);
+
+  console.log("play music:", src, musicAudios);
 };
 
 /**
