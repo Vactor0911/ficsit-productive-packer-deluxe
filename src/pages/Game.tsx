@@ -164,14 +164,18 @@ const Game = () => {
       return;
     }
 
-    setScore((score) => score + Math.round(packageScore * fillingBonus)); // 점수 증가
+    const finalScore = score + Math.round(packageScore * fillingBonus);
+    setScore(finalScore); // 최종 점수 설정
     setSentPackageCount((count) => count + 1); // 보낸 패키지 수 증가
     setBestPackageScore((score) => Math.max(score, packageScore)); // 포장 최고 점수 갱신
     setBestFillingBonus((bonus) => Math.max(bonus, fillingBonus)); // 최고 포장 패키지 점수 갱신
+
+    return finalScore;
   }, [
     fillingBonus,
     isBoardEmpty,
     packageScore,
+    score,
     setBestFillingBonus,
     setBestPackageScore,
     setScore,
@@ -209,8 +213,8 @@ const Game = () => {
     }
 
     setIsGameOver(true);
-    sendLastPackage(); // 남은 패키지 전송
-    saveScoreToLocalStorage(level, score, getStarLevel()); // 게임 점수를 로컬 스토리지에 저장
+    const finalScore = sendLastPackage(); // 남은 패키지 전송
+    saveScoreToLocalStorage(level, finalScore, getStarLevel()); // 게임 점수를 로컬 스토리지에 저장
     handleGameOver(); // 게임 종료 처리
   }, [
     getStarLevel,
