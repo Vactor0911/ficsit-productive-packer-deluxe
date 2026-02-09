@@ -23,7 +23,7 @@
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-fast-marquee": "^1.6.5",
-    "react-router-dom": "^7.6.3",
+    "react-router-dom": "^7.13.0",
     "vite-plugin-svgr": "^4.3.0"
   },
   "devDependencies": {
